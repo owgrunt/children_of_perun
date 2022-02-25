@@ -1,0 +1,18 @@
+﻿l_spanish:
+rus_conversion_decision:0 "Seek a New Faith for the Rus'"
+ rus_conversion_decision_desc:0 "The pagan ways worked well enough for my forefathers. However, our enterprising traders and warriors tell awesome tales of the monotheistic [Concept( 'faith', 'faiths')|E] practiced in neighbouring [Concept( 'realm', 'realms' )|E], with their majestic [Concept( 'temple', 'temples' )|E], stunning rituals and powerful priestly hierarchies. Maybe the time has come for a single God to stand behind a mighty [Concept( 'ruler', 'ruler' )|E]?"
+ rus_conversion_decision_tooltip:0 "Call for emissaries from neighbouring monotheistic religions"
+ rus_conversion_decision_custom_tooltip:0 "You will receive delegations from neighbouring monotheistic [Concept( 'ruler', 'rulers' )|E] arguing in favour of their [Concept( 'faith', 'faith')|E]."
+ rus_conversion_decision_confirm:0 "Let the messengers fly!"
+
+select_personal_deity_slavic_decision:0 "Determine Personal Deity"
+ select_personal_deity_slavic_decision_tooltip:0 "Think about [ROOT.Char.GetFaith.PantheonTerm]"
+ select_personal_deity_slavic_decision_desc:1 "#F It is not uncommon for [ROOT.Char.GetFaith.GetAdherentNamePluralNoTooltip] to single out one amongst [ROOT.Char.GetFaith.PantheonTerm] who suits their particular tastes and aims in life for special attention.\n\nI should contemplate these divine beings and decide which one calls to me the most.#!"
+ select_personal_deity_slavic_decision_confirm:0 "Dedicate your Worship to a particular God"
+ select_personal_deity_slavic_decision_tt:1 "You begin to live your life according to the values of"
+ select_personal_deity_slavic_decision.select_perun:0 "Perun, the Thunderer"
+ select_personal_deity_slavic_decision.select_veles:0 "Veles, the Serpent"
+ select_personal_deity_slavic_decision.select_dazhbog:0 "Dazhbog, the Sun Caesar"
+ select_personal_deity_slavic_decision.select_stribog:0 "Stribog, the all-knowing"
+ select_personal_deity_slavic_decision.select_svarog:0 "Svarog, the Quarrelsome"
+ select_personal_deity_slavic_decision.select_mokosh:0 "Mokosh, Damp Mother Earth"

@@ -1,0 +1,243 @@
+﻿namespace = cop_conversion
+
+
+#When a pagan (ai) domain is ready to feudalize, a reformed neighbor they're on good terms with should attempt to convert them, or they should have a chance to spontaneously convert
+
+
+#########################################################################
+# Pagan reformed by neighbor or spontaneously 							#
+# by Linnéa Thimrén														#
+# global_religion.0001-0009												#
+#########################################################################
+
+cop_conversion.0001 = {
+	hidden = yes
+	
+	immediate = {
+		random_list = {
+			5 = {
+				trigger = {
+					#A separate version for faiths from the same religion
+					any_neighboring_top_liege_realm_owner = {
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						faith.religion = root.faith.religion
+					}
+				}
+				modifier = { #Boost for the reformed version of your faith
+					add = 10
+					any_neighboring_top_liege_realm_owner = {
+						faith = { 
+							has_variable = original_faith
+							var:original_faith = root.faith
+						}
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+					}
+				}
+				random_neighboring_top_liege_realm_owner = {
+					limit = {
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						faith = { 
+							has_variable = original_faith
+							var:original_faith = root.faith
+						}
+					}
+					alternative_limit = {
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						faith.religion = root.faith.religion
+					}
+					save_scope_as = actor #for the effect to work properly
+				}
+			}
+			5 = {
+				trigger = {
+					any_spouse = {
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						faith.religion = root.faith.religion
+						NOR = {
+							has_relation_potential_rival = root
+							has_relation_rival = root
+						}
+					}
+				}
+				modifier = { #Boost for the reformed version of your faith
+					add = 5
+					any_spouse = {
+						faith = { 
+							has_variable = original_faith
+							var:original_faith = root.faith
+						}
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						NOR = {
+							has_relation_potential_rival = root
+							has_relation_rival = root
+						}
+					}
+				}
+				random_spouse = {
+					limit = {
+						faith = { 
+							has_variable = original_faith
+							var:original_faith = root.faith
+						}
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						NOR = {
+							has_relation_potential_rival = root
+							has_relation_rival = root
+						}
+					}
+					alternative_limit = {
+						faith.religion = root.faith.religion
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						NOR = {
+							has_relation_potential_rival = root
+							has_relation_rival = root
+						}
+					}
+					save_scope_as = actor #for the effect to work properly
+				}
+			}
+			5 = {
+				trigger = {
+					any_relation = {
+						type = soulmate
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						faith.religion = root.faith.religion
+					}
+				}
+				modifier = { #Boost for the reformed version of your faith
+					add = 5
+					any_relation = {
+						faith = { 
+							has_variable = original_faith
+							var:original_faith = root.faith
+						}
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+					}
+				}
+				random_relation = {
+					type = soulmate
+					limit = {
+						faith = { 
+							has_variable = original_faith
+							var:original_faith = root.faith
+						}
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+					}
+					alternative_limit = {
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						faith.religion = root.faith.religion
+					}
+					save_scope_as = actor #for the effect to work properly
+				}
+			}
+			2 = {
+				trigger = {
+					any_relation = {
+						type = friend
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						faith.religion = root.faith.religion
+					}
+				}
+				modifier = {
+					add = 2
+					any_relation = {
+						type = friend
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						faith.religion = root.faith.religion
+						has_relation_best_friend = root
+					}
+				}
+				random_relation = {
+					type = friend
+					limit = {
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						faith.religion = root.faith.religion
+						has_relation_best_friend = root
+					}
+					alternative_limit = {
+						faith = { NOT = { has_doctrine_parameter = unreformed } }
+						faith.religion = root.faith.religion
+					}
+					save_scope_as = actor #for the effect to work properly
+				}
+			}
+			#Geographical regions to also push extra for
+			5 = {
+				trigger = {
+					faith.religion = {
+						any_faith = {
+							NOT = { has_doctrine_parameter = unreformed }
+							exists = religious_head
+						}
+					}
+				}
+				faith.religion = {
+					random_faith = {
+						limit = {
+							NOT = { has_doctrine_parameter = unreformed } 
+							has_variable = original_faith
+							var:original_faith = root.faith
+						}
+						alternative_limit = {
+							NOT = { has_doctrine_parameter = unreformed }
+						}
+						religious_head = {
+							save_scope_as = actor #for the effect to work properly
+						}
+					}
+				}
+			}
+			100 = {
+				modifier = {
+					add = -20
+					current_date >= 868.1.1
+				}
+				modifier = {
+					add = -20
+					current_date >= 950.1.1
+				}
+				modifier = { #100 % that something happens if it can
+					add = -10
+					current_date >= 1100.1.1
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				exists = scope:actor
+			}
+			save_scope_as = recipient #for the effect to work properly
+
+			demand_conversion_interaction_effect = yes
+
+			if = { #If you converted to a neighboring faith your government and capital county also converts
+				limit = {
+					AND = {
+						any_neighboring_top_liege_realm_owner = {
+							this = scope:recipient
+						}
+						scope:recipient = { has_government = feudal_government }
+					}
+				}
+				change_government = feudal_government
+				capital_county = {
+					set_county_faith = root.faith
+				}
+			}
+		}
+	}
+}
+
+cop_conversion.0003 = {
+	hidden = yes
+
+	immediate = {
+		faith = {
+			set_variable = {
+				name = original_faith
+				value = founder.var:foundational_faith
+			}
+		}
+	}
+}

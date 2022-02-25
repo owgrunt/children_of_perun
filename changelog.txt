@@ -1,0 +1,11 @@
+1.1:
+✽ Fixed the silver spoon event not requiring any spending.
+
+1.0.2:
+✽ Replaced Russians with Rus' and Russes.
+✽ Reduced some personal deity modifiers.
+✽ Made the second option in the "Clubbing for Perun" event a bit safer.
+
+✽ Исправил "русских" на "русов", изменил "Российскую империю" на "Великую Русь".
+✽ Снизил некоторые модификаторы личных божеств.
+✽ Сделал второй вариант в событии "Перуновы палицы" более безопасным.

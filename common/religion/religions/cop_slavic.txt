@@ -1,0 +1,281 @@
+﻿slavic_religion = {
+	family = rf_pagan
+	graphical_faith = pagan_gfx
+
+	pagan_roots = yes
+
+	doctrine = pagan_hostility_doctrine
+
+	#Main Group
+	doctrine = doctrine_no_head
+	doctrine = doctrine_gender_male_dominated
+	doctrine = doctrine_pluralism_fundamentalist
+	doctrine = doctrine_theocracy_temporal
+
+	#Marriage
+	doctrine = doctrine_concubines
+	doctrine = doctrine_divorce_allowed
+	doctrine = doctrine_bastardry_legitimization
+	doctrine = doctrine_consanguinity_cousins
+
+	#Crimes
+	doctrine = doctrine_homosexuality_crime
+	doctrine = doctrine_adultery_men_crime
+	doctrine = doctrine_adultery_women_crime
+	doctrine = doctrine_kinslaying_close_kin_crime
+	doctrine = doctrine_deviancy_crime
+	doctrine = doctrine_witchcraft_crime
+
+	#Clerical Functions
+	doctrine = doctrine_clerical_function_recruitment
+	doctrine = doctrine_clerical_gender_either
+	doctrine = doctrine_clerical_marriage_allowed
+	doctrine = doctrine_clerical_succession_temporal_appointment
+
+	traits = {
+		virtues = { just gregarious honest }
+		sins = { arbitrary shy deceitful }
+	}
+
+	custom_faith_icons = {
+		cop_perun cop_perun_brown cop_perun_green cop_perun_gold cop_perun_purple cop_perun_red cop_triglav cop_triglav_brown cop_triglav_green cop_triglav_gold cop_triglav_purple cop_triglav_red slavic cop_slavic_brown cop_slavic_green cop_slavic_gold cop_slavic_purple cop_slavic_red cop_rod cop_rod_brown cop_rod_green cop_rod_gold cop_rod_purple cop_rod_red cop_rose cop_rose_brown cop_rose_green cop_rose_gold cop_rose_purple cop_rose_red cop_svarga cop_svarga_brown cop_svarga_green cop_svarga_gold cop_svarga_purple cop_svarga_red
+	}
+
+	holy_order_maa = { horse_archers }
+
+	holy_order_names = {
+		{ name = "holy_order_warriors_of_perun" }
+		{ name = "holy_order_guardians_of_divinerealm" }
+		{ name = "holy_order_faithful_of_highgod" }
+		{ name = "holy_order_warriors_of_the_symbol" }
+	}	
+
+	localization = {
+		HighGodName = slavic_high_god_name
+		HighGodName2 = slavic_high_god_name_2
+		HighGodNamePossessive = slavic_high_god_name_possessive
+		HighGodNameSheHe = CHARACTER_SHEHE_HE
+		HighGodHerselfHimself = CHARACTER_HIMSELF
+		HighGodHerHis = CHARACTER_HERHIS_HIS
+		HighGodNameAlternate = slavic_high_god_name_alternate
+		HighGodNameAlternatePossessive = slavic_high_god_name_alternate_possessive
+
+		#Creator
+		CreatorName = slavic_creator_god_name
+		CreatorNamePossessive = slavic_creator_god_name_possessive
+		CreatorSheHe = CHARACTER_SHEHE_HE
+		CreatorHerHis = CHARACTER_HERHIS_HIS
+		CreatorHerHim = CHARACTER_HERHIM_HIM
+
+		#HealthGod
+		HealthGodName = slavic_health_god_name
+		HealthGodNamePossessive = slavic_health_god_name_possessive
+		HealthGodSheHe = CHARACTER_SHEHE_HE
+		HealthGodHerHis = CHARACTER_HERHIS_HIS
+		HealthGodHerHim = CHARACTER_HERHIM_HIM
+		
+		#FertilityGod
+		FertilityGodName = slavic_fertility_god_name
+		FertilityGodNamePossessive = slavic_fertility_god_name_possessive
+		FertilityGodSheHe = CHARACTER_SHEHE_SHE
+		FertilityGodHerHis = CHARACTER_HERHIS_HER
+		FertilityGodHerHim = CHARACTER_HERHIM_HER
+
+		#WealthGod
+		WealthGodName = slavic_wealth_god_name
+		WealthGodNamePossessive = slavic_wealth_god_name_possessive
+		WealthGodSheHe = CHARACTER_SHEHE_HE
+		WealthGodHerHis = CHARACTER_HERHIS_HIS
+		WealthGodHerHim = CHARACTER_HERHIM_HIM
+
+		#HouseholdGod
+		HouseholdGodName = slavic_household_god_name
+		HouseholdGodNamePossessive = slavic_household_god_name_possessive
+		HouseholdGodSheHe = CHARACTER_SHEHE_SHE
+		HouseholdGodHerHis = CHARACTER_HERHIS_HER
+		HouseholdGodHerHim = CHARACTER_HERHIM_HER
+
+		#FateGod
+		FateGodName = slavic_fate_god_name
+		FateGodNamePossessive = slavic_fate_god_name_possessive
+		FateGodSheHe = CHARACTER_SHEHE_HE
+		FateGodHerHis = CHARACTER_HERHIS_HIS
+		FateGodHerHim = CHARACTER_HERHIM_HIM
+
+		#KnowledgeGod
+		KnowledgeGodName = slavic_knowledge_god_name
+		KnowledgeGodNamePossessive = slavic_knowledge_god_name_possessive
+		KnowledgeGodSheHe = CHARACTER_SHEHE_HE
+		KnowledgeGodHerHis = CHARACTER_HERHIS_HIS
+		KnowledgeGodHerHim = CHARACTER_HERHIM_HIM
+
+		#WarGod
+		WarGodName = slavic_war_god_name
+		WarGodNamePossessive = slavic_war_god_name_possessive
+		WarGodSheHe = CHARACTER_SHEHE_HE
+		WarGodHerHis = CHARACTER_HERHIS_HIS
+		WarGodHerHim = CHARACTER_HERHIM_HIM
+
+		#TricksterGod
+		TricksterGodName = slavic_trickster_god_name
+		TricksterGodNamePossessive = slavic_trickster_god_name_possessive
+		TricksterGodSheHe = CHARACTER_SHEHE_HE
+		TricksterGodHerHis = CHARACTER_HERHIS_HIS
+		TricksterGodHerHim = CHARACTER_HERHIM_HIM
+
+		#NightGod
+		NightGodName = slavic_night_god_name
+		NightGodNamePossessive = slavic_night_god_name_possessive
+		NightGodSheHe = CHARACTER_SHEHE_HE
+		NightGodHerHis = CHARACTER_HERHIS_HIS
+		NightGodHerHim = CHARACTER_HERHIM_HIM
+
+		#WaterGod
+		WaterGodName = slavic_water_god_name
+		WaterGodNamePossessive = slavic_water_god_name_possessive
+		WaterGodSheHe = CHARACTER_SHEHE_SHE
+		WaterGodHerHis = CHARACTER_HERHIS_HER
+		WaterGodHerHim = CHARACTER_HERHIM_HER
+
+
+
+		PantheonTerm = religion_the_gods
+		PantheonTerm2 = religion_the_gods_2
+		PantheonTerm3 = religion_the_gods_3
+		PantheonTermHasHave = pantheon_term_have
+		GoodGodNames = {slavic_good_god_dazhbog slavic_good_god_stribog slavic_good_god_svarog}
+		DevilName = slavic_devil_name
+		DevilNamePossessive = slavic_devil_name_possessive
+		DevilSheHe = CHARACTER_SHEHE_HE
+		DevilHerHis = CHARACTER_HERHIS_HIS
+		DevilHerselfHimself = CHARACTER_HIMSELF
+		EvilGodNames = { slavic_evil_god_chernobog slavic_evil_god_morana }
+		HouseOfWorship = slavic_house_of_worship
+		HouseOfWorship2 = paganism_house_of_worship_2
+		HouseOfWorship3 = paganism_house_of_worship_3
+		HouseOfWorshipPlural = slavic_house_of_worship_plural
+		ReligiousSymbol = slavic_religious_symbol
+		ReligiousSymbol2 = slavic_religious_symbol_2
+		ReligiousSymbol3 = slavic_religious_symbol_3
+		ReligiousText = slavic_religious_text
+		ReligiousText2 = slavic_religious_text_2
+		ReligiousText3 = slavic_religious_text_3
+		ReligiousHeadName = slavic_religious_head_title
+		ReligiousHeadTitleName = paganism_religious_head_title_name
+		DevoteeMale = slavic_devotee_male
+		DevoteeMalePlural = slavic_devotee_male_plural
+		DevoteeFemale = slavic_devotee_female
+		DevoteeFemalePlural = slavic_devotee_female_plural
+		DevoteeNeuter = slavic_devotee_male
+		DevoteeNeuterPlural = slavic_devotee_male_plural
+		PriestMale = slavic_priest_male
+		PriestMalePlural = slavic_priest_male_plural
+		PriestFemale = slavic_priest_female
+		PriestFemalePlural = slavic_priest_female_plural
+		PriestNeuter = slavic_priest_male
+		PriestNeuterPlural = slavic_priest_male_plural
+		BishopMale = slavic_bishop_male
+		BishopMalePlural = slavic_bishop_male_plural
+		BishopFemale = slavic_bishop_female
+		BishopFemalePlural = slavic_bishop_female_plural
+		BishopNeuter = slavic_bishop_male
+		BishopNeuterPlural = slavic_bishop_male_plural
+		AltPriestTermPlural = slavic_priest_alternate_plural
+		DivineRealm = slavic_positive_afterlife
+		DivineRealm2 = slavic_positive_afterlife_2
+		DivineRealm3 = slavic_positive_afterlife_3
+		PositiveAfterLife = slavic_positive_afterlife
+		PositiveAfterLife2 = slavic_positive_afterlife_2
+		PositiveAfterLife3 = slavic_positive_afterlife_3
+		NegativeAfterLife = slavic_negative_afterlife
+		NegativeAfterLife2 = slavic_negative_afterlife_2
+		NegativeAfterLife3 = slavic_negative_afterlife_3
+		DeathDeityName = slavic_death_deity_name
+		DeathDeityNamePossessive = slavic_death_deity_name_possessive
+		DeathDeitySheHe = slavic_death_deity_sheheit
+		DeathDeityHerHis = slavic_death_deity_herhis
+		WitchGodName = slavic_good_god_veles
+		WitchGodNamePossessive = slavic_good_god_veles_possessive
+		WitchGodHerHis = CHARACTER_HERHIS_HIS
+		WitchGodSheHe = CHARACTER_SHEHE_HE
+		WitchGodHerHim = CHARACTER_HERHIM_HIM
+		WitchGodMistressMaster = master
+		WitchGodMotherFather = father
+
+		
+		GHWName = ghw_great_holy_war
+		GHWNamePlural = ghw_great_holy_wars
+	}	
+
+	faiths = {
+		slavic_pagan = {
+			color = { 0.7 0.6 0.3 }
+			icon = slavic
+			reformed_icon = slavic_reformed
+
+			holy_site = kiev
+			holy_site = peryn
+			holy_site = barlad
+			holy_site = plock
+			holy_site = arkona
+
+			doctrine = unreformed_faith_doctrine
+
+			doctrine = tenet_sanctity_of_nature
+			doctrine = tenet_ritual_celebrations
+			doctrine = tenet_communal_identity	
+		}
+		
+		slavic_east = {
+			color = { 99 197 50 }
+			icon = cop_slavic_green
+			reformed_icon = cop_slavic_reformed
+
+			holy_site = kiev
+			holy_site = peryn
+			holy_site = zbruch
+			holy_site = smolensk
+			holy_site = barlad
+
+			doctrine = tenet_sanctity_of_nature
+			doctrine = tenet_ritual_celebrations
+			doctrine = tenet_communal_identity	
+		}
+
+		slavic_south = {
+			color = { 50 80 130 }
+			icon = cop_perun
+			reformed_icon = cop_perun_reformed
+
+			holy_site = barlad
+			holy_site = preslav
+			holy_site = triglav
+			holy_site = veles
+			holy_site = visoki
+
+			doctrine = unreformed_faith_doctrine
+
+			doctrine = tenet_sanctity_of_nature
+			doctrine = tenet_ritual_celebrations
+			doctrine = tenet_ancestor_worship
+		}
+		
+		slavic_west = {
+			color = { 120 20 20 }
+			icon = cop_triglav_brown
+			reformed_icon = cop_triglav_reformed
+
+			holy_site = arkona
+			holy_site = plock
+			holy_site = lysa_gora
+			holy_site = pohansko
+			holy_site = triglav
+			
+			doctrine = unreformed_faith_doctrine
+
+			doctrine = tenet_sanctity_of_nature
+			doctrine = tenet_ritual_celebrations
+			doctrine = tenet_false_conversion_sanction
+		}
+	}
+}

@@ -1,0 +1,330 @@
+﻿################
+# SLAVIC EVENTS
+################
+# By Artem Samarsky
+##
+# EVENT LIST
+#  cop_slavic_yearly.0001 - Choose Personal Deity
+
+namespace = cop_slavic_decision_event
+
+#########################
+# Choose Personal Deity	#
+# by Artem Samarsky		#
+#########################
+
+cop_slavic_decision_event.0001 = {
+	type = character_event
+	title = cop_slavic_decision_event.0001.t
+	desc = cop_slavic_decision_event.0001.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	override_background = { event_background = fp1_tribal_temple }
+
+	# Perun
+	option = {
+		name = cop_slavic_decision_event.0001.perun
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_perun }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_perun }
+	}
+
+	# Veles
+	option = {
+		name = cop_slavic_decision_event.0001.veles
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_veles }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_veles }
+	}
+
+	# Dazhbog
+	option = {
+		name = cop_slavic_decision_event.0001.dazhbog
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_dazhbog }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_dazhbog }
+	}
+
+	# Stribog
+	option = {
+		name = cop_slavic_decision_event.0001.stribog
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_stribog }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_stribog }
+	}
+
+	# Svarog
+	option = {
+		name = cop_slavic_decision_event.0001.svarog
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_svarog }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_svarog }
+	}
+
+	# Mokosh
+	option = {
+		name = cop_slavic_decision_event.0001.mokosh
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_mokosh }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_mokosh }
+	}
+
+	# Opt-Out
+	option = {
+		name = cop_slavic_decision_event.0001.optout
+		flavor = cop_slavic_yearly.0001.flavor
+
+		ai_chance = {
+			base = 0
+		}		
+	}
+}
+
+##################################################
+# Uniting the Religion (adopted from Schism events)
+# by Artem Samarsky
+##################################################
+
+roman_restoration.0100 = {
+	type = character_event
+	title = roman_restoration.0100.t
+	desc = {
+		desc = roman_restoration.0100.desc.intro
+		first_valid = {
+			# As an Orthodox
+			triggered_desc = {
+				trigger = {
+					faith = faith:orthodox
+				}
+				desc = roman_restoration.0100.desc.orthodox
+			}
+			# As a Catholic
+			triggered_desc = {
+				trigger = {
+					faith = faith:catholic
+				}
+				desc = roman_restoration.0100.desc.catholic
+			}
+			# And Everybody else
+			triggered_desc = {
+				trigger = {
+					NOR = {
+						faith = faith:catholic
+						faith = faith:orthodox
+					}
+				}
+				desc = roman_restoration.0100.desc.generic
+			}
+		}
+	}
+	theme = realm
+	left_portrait = {
+		character = scope:scoped_emperor
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_faith_conversion"
+		save_scope_as = scoped_emperor
+		faith = { save_scope_as = mending_faith }
+		mend_great_schism_scripted_effect = yes
+	}
+
+	option = {
+		name = roman_restoration.0100.a
+	}
+}
+
+# Ecumenical followers get chance to convert.
+roman_restoration.0101 = {
+	type = character_event
+	title = roman_restoration.0100.t
+	desc = {
+		desc = roman_restoration.0101.desc.intro
+		first_valid = {
+			# As an Orthodox
+			triggered_desc = {
+				trigger = {
+					scope:mending_faith = faith:orthodox
+				}
+				desc = roman_restoration.0101.desc.orthodox
+			}
+			# As a Catholic
+			triggered_desc = {
+				trigger = {
+					scope:mending_faith = faith:catholic
+				}
+				desc = roman_restoration.0101.desc.catholic
+			}
+			# And Everybody else
+			triggered_desc = {
+				trigger = {
+					NOR = {
+						scope:mending_faith = faith:catholic
+						scope:mending_faith = faith:orthodox
+					}
+				}
+				desc = roman_restoration.0101.desc.generic
+			}
+		}
+	}
+	theme = realm
+	left_portrait = {
+		character = scope:scoped_emperor
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_faith_conversion"
+		faith = { save_scope_as = old_faith }
+	}
+
+	option = {
+		name = roman_restoration.0101.a
+		trigger = {
+			OR = {
+				is_ai = no
+				NOT = { has_trait = zealous } # Never!
+			}
+		}
+		set_character_faith = scope:mending_faith
+		every_held_title = {
+			limit = { tier = tier_county }
+			set_county_faith = scope:mending_faith
+		}
+		ai_chance = {
+			base = 80
+			modifier = { # Where the wind blows, I sail.
+				add = 20
+				has_trait = cynical
+			}
+		}
+	}
+	option = {
+		name = roman_restoration.0101.b
+		ai_chance = {
+			base = 20
+			ai_value_modifier = {
+				ai_zeal = 1.0
+			}
+			modifier = {
+				add = 20
+				has_trait = zealous
+			}
+			modifier = {
+				add = 10
+				OR = {
+					has_title = title:e_byzantium
+					has_title = title:e_hre
+				}
+			}
+		}
+	}
+}
+
+# Heretics and Heathens are only notified.
+roman_restoration.0102 = {
+	type = character_event
+	title = roman_restoration.0100.t
+	desc = {
+		desc = roman_restoration.0101.desc.intro
+		first_valid = {
+			# As an Orthodox
+			triggered_desc = {
+				trigger = {
+					scope:mending_faith = faith:orthodox
+				}
+				desc = roman_restoration.0101.desc.orthodox
+			}
+			# As a Catholic
+			triggered_desc = {
+				trigger = {
+					scope:mending_faith = faith:catholic
+				}
+				desc = roman_restoration.0101.desc.catholic
+			}
+			# And Everybody else
+			triggered_desc = {
+				trigger = {
+					NOR = {
+						scope:mending_faith = faith:catholic
+						scope:mending_faith = faith:orthodox
+					}
+				}
+				desc = roman_restoration.0101.desc.generic
+			}
+		}
+	}
+	theme = realm
+	left_portrait = {
+		character = scope:scoped_emperor
+		animation = personality_zealous
+	}
+
+	immediate = {
+		#Even if you're not converting, it's still all rather momentous.
+		play_music_cue = "mx_cue_faith_conversion"
+	}
+
+	option = {
+		name = roman_restoration.0102.a
+	}
+}
+
+# Faithful players notified.
+roman_restoration.0103 = {
+	type = character_event
+	title = roman_restoration.0100.t
+	desc = {
+		desc = roman_restoration.0100.desc.intro
+		first_valid = {
+			# As an Orthodox
+			triggered_desc = {
+				trigger = {
+					scope:mending_faith = faith:orthodox
+				}
+				desc = roman_restoration.0100.desc.orthodox
+			}
+			# As a Catholic
+			triggered_desc = {
+				trigger = {
+					scope:mending_faith = faith:catholic
+				}
+				desc = roman_restoration.0100.desc.catholic
+			}
+			# And Everybody else
+			triggered_desc = {
+				trigger = {
+					NOR = {
+						scope:mending_faith = faith:catholic
+						scope:mending_faith = faith:orthodox
+					}
+				}
+				desc = roman_restoration.0100.desc.generic
+			}
+		}
+	}
+	theme = realm
+	left_portrait = {
+		character = scope:scoped_emperor
+		animation = personality_zealous
+	}
+
+	immediate = {
+		#Even if you're not converting, it's still all rather momentous.
+		play_music_cue = "mx_cue_faith_conversion"
+	}
+
+	option = {
+		name = roman_restoration.0100.a
+	}
+}

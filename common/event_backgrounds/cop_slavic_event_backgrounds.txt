@@ -1,0 +1,24 @@
+﻿# Idols by Nicholas Roerich
+idols = {
+	background = {	# slavic temple
+		reference = "gfx/interface/illustrations/event_scenes/idols.dds"
+		environment = "environment_event_fp1_tribal_temple"
+		ambience = "event:/DLC/FP1/SFX/Events/event_temple"
+	}
+}
+
+sacred_spring = {
+	background = {	# Roerich
+		reference = "gfx/interface/illustrations/event_scenes/sacred_spring_2.dds"
+		environment = "environment_event_feast"
+		ambience = "event:/SFX/Events/Backgrounds/feasthall"
+	}
+}
+
+maslenitsa = {
+	background = {	# Roerich
+		reference = "gfx/interface/illustrations/event_scenes/maslenitsa.dds"
+		environment = "environment_event_feast"
+		ambience = "event:/SFX/Events/Backgrounds/feasthall"
+	}
+}

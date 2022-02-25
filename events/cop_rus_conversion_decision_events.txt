@@ -1,0 +1,1136 @@
+﻿namespace = rus_conversion_decision
+
+##################################################
+# Converting the Rus
+# by Artem Samarsky
+# 0001-0010
+##################################################
+
+#	Starting event
+rus_conversion_decision.0010 = {
+	type = character_event
+	title = rus_conversion_decision.0010.t
+	desc = rus_conversion_decision.0010.desc
+	theme = faith
+	left_portrait = {
+		character = scope:converter
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = realm_priest
+		animation = fear
+	}
+	override_background = { event_background = fp1_tribal_temple }
+
+	immediate = {
+		play_music_cue = "mx_cue_faith_conversion"
+		root = { save_scope_as = converter }
+	}
+
+	#Go!
+	option = {
+		name = rus_conversion_decision.0010.a
+		custom_tooltip = rus_conversion_decision.0010.a.tt
+		trigger_event = {
+			id = rus_conversion_decision.0020
+			days = { 15 30 }
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = cynical }
+				has_trait = zealous 
+				}
+			remove_trait = zealous
+			add_trait = cynical
+		}
+		realm_priest = {
+			add_opinion = {
+					modifier = rus_conversion_start_opinion
+					target = scope:converter
+			}
+		}
+	}
+	#Stop!
+	option = {
+		name = rus_conversion_decision.0010.b
+		custom_tooltip = rus_conversion_decision.0010.b.tt
+	}
+}
+
+#	Muslims
+rus_conversion_decision.0020 = {
+	type = character_event
+	title = rus_conversion_decision.0020.t
+	desc = rus_conversion_decision.0020.desc
+	theme = faith
+
+	immediate = {
+		faith:ashari.religious_head = {
+			save_scope_as = muslim_emissary
+		}
+	}
+	left_portrait = {
+		character = scope:muslim_emissary
+		animation = personality_honorable
+	}
+	override_background = { event_background = temple_mosque }
+
+	#Agree
+	option = {
+		name = rus_conversion_decision.0020.a
+		scope:converter = { 
+			set_character_faith_with_conversion = faith:ashari
+		}
+		reverse_add_opinion = {
+			target = scope:muslim_emissary
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0100
+			days = { 30 60 }
+		}
+	}
+	#Decline
+	option = {
+		name = rus_conversion_decision.0020.b
+		custom_tooltip = rus_conversion_decision.0020.b.tt
+		reverse_add_opinion = {
+			target = scope:muslim_emissary
+			modifier = rus_conversion_decline_opinion
+			opinion = -50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0030
+			days = { 15 30 }
+		}
+	}
+}
+
+#	Catholics
+rus_conversion_decision.0030 = {
+	type = character_event
+	title = rus_conversion_decision.0030.t
+	desc = rus_conversion_decision.0030.desc
+	theme = faith
+
+	immediate = {
+		faith:catholic.religious_head = {
+			save_scope_as = catholic_emissary
+		}
+		ordered_ruler = {
+			limit = {
+				faith = { this = faith:catholic }
+				primary_title.empire = title:e_germany
+				or = {
+					culture = { has_cultural_pillar = heritage_north_germanic }
+					culture = { has_cultural_pillar = heritage_central_germanic }
+					culture = { has_cultural_pillar = heritage_west_germanic }
+					culture = { has_cultural_pillar = heritage_goidelic }
+					culture = { has_cultural_pillar = heritage_brythonic }
+					has_culture = culture:norman
+				}
+			}
+			order_by = highest_held_title_tier
+			save_scope_as = catholic_emissary_2
+		}
+	}
+	left_portrait = {
+		character = scope:catholic_emissary
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:catholic_emissary_2
+		animation = personality_honorable
+	}
+	override_background = { event_background = temple_church }
+
+	#Agree
+	option = {
+		name = rus_conversion_decision.0030.a
+		scope:converter = { 
+			set_character_faith_with_conversion = faith:catholic
+		}
+		reverse_add_opinion = {
+			target = scope:catholic_emissary
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		reverse_add_opinion = {
+			target = scope:catholic_emissary_2
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0100
+			days = { 30 60 }
+		}
+	}
+	#Decline
+	option = {
+		name = rus_conversion_decision.0030.b
+		custom_tooltip = rus_conversion_decision.0030.b.tt
+		reverse_add_opinion = {
+			target = scope:catholic_emissary
+			modifier = rus_conversion_decline_opinion
+			opinion = -50
+		}
+		reverse_add_opinion = {
+			target = scope:catholic_emissary_2
+			modifier = rus_conversion_decline_opinion
+			opinion = -50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0040
+			days = { 15 30 }
+		}
+	}
+}
+
+#	Jews
+rus_conversion_decision.0040 = {
+	type = character_event
+	title = rus_conversion_decision.0040.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { 
+					title:e_caspian-pontic_steppe.holder = scope:jewish_emissary 
+				}
+				desc = rus_conversion_decision.0040.desc_khazar
+			}
+			desc = rus_conversion_decision.0040.desc
+		}
+	}
+	theme = faith
+
+	immediate = {
+		ordered_ruler = {
+			limit = {
+				faith.religion = { this = religion:judaism_religion }
+			}
+			order_by = highest_held_title_tier
+			save_scope_as = jewish_emissary
+		}
+		if = {
+			limit = { not = { exists = scope:jewish_emissary } }
+			create_character = {
+				location = root.capital_province
+				template = jewish_emissary_character
+				save_scope_as = jewish_emissary
+			}
+		}
+	}
+
+	left_portrait = {
+		character = scope:jewish_emissary
+		animation = war_over_win
+	}
+	override_background = { event_background = throne_room_east }
+
+	#Agree
+	option = {
+		name = rus_conversion_decision.0040.a
+		scope:converter = { 
+			set_character_faith_with_conversion = scope:jewish_emissary.faith
+		}
+		reverse_add_opinion = {
+			target = scope:jewish_emissary
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0100
+			days = { 30 60 }
+		}
+	}
+	#Inquire
+	option = {
+		trigger = { title:d_palestine.holder = { NOT = { faith.religion = { this = religion:judaism_religion } } } }
+		name = rus_conversion_decision.0040.b
+		custom_tooltip = rus_conversion_decision.0040.b.tt
+		trigger_event = {
+			id = rus_conversion_decision.0050
+		}
+	}
+	#Decline
+	option = {
+		name = rus_conversion_decision.0040.c
+		custom_tooltip = rus_conversion_decision.0040.c.tt
+		reverse_add_opinion = {
+			target = scope:jewish_emissary
+			modifier = rus_conversion_decline_opinion
+			opinion = -50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0060
+			days = { 15 30 }
+		}
+	}
+}
+
+#	Jews reply
+rus_conversion_decision.0050 = {
+	type = character_event
+	title = rus_conversion_decision.0050.t
+	desc = rus_conversion_decision.0050.desc
+	theme = faith
+
+	left_portrait = {
+		character = scope:jewish_emissary
+		animation = personality_zealous
+	}
+	override_background = { event_background = throne_room_east }
+
+	immediate = {
+		title:d_palestine = { 
+			save_scope_as = palestine_war_target
+		}
+	}
+
+	#Agree
+	option = {
+		name = rus_conversion_decision.0050.a
+		scope:converter = { 
+			set_character_faith_with_conversion = scope:jewish_emissary.faith
+		}
+		reverse_add_opinion = {
+			target = scope:jewish_emissary
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0100
+			days = { 30 60 }
+		}
+	}
+
+	#Agree + ally + GHW for Jerusalem
+	option = {
+		name = rus_conversion_decision.0050.b
+		custom_tooltip = rus_conversion_decision.0050.b.tt
+		scope:converter = { 
+			set_character_faith_with_conversion = scope:jewish_emissary.faith
+		}
+		hidden_effect = {
+			scope:converter = {
+				allow_alliance = scope:jewish_emissary
+				create_alliance = {
+					target = scope:jewish_emissary
+					allied_through_owner = scope:converter
+					allied_through_target = scope:jewish_emissary
+				}
+			}
+		}
+		reverse_add_opinion = {
+			target = scope:jewish_emissary
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		scope:jewish_emissary = {
+			add_opinion = {
+				modifier = perk_negotiated_alliance_opinion
+				target = scope:converter
+			}
+		}
+		trigger_event = {
+			id = middle_east_decisions.0007
+			days = { 5 10 }
+		}
+		scope:jewish_emissary.faith = {
+			trigger_event = {
+				id = rus_conversion_decision.0055
+				days = { 10 15 }
+			}
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0100
+			days = { 30 60 }
+		}
+	}
+	#Decline
+	option = {
+		name = rus_conversion_decision.0050.c
+		custom_tooltip = rus_conversion_decision.0050.b.tt
+		reverse_add_opinion = {
+			target = scope:jewish_emissary
+			modifier = rus_conversion_decline_opinion
+			opinion = -50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0060
+			days = { 15 30 }
+		}
+	}
+}
+
+# Edited copy of the GHW start event
+rus_conversion_decision.0055 = {
+	hidden = yes
+	scope = faith
+	
+	trigger = {
+		save_temporary_scope_as = the_faith
+		NOR = {
+			exists = great_holy_war
+			exists = var:variable_ghw_cooldown
+			religion = { exists = var:variable_first_ghw_cooldown } # Do not event spam after Crusades have been just unlocked.
+		}
+	}
+	
+	immediate = {
+		save_scope_as = the_faith
+		#Determine Sponsor.
+		religious_head = { save_scope_as = ghw_sponsor }
+		determine_ghw_target_effect = { FAITH = scope:the_faith }
+
+		# Launch the preparation phase
+		start_great_holy_war = {
+			target_character = title:c_jerusalem.duchy.holder.top_liege
+			target_title = title:k_israel
+			delay = { 365 545 }
+		}
+		scope:target_character.faith = { save_scope_as = target_faith } #Used for counterpledges.
+
+		great_holy_war = {
+			set_war_declarer = scope:ghw_sponsor
+			if = {
+				limit = { is_directed_ghw = no }
+				undirected_ghw_recipient_selection_effect = yes
+			}
+		}
+		if = {
+			limit = { scope:ghw_sponsor.gold > 0 }
+			great_holy_war = {
+				change_war_chest_gold = {
+					value = scope:ghw_sponsor.gold
+					divide = 2
+					max = 5000
+				}
+			}
+			scope:ghw_sponsor = {
+				remove_short_term_gold = {
+					value = gold
+					divide = 2
+					max = 5000
+				}
+			}
+		}
+		great_holy_war = {
+			pledge_attacker = scope:ghw_sponsor
+			set_variable = {
+				name = redirect_cost
+				value = 500
+			}
+		}
+		#If no Claimant or Title Holder is available to be the Papal choice and the Crusade has not proceeded far enough to have a favorite beneficiary, select a fallback Recipient so that the CB's tooltip does not appear incomplete.
+		if = { #Random Courtier in the Pope's court.
+			limit = {
+				NOT = { exists = faith.great_holy_war.ghw_title_recipient }
+				exists = scope:ghw_sponsor
+				exists = scope:the_faith.great_holy_war
+				scope:ghw_sponsor = {
+					any_courtier = {
+						is_adult = yes
+						is_ai = yes
+						NOR = {
+							has_trait = excommunicated
+							has_trait = incapable
+							has_trait = devoted
+						}
+						faith = scope:the_faith
+					}
+				}
+			}
+			scope:ghw_sponsor = {
+				random_courtier = {
+					alternative_limit = {
+						scope:the_faith = { has_doctrine = doctrine_gender_male_dominated }
+						is_male = yes
+						is_adult = yes
+						is_ai = yes
+						NOR = {
+							has_trait = excommunicated
+							has_trait = incapable
+							has_trait = devoted
+						}
+						faith = scope:the_faith
+					}
+					alternative_limit = {
+						scope:the_faith = { has_doctrine = doctrine_gender_female_dominated }
+						is_female = yes
+						is_adult = yes
+						is_ai = yes
+						NOR = {
+							has_trait = excommunicated
+							has_trait = incapable
+							has_trait = devoted
+						}
+						faith = scope:the_faith
+					}
+					limit = {
+						is_adult = yes
+						is_ai = yes
+						NOR = {
+							has_trait = excommunicated
+							has_trait = incapable
+							has_trait = devoted
+						}
+						faith = scope:the_faith
+					}
+					save_scope_as = fallback_recipient
+					add_character_flag = flag_is_ghw_fallback_recipient
+				}
+			}
+		}
+		else_if = { #Else Generate a fallback recipient.
+			limit = {
+				NOT = { exists = faith.great_holy_war.ghw_title_recipient }
+			}
+			create_character = {
+				location = scope:ghw_sponsor.capital_province
+				template = new_commander_character
+				faith = scope:the_faith
+				culture = scope:ghw_sponsor.culture
+				save_scope_as = fallback_recipient
+				gender_female_chance = {
+					if = {
+						limit = {
+							scope:the_faith = { has_doctrine = doctrine_gender_male_dominated }
+						}
+						add = 0
+					}
+					else_if = {
+						limit = {
+							scope:the_faith = { has_doctrine = doctrine_gender_female_dominated }
+						}
+						add = 100
+					}
+					else = {
+						add = 50
+					}
+				}
+			}
+			scope:fallback_recipient = { add_character_flag = flag_is_ghw_fallback_recipient }
+		}
+		great_holy_war = {
+			set_variable = {
+				name = var_fallback_recipient
+				value = scope:fallback_recipient
+			}
+		}
+
+		every_player = { #Inform players
+			limit = {
+				faith = scope:the_faith
+				highest_held_title_tier >= tier_county
+				NOT = { this = scope:ghw_sponsor }
+			}
+			trigger_event = great_holy_war.0003 #Send event immediately for player, then delay it for all the AIs.
+		}
+		every_player = { #Inform defending players
+			limit = {
+				OR = {
+					faith = scope:target_faith #All infidels.
+					any_liege_or_above = {
+						scope:the_faith.great_holy_war = { has_pledged_defender = prev }
+					}
+					AND = {
+						NOT = { faith = scope:the_faith }
+						scope:the_faith.great_holy_war = { has_pledged_defender = prev }
+					}
+				}
+			}
+			trigger_event = great_holy_war.0050
+		}
+
+		#Attackers Pledge to the Crusade. (AI only)
+		every_ruler = {
+			limit = {
+				faith = scope:the_faith
+				is_ai = yes
+				is_landed = yes
+				highest_held_title_tier >= tier_county
+				NOR = {
+					this = scope:ghw_sponsor
+					root.great_holy_war = { has_pledged_attacker = prev }
+					target_is_liege_or_above = scope:target_character
+				}
+			}
+			trigger_event = {
+				#AI pledging. There is a chance the AI might pledge after the Crusade starts, but it's a lot less likely.
+				id = great_holy_war.0020
+				days = { 50 450 }
+			}
+		}
+		every_faith_holy_order = {
+			trigger_event = {
+				#Holy orders always join
+				id = great_holy_war.0090
+				days = { 30 60 }
+			}
+		}
+
+		#Defenders Pledge to the Crusade. (AI only)
+		every_ruler = {
+			limit = {
+				faith.religion = scope:target_character.faith.religion
+				is_ai = yes
+				is_landed = yes
+				highest_held_title_tier >= tier_county
+				NOT = {
+					root.great_holy_war = { has_pledged_defender = prev }
+				}
+			}
+			trigger_event = {
+				#AI counterpledging. Unlike attackers, defenders should be selected much faster during the preparation phase and then stop.
+				id = great_holy_war.0021
+				days = { 25 150 }
+			}
+		}
+		scope:target_character = {
+			faith = {
+				every_faith_holy_order = {
+					trigger_event = {
+						# Holy orders always join
+						id = great_holy_war.0091
+						days = { 30 60 }
+					}
+				}
+			}
+		}
+	}
+}
+
+#	Orthodox
+rus_conversion_decision.0060 = {
+	type = character_event
+	title = rus_conversion_decision.0060.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { 
+					exists = scope:orthodox_emissary_2 
+				}
+				desc = rus_conversion_decision.0060.desc_emperor
+			}
+			desc = rus_conversion_decision.0060.desc
+		}
+	}
+	theme = faith
+
+	immediate = {
+		faith:orthodox.religious_head = {
+			save_scope_as = orthodox_emissary
+		}
+		if = {
+			limit = {
+				title:e_byzantium.holder = {
+					this.faith = faith:orthodox
+					has_culture = culture:greek
+				}
+			}
+			title:e_byzantium.holder = { save_scope_as = orthodox_emissary_2 }
+		}
+		else_if = {
+			limit = {
+				NOT = { exists = scope:orthodox_emissary_2 }
+			}
+			ordered_ruler = {
+				limit = {
+					faith = { this = faith:orthodox }
+					primary_title = {
+						or = {
+							de_jure_liege = title:e_byzantium
+							de_jure_liege.de_jure_liege = title:e_byzantium
+							de_jure_liege.de_jure_liege.de_jure_liege = title:e_byzantium
+						}
+					}
+					has_culture = culture:greek
+				}
+				order_by = highest_held_title_tier
+				save_scope_as = orthodox_emissary_2
+			}
+		}
+		create_character = {
+			location = root.capital_province
+			template = orthodox_emissary_character
+			save_scope_as = orthodox_emissary_3
+		}
+	}
+
+	left_portrait = {
+		character = scope:orthodox_emissary_2
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:orthodox_emissary
+		animation = personality_zealous
+	}
+	lower_right_portrait = {
+		character = scope:orthodox_emissary_3
+	}
+	override_background = { event_background = throne_room_mediterranean }
+
+	#Agree
+	option = {
+		name = rus_conversion_decision.0060.a
+		scope:converter = { 
+			set_character_faith_with_conversion = faith:orthodox
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary_2
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary_3
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0100
+			days = { 30 60 }
+		}
+	}
+	#Agree + alliance
+	option = {
+		trigger = { exists = scope:orthodox_emissary_2 }
+		name = rus_conversion_decision.0060.b
+		custom_tooltip = rus_conversion_decision.0060.b.tt
+		scope:converter = { 
+			set_character_faith_with_conversion = faith:orthodox
+		}
+		hidden_effect = {
+			scope:converter = {
+				allow_alliance = scope:orthodox_emissary_2
+				create_alliance = {
+					target = scope:orthodox_emissary_2
+					allied_through_owner = root
+					allied_through_target = scope:orthodox_emissary_2
+				}
+			}
+		}
+		scope:orthodox_emissary_2 = {
+			add_opinion = {
+				modifier = perk_negotiated_alliance_opinion
+				target = scope:converter
+			}
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary_2
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary_3
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0100
+			days = { 30 60 }
+		}
+	}	
+	#Inquire
+	option = {
+		name = rus_conversion_decision.0060.c
+		custom_tooltip = rus_conversion_decision.0060.c.tt
+		trigger_event = {
+			id = rus_conversion_decision.0070
+		}
+	}
+	#Decline
+	option = {
+		name = rus_conversion_decision.0060.d
+		custom_tooltip = rus_conversion_decision.0060.d.tt
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary
+			modifier = rus_conversion_decline_opinion
+			opinion = -50
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary_2
+			modifier = rus_conversion_decline_opinion
+			opinion = -50
+		}
+		scope:orthodox_emissary_3 = {
+			if = {
+				limit = {
+					NOT = { is_courtier_of = root }
+				}
+				hidden_effect = {
+					death = { death_reason = death_vanished }
+				}
+			}
+		}
+		reverse_add_opinion = {
+			target = realm_priest
+			modifier = rus_conversion_abandon_opinion
+			opinion = 50
+		}
+		realm_priest = {
+			remove_opinion = {
+				modifier = rus_conversion_start_opinion
+				target = root
+			}
+		}
+	}
+}
+
+#	Greeks reply
+rus_conversion_decision.0070 = {
+	type = character_event
+	title = rus_conversion_decision.0070.t
+	desc = rus_conversion_decision.0070.desc
+	theme = faith
+
+	left_portrait = {
+		character = scope:orthodox_emissary_3
+		animation = personality_compassionate
+	}
+	override_background = { event_background = throne_room_mediterranean }
+
+	#Agree
+	option = {
+		name = rus_conversion_decision.0070.a
+		scope:converter = { 
+			set_character_faith_with_conversion = faith:orthodox
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary_2
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary_3
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+	}
+	#Agree + alliance
+	option = {
+		trigger = { exists = scope:orthodox_emissary_2 }
+		name = rus_conversion_decision.0070.b
+		custom_tooltip = rus_conversion_decision.0070.b.tt
+		scope:converter = { 
+			set_character_faith_with_conversion = faith:orthodox
+		}
+		hidden_effect = {
+			scope:converter = {
+				allow_alliance = scope:orthodox_emissary_2
+				create_alliance = {
+					target = scope:orthodox_emissary_2
+					allied_through_owner = root
+					allied_through_target = scope:orthodox_emissary_2
+				}
+			}
+		}
+		scope:orthodox_emissary_2 = {
+			add_opinion = {
+				modifier = perk_negotiated_alliance_opinion
+				target = scope:converter
+			}
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary_2
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary_3
+			modifier = rus_conversion_agree_opinion
+			opinion = 50
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0100
+			days = { 30 60 }
+		}
+	}	
+	#Decline
+	option = {
+		name = rus_conversion_decision.0070.c
+		custom_tooltip = rus_conversion_decision.0070.c.tt
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary
+			modifier = rus_conversion_decline_opinion
+			opinion = -50
+		}
+		reverse_add_opinion = {
+			target = scope:orthodox_emissary_2
+			modifier = rus_conversion_decline_opinion
+			opinion = -50
+		}
+		scope:orthodox_emissary_3 = {
+			if = {
+				limit = {
+					NOT = { is_courtier_of = root }
+				}
+				hidden_effect = {
+					death = { death_reason = death_vanished }
+				}
+			}
+		}
+		reverse_add_opinion = {
+			modifier = rus_conversion_abandon_opinion
+			target = realm_priest
+		}
+		realm_priest = {
+			remove_opinion = {
+				modifier = rus_conversion_start_opinion
+				target = scope:converter
+			}
+		}
+	}
+}
+
+#	Convert your capital
+rus_conversion_decision.0100 = { 
+	type = character_event
+	title = rus_conversion_decision.0100.t
+	desc = rus_conversion_decision.0100.desc
+	theme = faith
+	trigger = {
+		not = {
+			capital_county.faith = scope:converter.faith
+		}
+	}
+
+	left_portrait = {
+		character = scope:converter
+		animation = personality_compassionate
+	}
+	right_portrait = {
+		character = scope:demanding_priest
+		animation = anger
+	}
+	override_background = { event_background = market_tribal }
+
+	immediate = {
+		capital_county = { save_scope_as = converted_capital }
+		cp:councillor_court_chaplain = { save_scope_as = demanding_priest }
+		scope:converted_capital.faith = { save_scope_as = old_faith }
+		scope:converter.faith = { save_scope_as = new_faith } 
+	}
+
+	#Go in heavy-handed
+	option = {
+		name = rus_conversion_decision.0100.a
+		show_as_tooltip = {
+			scope:converted_capital = {
+				set_county_faith = scope:new_faith
+				change_county_control = -25
+			}
+			add_piety = minor_piety_gain
+			add_tyranny = minor_tyranny_gain
+			reverse_add_opinion = {
+				target = scope:demanding_priest
+				modifier = rus_conversion_agree_opinion
+				opinion = 25
+			}
+		}
+		trigger_event = {
+			id = rus_conversion_decision.0110
+			days = { 5 10 }
+		}
+	}
+	#Try to convert peacefully
+	option = {
+		name = rus_conversion_decision.0100.b
+		custom_tooltip = rus_conversion_decision.0100.b.tt
+		trigger_event = {
+			id = rus_conversion_decision.0120
+			days = { 1095 1095 }
+		}
+	}
+	#Leave things as they are
+	option = {
+		name = rus_conversion_decision.0100.c
+		custom_tooltip = rus_conversion_decision.0100.c.tt
+		reverse_add_opinion = {
+			target = scope:demanding_priest
+			modifier = rus_conversion_decline_opinion
+			opinion = -25
+		}
+	}
+}
+
+#	Convert your capital violently
+rus_conversion_decision.0110 = {
+	type = character_event
+	title = rus_conversion_decision.0110.t
+	desc = rus_conversion_decision.0110.desc
+	theme = faith
+	trigger = {
+		scope:converter.faith = scope:new_faith
+	}
+
+	immediate = {
+		if = {
+			limit = { not = { cp:councillor_court_chaplain = scope:demanding_priest } }
+			cp:councillor_court_chaplain = { save_scope_as = demanding_priest }
+		}
+	}
+
+	left_portrait = {
+		character = scope:converter
+		animation = war_attacker
+	}
+
+	override_background = { event_background = burning_building }
+
+	# Go through
+	option = {
+		name = rus_conversion_decision.0110.a
+		scope:converted_capital = {
+			set_county_faith = scope:new_faith
+			change_county_control = -25
+		}
+		add_piety = minor_piety_gain
+		reverse_add_opinion = {
+			target = scope:demanding_priest
+			modifier = rus_conversion_agree_opinion
+			opinion = 25
+		}
+	}
+}
+
+#	Check if capital has been converted in three years
+rus_conversion_decision.0120 = {
+	hidden = yes
+	scope = character
+	trigger = {
+		scope:converter.faith = scope:new_faith
+	}
+	immediate = {
+		if = {
+			limit = { scope:converted_capital.faith = scope:new_faith }
+			trigger_event = {
+				id = rus_conversion_decision.0121
+				days = { 1 1 }
+			}
+		}
+		else = {
+			trigger_event = {
+				id = rus_conversion_decision.0122
+				days = { 1 1 }
+			}
+		}
+		if = {
+			limit = { not = { cp:councillor_court_chaplain = scope:demanding_priest } }
+			cp:councillor_court_chaplain = { save_scope_as = demanding_priest }
+		}
+	}
+}
+
+#	Capital has been converted
+rus_conversion_decision.0121 = {
+	type = character_event
+	title = rus_conversion_decision.0121.t
+	desc = rus_conversion_decision.0121.desc
+	theme = faith
+	trigger = {
+		scope:converter.faith = scope:new_faith
+	}
+
+	immediate = {
+		if = {
+			limit = { not = { cp:councillor_court_chaplain = scope:demanding_priest } }
+			cp:councillor_court_chaplain = { save_scope_as = demanding_priest }
+		}
+	}
+
+	left_portrait = {
+		character = scope:converter
+		animation = admiration
+	}
+
+	override_background = { event_background = temple }
+
+	option = {
+		name = rus_conversion_decision.0121.a
+		add_piety = 25
+		reverse_add_opinion = {
+			target = scope:demanding_priest
+			modifier = rus_conversion_agree_opinion
+			opinion = 15
+		}
+	}
+}
+
+#	Capital has NOT been converted
+rus_conversion_decision.0122 = {
+	type = character_event
+	title = rus_conversion_decision.0122.t
+	desc = rus_conversion_decision.0122.desc
+	theme = faith
+	trigger = {
+		scope:converter.faith = scope:new_faith
+	}
+
+	immediate = {
+		if = {
+			limit = { not = { cp:councillor_court_chaplain = scope:demanding_priest } }
+			cp:councillor_court_chaplain = { save_scope_as = demanding_priest }
+		}
+	}
+
+	left_portrait = {
+		character = scope:converter
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:demanding_priest
+		animation = disgust
+	}
+
+	override_background = { event_background = bedchamber }
+
+	# Admit defeat
+	option = {
+		name = rus_conversion_decision.0122.a
+		add_piety = -50
+		reverse_add_opinion = {
+			target = scope:demanding_priest
+			modifier = rus_conversion_decline_opinion
+			opinion = -50
+		}
+	}
+	# Use violence after all
+	option = {
+		name = rus_conversion_decision.0122.b
+		custom_tooltip = rus_conversion_decision.0122.b.tt
+		trigger_event = {
+			id = rus_conversion_decision.0110
+			days = { 5 10 }
+		}
+	}
+	option = {
+		name = rus_conversion_decision.0122.c
+		add_tyranny = 15
+		imprison = { 
+			target = scope:demanding_priest
+			type = dungeon 
+		}
+	}
+}

@@ -1,0 +1,220 @@
+﻿tradition_druzhina = {
+	category = regional
+
+	layers = {
+		0 = martial
+		1 = western
+		4 = shield.dds
+	}
+
+	#East Slavic
+	#This replaces Martial Admiration
+	is_shown = {
+		has_cultural_pillar = heritage_east_slavic
+		NOR = { #Replaces Martial Admiration
+			has_cultural_tradition = tradition_futuwaa
+			has_cultural_tradition = tradition_chanson_de_geste
+			has_cultural_tradition = tradition_martial_admiration
+		}
+	}
+	can_pick = {
+		has_cultural_pillar = heritage_east_slavic
+		NOR = { #Replaces Martial Admiration
+			has_cultural_tradition = tradition_futuwaa
+			has_cultural_tradition = tradition_chanson_de_geste
+			has_cultural_tradition = tradition_martial_admiration
+		}
+	}
+	
+	parameters = {
+		unlock_maa_druzhina = yes
+		martial_education_more_valued = yes
+		prowess_traits_more_valued = yes
+		blademaster_trait_bonuses = yes
+		craven_and_content_traits_looked_down_upon = yes
+		knights_slightly_more_prone_to_injury = yes
+		can_duel_rivals = yes
+		has_access_to_trials_by_combat = yes
+	}
+	character_modifier = {
+		knight_limit = 2
+		negate_prowess_penalty_add = 5
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_bellicose }
+						any_in_list = { list = traits this = flag:ethos_stoic }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_or_stoic_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						scope:character = {
+							any_knight = {
+								count >= 6
+								prowess >= 12
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = knights_with_prowess_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = { value = 100 }
+}
+
+#WIP
+# tradition_varangians_greeks = {
+# 	category = societal
+
+# 	layers = {
+# 		0 = steward
+# 		1 = western
+# 		4 = viking.dds
+# 	}
+	
+# 	is_shown = {
+# 		has_cultural_pillar = heritage_east_slavic
+# 		NOR = {
+# 			has_cultural_tradition = tradition_fp1_coastal_warriors
+# 			has_cultural_tradition = tradition_seafaring
+# 		}
+# 	}
+# 	can_pick = {
+# 		custom_description = {
+# 			text = percentage_of_culture_along_river_desc
+# 			any_culture_county = {
+# 				percent >= 0.5
+# 				any_county_province = {
+# 					is_riverside_province = yes
+# 				}
+# 			}
+# 		}
+# 		# Must be of a suitable heritage.
+# 		custom_tooltip = {
+# 			text = east_slavic_heritage_trigger
+# 			has_cultural_pillar = heritage_east_slavic
+# 		}
+# 		custom_tooltip = {
+# 			text = cannot_have_tradition_fp1_coastal_warriors
+# 			NOT = { any_in_list = { list = traits this = flag:tradition_fp1_coastal_warriors } }
+# 		}
+# 		custom_tooltip = {
+# 			text = cannot_have_tradition_seafaring
+# 			NOT = { any_in_list = { list = traits this = flag:tradition_seafaring } }
+# 		}
+# 	}
+	
+# 	parameters = {
+# 		can_travel_along_rivers = yes
+# 		culture_can_raid_at_sea_even_if_feudal = yes
+# 		maritime_mercantilism_coastal_holdings = yes
+# 		#cop_culture_river_commerce = yes
+# 	}
+# 	character_modifier = {
+# 		embarkation_cost_mult = -0.25
+# 	}
+	
+# 	cost = {
+# 		prestige = {
+# 			add = {
+# 				value = tradition_base_cost
+# 				desc = BASE
+# 				format = "BASE_VALUE_FORMAT"
+# 			}
+# 			if = {
+# 				limit = {
+# 					NOR = {
+# 						any_in_list = { list = traits this = flag:ethos_bellicose }
+# 						any_in_list = { list = traits this = flag:ethos_bureaucratic }
+# 						any_in_list = { list = traits this = flag:ethos_spiritual }
+# 					}
+# 				}
+# 				add = {
+# 					value = tradition_incompatible_ethos_penalty
+# 					desc = not_bellicose_bureaucratic_or_spiritual_desc
+# 				}
+# 			}
+# 			if = {
+# 				limit = {
+# 					NOT = {
+# 						any_culture_county = {
+# 							percent >= 0.7
+# 							any_county_province = {
+# 								is_riverside_province = yes
+# 							}
+# 						}
+# 					}
+# 				}
+# 				add = {
+# 					value = tradition_unfulfilled_criteria_penalty
+# 					desc = high_riverside_percentage_desc
+# 				}
+# 			}
+			
+# 			multiply = tradition_replacement_cost_if_relevant
+# 		}
+# 	}
+	
+# 	ai_will_do = {
+# 		value = 100
+# 		if = { # Make stacking a bit less common
+# 			limit = {
+# 				OR = {
+# 					any_in_list = { list = traits this = flag:tradition_maritime_mercantilism }
+# 					any_in_list = { list = traits this = flag:tradition_fishermen }
+# 				}
+# 			}
+# 			multiply = 0.75
+# 		}
+# 		if = {
+# 			limit = {
+# 				NOT = {
+# 					scope:character = {
+# 						any_sub_realm_county = {
+# 							percent >= 0.3
+# 							any_county_province = {
+# 								is_coastal = yes
+# 							}
+# 						}
+# 					}
+# 				}
+# 			}
+# 			multiply = 0
+# 		}
+# 		if = {
+# 			limit = {
+# 				scope:character = {
+# 					any_sub_realm_county = {
+# 						percent >= 0.7
+# 						any_county_province = {
+# 							is_coastal = yes
+# 						}
+# 					}
+# 				}
+# 			}
+# 			multiply = 2
+# 		}
+# 	}
+# }

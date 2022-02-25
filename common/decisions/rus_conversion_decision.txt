@@ -1,0 +1,57 @@
+﻿rus_conversion_decision = {
+    picture = gfx/interface/illustrations/decisions/eggink_trial.dds
+    major = yes
+	cooldown = { days = 3650 }
+
+    ai_check_interval = 120
+
+	desc = rus_conversion_decision_desc
+	selection_tooltip = rus_conversion_decision_tooltip
+
+    is_shown = {
+		is_landed = yes
+	    any_held_title = {
+            tier = tier_county
+            empire = title:e_russia
+		}
+		NOR = { 
+			faith = { religion_tag = christianity_religion }
+			faith = { religion_tag = islam_religion }
+			faith = { religion_tag = judaism_religion }
+		 }
+    }
+
+	is_valid = {
+		#Must be independent.
+		is_independent_ruler = yes
+		#Has to be around to organise the conversion.
+		is_imprisoned = no
+		#Must have a primary title within title:e_russia
+		primary_title.empire = title:e_russia
+		#Should have a decent prestige level.
+		prestige_level >= very_high_prestige_level
+		#Must hold a Russian kingdom/empire title
+		highest_held_title_tier >= tier_kingdom
+    }
+
+	cost = {
+		gold = 100
+		prestige = 500
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
+	}
+
+
+    effect = {
+		custom_tooltip = rus_conversion_decision_custom_tooltip
+		trigger_event = { id = rus_conversion_decision.0010 }
+    }
+
+	ai_potential = {
+		always = yes
+	}
+
+    ai_will_do = 0
+}

@@ -1,0 +1,72 @@
+﻿l_spanish:
+ rus_conversion_agree_opinion:0 "Converted to my Faith"
+ rus_conversion_decline_opinion:0 "Refused to Convert"
+ rus_conversion_start_opinion:0 "Abandoned the Old Ways"
+ rus_conversion_abandon_opinion:0 "Returned to the Old Ways"
+
+ bhakti_slavic_perun:0 "Devotee of Perun"
+ bhakti_slavic_perun_desc:0 "This character's favored god is Perun the Thunderer, a noble and mighty god of thunder, princely power, war and warriors."
+ bhakti_slavic_veles:0 "Devotee of Veles"
+ bhakti_slavic_veles_desc:0 "This character's favored god is Veles, a terrible god of water, cattle, the underworld and poetry."
+ bhakti_slavic_dazhbog:0 "Devotee of Dazhbog"
+ bhakti_slavic_dazhbog_desc:0 "This character's favored god is Dazhbog the Sun Caesar, a shining god of harvest and prosperity."
+ bhakti_slavic_stribog:0 "Devotee of Stribog"
+ bhakti_slavic_stribog_desc:0 "This character's favored god is Stribog, an all-knowing god of the wind, who spreads around wealth and ideas."
+ bhakti_slavic_svarog:0 "Devotee of Svarozhits"
+ bhakti_slavic_svarog_desc:0 "This character's favored god is Svarozhits, a quarrelsome god of fire and smiths."
+ bhakti_slavic_mokosh:0 "Devotee of Mokosh"
+ bhakti_slavic_mokosh_desc:0 "This character's favored goddess is Mokosh, Damp Mother Earth, protector of women, a goddess of weaving, sheep, harvest and childbirth."
+
+ perun_warrior:0 "Victor of Perun's Bout"
+ perun_warrior_desc:0 "This character bested his opponents in the traditional melee on Perun's day."
+
+ cop_cop_slavic_yearly_fp1_0071_leshy_attacks_modifier:0 "Angry Div"
+ cop_cop_slavic_yearly_fp1_0071_leshy_attacks_modifier_desc:0 "There is... #EMP something#! in the wilds of this county, terrifying, and even killing, the locals."
+
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_bear_modifier:0 "Bear-Slayer"
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_bear_modifier_desc:0 "This character is reputed to have slain either a div, or the world's largest bear."
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolf_modifier:0 "Wolf-Slayer"
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolf_modifier_desc:0 "This character slew a wolf so swift that the commonfolk believed it a div."
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolverine_modifier:0 "Wolverine-Slayer"
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolverine_modifier_desc:0 "This character slew a wolverine so ferocious that the commonfolk believed it a div, keeping the wilds safe."
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_lynx_modifier:0 "Lynx-Slayer"
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_lynx_modifier_desc:0 "This character slew a lynx so silent that the commonfolk believed it a div."
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_moose_modifier:0 "Moose-Slayer"
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_moose_modifier_desc:0 "This character slew a moose so rabid that the commonfolk believed it a div"
+
+ slavic_fp1_yearly_0591_levy_modifier:1 "Supported at Veche"
+ slavic_fp1_yearly_0591_levy_modifier_desc:1 "Petty drama at the local Veche has recently gained this county tracts of border land, causing new villages to spring up."
+ slavic_fp1_yearly_0591_building_modifier:1 "Vindicated at Veche"
+ slavic_fp1_yearly_0591_building_modifier_desc:1 "Political capital at the local Veche has allowed this county to claim several minor border territories, giving ample space to expand existing settlements."
+
+ slavic_blundering_priest_spared:0 "Superstitious Peasants"
+ slavic_blundering_priest_spared_desc:0 "Locals fear Veles's wrath after his fire was allowed to die down."
+
+ cop_slavic_yearly_0041_trade_developed:0 "Burgeoning Trade"
+ cop_slavic_yearly_0041_trade_developed_desc:0 "This county is becoming a trade hub, welcoming merchants from far and wide."
+ cop_slavic_yearly_0041_trade_stifled:0 "Stifled Trade"
+ cop_slavic_yearly_0041_trade_stifled_desc:0 "This county has expelled foreign merchants, limiting its development potential."
+ cop_slavic_yearly_0041_priest_spared:0 "Veche Disregarded"
+ cop_slavic_yearly_0041_priest_spared_desc:0 "The issue of the Christian priest was decided without consulting the people, making them understandably upset."
+
+ cop_slavic_yearly_0050_joined_skomorokhs:0 "Skomorokh Aficionado"
+ cop_slavic_yearly_0050_joined_skomorokhs_desc:0 "This character sometimes joins the merry bands of skomorokhs to dance, drink, divine and rob while travelling around."
+ cop_slavic_yearly_0050_rampant_skomorokhs:0 "Rampant Skomorokhs"
+ cop_slavic_yearly_0050_rampant_skomorokhs_desc:0 "This county is plagued by a particularly large band of skomorokhs extorting the peasants."
+
+ cop_slavic_yearly_0060_druzhina_positive:0 "Respects the Druzhina"
+ cop_slavic_yearly_0060_druzhina_positive_desc:0 "This character showed their appreciation for the retinue by giving them silver spoons to eat with."
+ cop_slavic_yearly_0060_druzhina_negative:0 "Does not Respect the Druzhina"
+ cop_slavic_yearly_0060_druzhina_negative_desc:0 "This character refused to show their appreciation for the retinue by giving them silver spoons to eat with."
+
+ cop_slavic_yearly_0070_shaved:0 "Forced to Shave"
+ cop_slavic_yearly_0070_shaved_desc:0 "This character was forced to shave as a sacrifice to Mokosh."
+
+ cop_slavic_yearly_0081_jumped:0 "Jumped over the Maslenitsa Fire"
+ cop_slavic_yearly_0081_ate:0 "Ate Maslenitsa Pancakes"
+ cop_slavic_yearly_0081_skomorokh:0 "Watched a Maslenitsa Play"
+
+ cop_slavic_yearly_0090_tax:0 "Clear Property Titles"
+ cop_slavic_yearly_0090_tax_desc:0 "This character is receiving more taxes thanks to good property title management."
+ cop_slavic_yearly_0090_honey_good:0 "Flourishing Beekeping"
+ cop_slavic_yearly_0090_honey_bad:0 "Damaged Beekeping"

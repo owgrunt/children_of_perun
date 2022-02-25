@@ -1,0 +1,86 @@
+﻿namespace = cop_setup
+
+#Give Russians relevant innovations
+cop_setup.0001 = {
+	type = empty
+	hidden = yes
+
+	immediate = {
+		culture:russian = {
+			add_innovation = innovation_table_of_princes_rus
+			add_innovation = innovation_longboats
+			add_innovation = innovation_varangian_adventurers
+		}
+	}
+}
+
+#Set up Slavic Faith
+cop_setup.0002 = {
+	type = empty
+	hidden = yes
+
+	immediate = {
+		every_county = {
+			if = {
+				limit = {
+					culture = {
+						OR = {
+							has_cultural_pillar = heritage_east_slavic
+							has_cultural_pillar = heritage_volga_finnic
+						}
+					}
+					religion = religion:slavic_religion
+				}
+				set_county_faith = faith:slavic_east
+			}
+			if = {
+				limit = {
+					culture = { has_cultural_pillar = heritage_south_slavic }
+					religion = religion:slavic_religion
+				}
+				set_county_faith = faith:slavic_south
+			}
+			if = {
+				limit = {
+					culture = { has_cultural_pillar = heritage_west_slavic }
+					religion = religion:slavic_religion
+				}
+				set_county_faith = faith:slavic_west
+			}
+		}
+		faith:slavic_pagan = {
+			every_faith_character = {
+				if = {
+					limit = {
+						culture = {
+							OR = {
+								has_cultural_pillar = heritage_east_slavic
+								has_cultural_pillar = heritage_volga_finnic
+								has_cultural_pillar = heritage_north_germanic
+							}
+						}
+					}
+					set_character_faith = faith:slavic_east
+				}
+				if = {
+					limit = {
+						culture = {
+							OR = {
+								has_cultural_pillar = heritage_south_slavic
+								has_cultural_pillar = heritage_turkic
+								has_cultural_pillar = heritage_vlach
+							}
+						}
+					}
+					set_character_faith = faith:slavic_south
+				}
+				if = {
+					limit = {
+						culture = { has_cultural_pillar = heritage_west_slavic }
+					}
+					set_character_faith = faith:slavic_west
+				}
+			}
+		}
+	}
+}

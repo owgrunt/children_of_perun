@@ -1,0 +1,183 @@
+﻿#Personal deity
+
+bhakti_slavic_perun = {	# 
+	icon = slavic_positive
+	martial = major_skill_bonus
+	vassal_opinion = 5
+}
+
+bhakti_slavic_veles = {	# 
+	icon = deviant_positive
+	monthly_piety_gain_per_dread_add = 0.03
+	stewardship = minor_skill_bonus
+	intrigue = minor_skill_bonus
+}
+
+bhakti_slavic_dazhbog = {	# 
+	icon = dazhbog_positive
+	stewardship = medium_skill_bonus
+	fertility = 0.1
+}
+
+bhakti_slavic_stribog = {	# 
+	icon = stribog_positive
+	movement_speed = 0.1
+	diplomacy = minor_skill_bonus
+	learning = minor_skill_bonus
+}
+
+bhakti_slavic_svarog = {	# 
+	icon = svarog_positive
+	prowess = major_skill_bonus
+	health = minor_health_bonus	
+}
+
+bhakti_slavic_mokosh = {	# 
+	icon = mokosh_positive
+	fertility = 0.25
+	health = minor_health_bonus
+	stewardship = minor_skill_bonus
+}
+
+#Character
+
+perun_warrior = {
+	icon = prowess_positive
+	prowess = 3
+}
+
+cop_cop_slavic_yearly_fp1_0071_leshy_victory_bear_modifier = {
+	icon = bear_positive
+	same_culture_opinion = 20
+}
+
+cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolf_modifier = {
+	icon = bear_positive
+	prowess_per_prestige_level = 2
+}
+
+cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolverine_modifier = {
+	icon = bear_positive
+	tribal_holding_build_speed = -0.5
+}
+
+cop_cop_slavic_yearly_fp1_0071_leshy_victory_lynx_modifier = {
+	icon = bear_positive
+	hostile_scheme_resistance_add = 10
+}
+
+cop_cop_slavic_yearly_fp1_0071_leshy_victory_moose_modifier = {
+	icon = bear_positive
+	learning_per_prestige_level = 2
+}
+
+cop_slavic_yearly_0050_joined_skomorokhs = {
+	icon = horse_dead_positive
+	fertility = 0.15
+	stress_gain_mult = -0.15
+	monthly_prestige_gain_mult = -0.1
+}
+
+cop_slavic_yearly_0060_druzhina_positive = {
+	icon = martial_positive
+	knight_effectiveness_mult = 0.15
+}
+
+cop_slavic_yearly_0060_druzhina_negative = {
+	icon = martial_negative
+	knight_effectiveness_mult = -0.15
+}
+
+cop_slavic_yearly_0070_shaved = {
+	icon = fertility_negative
+	fertility = -0.15
+	stress_gain_mult = 0.15
+	attraction_opinion = -15
+}
+
+cop_slavic_yearly_0081_jumped = {
+	icon = prowess_positive
+	prowess = 2
+}
+
+cop_slavic_yearly_0081_ate = {
+	icon = feast_positive
+	health = minor_health_bonus
+}
+
+cop_slavic_yearly_0081_skomorokh = {
+	icon = fertility_positive
+	fertility = 0.15
+}
+
+cop_slavic_yearly_0090_tax = {
+	icon = stewardship_positive
+	domain_tax_mult = 0.02
+}
+
+cop_slavic_decision_dodole_character = {
+	icon = magic_positive
+	fertility = 0.1
+}
+
+#County
+
+cop_cop_slavic_yearly_fp1_0071_leshy_attacks_modifier = {
+	icon = bear_negative
+	county_opinion_add = -50
+}
+
+slavic_blundering_priest_spared = {
+	icon = county_modifier_opinion_negative
+	county_opinion_add = -30
+}
+
+cop_slavic_yearly_0041_trade_developed = {
+	icon = economy_positive
+	development_growth_factor = 0.15
+}
+
+cop_slavic_yearly_0041_trade_stifled = {
+	icon = economy_negative
+	development_growth_factor = -0.15
+}
+
+cop_slavic_yearly_0041_priest_spared = {
+	icon = county_modifier_opinion_negative
+	county_opinion_add = -30
+}
+
+cop_slavic_yearly_0050_rampant_skomorokhs = {
+	icon = county_modifier_development_negative
+	development_growth_factor = -0.05
+	county_opinion_add = -10
+}
+
+slavic_fp1_yearly_0591_levy_modifier = {
+	icon = martial_positive
+	levy_size = 0.1
+}
+
+slavic_fp1_yearly_0591_building_modifier = {
+	icon = county_modifier_development_positive
+	build_gold_cost = -0.2
+	build_piety_cost = -0.2
+	build_prestige_cost = -0.2
+}
+
+cop_slavic_yearly_0090_honey_good = {
+	icon = county_modifier_development_positive
+	development_growth_factor = 0.05
+}
+
+cop_slavic_yearly_0090_honey_bad = {
+	icon = county_modifier_development_negative
+	development_growth_factor = 0.05
+}
+
+cop_slavic_decision_dodole_county = {
+	icon = magic_positive
+	tax_mult = 0.25
+	levy_size = 0.2
+	development_growth_factor = 0.1
+}

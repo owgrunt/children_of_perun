@@ -1,0 +1,8133 @@
+﻿################
+# FP1 EVENTS ADAPTED FOR SLAVS
+################
+# This file includes events from the DLC that are still applicable for Slavic characters.
+# DLC requirements still apply.
+# These events were not created by me, I just adapted them, original credits are included.
+##
+# EVENT LIST
+#  cop_slavic_yearly.0001 - Choose Personal Deity
+#  yearly_persian.1101 - Persian Nationalism
+
+namespace = cop_slavic_yearly_fp1
+
+##################################################
+# An Escaping Thrall Robs You
+# by Ewan Cowhig Croft
+# 0001 - 0010
+##################################################
+
+# Modder comment: thrall replaced with kholop
+
+scripted_trigger suitably_terrible_knight_trigger = {
+	is_available_ai = yes
+	is_ruler = no
+	# Just make sure they have at least one knight with believably-bad prowess. Deliberately "<", rather than "<=".
+	prowess < high_skill_rating
+	# And uhh, for obvious reasons...
+	NOT = { has_trait = blind }
+}
+
+#	A kholop leaves your court in the night.
+cop_slavic_yearly_fp1.0001 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0001.t
+	desc = cop_slavic_yearly_fp1.0001.desc
+	theme = stewardship
+	left_portrait = {
+		character = scope:scapegoat
+		animation = shame
+	}
+	override_background = { event_background = throne_room }
+
+	trigger = {
+		#DLC check.
+		has_fp1_dlc_trigger = yes
+		#Standard checks.
+		is_available_even_at_war_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0001 }
+		is_landed = yes
+		#Must be able to raid, or else your kholop economy is being phased out.
+		can_raid_trigger = yes
+		#MOD replace original trigger
+		OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+				religion = religion:slavic_religion
+			}
+		#Needs a knight for scapegoating.
+		any_knight = {
+			count >= 1
+			suitably_terrible_knight_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		#Weight up a little for rulers that kholops are desperate to escape from.
+		modifier = {
+			add = 0.5
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.25
+			has_trait = callous
+		}
+
+		#And weight down for anyone who's a bit nicer. Not to suggest that the kholops are treated particularly well, but they're not being casually murdered for fun like a sadist might.
+		modifier = {
+			add = -0.5
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.25
+			has_trait = forgiving
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0001
+			days = 1825
+		}
+		# Pick a fall guy.
+		random_knight = {
+			limit = { suitably_terrible_knight_trigger = yes }
+			weight = {
+				# Every point of prowess a knight has lowers the chance for it to be them by 2%.
+				base = 0
+				modifier = {
+					add = {
+						value = 50
+						subtract = prowess
+					}
+				}
+				# And every point of compassion another 1%.
+				modifier = { add = ai_compassion }
+			}
+			save_scope_as = scapegoat
+		}
+		# Give the escaped kholop a gender for loc.
+		random_dummy_gender_effect = yes
+		# Remove the stolen jewels.
+		remove_short_term_gold = medium_gold_value
+	}
+
+	# Send out descriptions of the kholop and the stolen goods.
+	option = {
+		name = cop_slavic_yearly_fp1.0001.a
+
+		duel = {
+			skill = stewardship
+			value = decent_skill_rating
+			# The kholop is spotted and captured several villages away.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0001.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0001.a.tt_success
+					left_icon = root
+					add_prestige = medium_prestige_gain
+					add_gold = medium_gold_value
+				}
+			}
+			# The kholop slips the net, with your stolen goods.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0001.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0001.a.tt_failure
+					left_icon = root
+					custom_tooltip = cop_slavic_yearly_fp1.0001.gold_stays_lost.tt
+				}
+			}
+		}
+
+		stress_impact = {
+			diligent = medium_stress_impact_loss
+			lazy = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = 0.5
+				ai_rationality = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = diligent
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = lazy
+			}
+		}
+	}
+	
+	#Start a manhunt.
+	option = {
+		name = cop_slavic_yearly_fp1.0001.b
+
+		duel = {
+			skill = martial
+			value = decent_skill_rating
+			#The kholop is caught before they can get far.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0001.b.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0001.b.tt_success
+					left_icon = root
+					add_prestige = medium_prestige_gain
+					add_gold = medium_gold_value
+				}
+			}
+			#The kholop slips the net, with your stolen goods.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0001.b.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0001.b.tt_failure
+					left_icon = root
+					custom_tooltip = cop_slavic_yearly_fp1.0001.gold_stays_lost.tt
+				}
+			}
+		}
+
+		stress_impact = {
+			diligent = medium_stress_impact_loss
+			lazy = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = 0.5
+				ai_rationality = 0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = diligent
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = lazy
+			}
+		}
+	}
+	
+	#Fine scope:scapegoat.
+	option = {
+		name = cop_slavic_yearly_fp1.0001.c
+
+		#And no money was lost after all.
+		add_prestige = medium_prestige_gain
+
+		#Unless you're scope:scapegoat.
+		scope:scapegoat = {
+			pay_short_term_gold = {
+				target = root
+				gold = root.medium_gold_value
+			}
+			#Who is, understandably, a bit miffed.
+			progress_towards_rival_effect = {
+				CHARACTER = root
+				OPINION = no
+			}
+			add_opinion = {
+				target = root
+				modifier = angry_opinion
+				opinion = -20
+			}
+		}
+
+		stress_impact = {
+			wrathful = minor_stress_impact_loss
+			greedy = medium_stress_impact_loss
+			vengeful = major_stress_impact_loss
+			calm = minor_stress_impact_gain
+			generous = medium_stress_impact_gain
+			forgiving = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = 0.25
+				ai_compassion = -0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = wrathful
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = greedy
+			}
+			modifier = {	#Weight up for stress.
+				add = 30
+				has_trait = vengeful
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = calm
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = generous
+			}
+			modifier = {	#Weight down for stress.
+				add = -30
+				has_trait = forgiving
+			}
+		}
+	}
+
+	#Not your fault, scope:scapegoat. These things happen.
+	option = {
+		name = cop_slavic_yearly_fp1.0001.d
+
+		#Some assets are gone for good.
+		custom_tooltip = cop_slavic_yearly_fp1.0001.gold_stays_lost.tt
+
+		#Welp, you _did_ show clemency.
+		if = {
+			limit = {
+				can_add_hook = {
+					type = favor_hook
+					target = scope:scapegoat
+				}
+			}
+			add_hook = {
+				type = favor_hook
+				target = scope:scapegoat
+			}
+		}
+		scope:scapegoat = {
+			add_opinion = {
+				target = root
+				modifier = relieved_opinion
+				opinion = 20
+			}
+		}
+
+		stress_impact = {
+			calm = minor_stress_impact_loss
+			generous = medium_stress_impact_loss
+			forgiving = major_stress_impact_loss
+			wrathful = minor_stress_impact_gain
+			greedy = medium_stress_impact_gain
+			vengeful = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.5
+				ai_vengefulness = -0.5
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = calm
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = generous
+			}
+			modifier = {	#Weight up for stress.
+				add = 30
+				has_trait = forgiving
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = wrathful
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = greedy
+			}
+			modifier = {	#Weight down for stress.
+				add = -30
+				has_trait = vengeful
+			}
+		}
+	}
+}
+
+##################################################
+# Two of your Knights wish to Holmgang over a Dispute
+# by Ewan Cowhig Croft
+# 0021 - 0030
+##################################################
+
+# Modder comment: some insult details are changed, holmgang replaced with polye (slavic version)
+
+scripted_trigger suitable_knight_for_dispute_trigger = {
+	is_available_ai_adult = yes
+	#Nab them for checking various things later in the event.
+	save_temporary_scope_as = current_knight
+	#Filter out rulers, as the loc mismatches such tonally.
+	is_ruler = no
+	#They have to be at least not non-argumentative.
+	NOR = {
+		has_trait = forgiving
+		has_trait = craven
+	}
+	#For the sake of ease, they shouldn't have a positive special relationship with any other knight.
+	NOT = {
+		root = {
+			any_knight = {
+				has_friendly_relationship_trigger = { CHARACTER = scope:current_knight }
+			}
+		}
+	}
+	#Is the character hookable for the event results?
+	root = {
+		can_add_hook = {
+			type = favor_hook
+			target = scope:current_knight
+		}
+	}
+}
+
+scripted_trigger deviant_knight_trigger = {
+	OR = {
+		has_trait = deviant
+		any_secret = { secret_type = secret_deviant }
+	}
+}
+
+scripted_effect holmgang_results_effect = {
+	if = {
+		limit = { has_government = tribal_government }
+		$LOSER$ = {
+			death = {
+				killer = $WINNER$
+				death_reason = death_duel
+			}
+		}
+	}
+	else = {
+		$LOSER$ = {
+			increase_wounds_effect = { REASON = duel }
+		}
+	}
+}
+
+#	Two knights fight to the death over nothing.
+cop_slavic_yearly_fp1.0021 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0021.t
+	desc = {
+		desc = cop_slavic_yearly_fp1.0021.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:dispute_nature = flag:doggo }
+				desc = cop_slavic_yearly_fp1.0021.desc.doggo
+			}
+			triggered_desc = {
+				trigger = { scope:dispute_nature = flag:spit_of_land }
+				desc = cop_slavic_yearly_fp1.0021.desc.spit_of_land
+			}
+			triggered_desc = {
+				trigger = { scope:dispute_nature = flag:unrepeatable_insult }
+				desc = cop_slavic_yearly_fp1.0021.desc.unrepeatable_insult
+			}
+			triggered_desc = {
+				trigger = { scope:dispute_nature = flag:escalating_prank_war }
+				desc = cop_slavic_yearly_fp1.0021.desc.escalating_prank_war
+			}
+			triggered_desc = {
+				trigger = { scope:dispute_nature = flag:religious_differences }
+				desc = cop_slavic_yearly_fp1.0021.desc.religious_differences
+			}
+			triggered_desc = {
+				trigger = { scope:dispute_nature = flag:stolen_pig }
+				desc = cop_slavic_yearly_fp1.0021.desc.stolen_pig
+			}
+			# Female Variant.
+			triggered_desc = {
+				trigger = {
+					scope:dispute_nature = flag:defiled_longboat
+					scope:defiling_knight = { is_female = yes }
+				}
+				desc = cop_slavic_yearly_fp1.0021.desc.defiled_longboat.woman
+			}
+			# Male Variant.
+			triggered_desc = {
+				trigger = {
+					scope:dispute_nature = flag:defiled_longboat
+					scope:defiling_knight = { is_male = yes }
+				}
+				desc = cop_slavic_yearly_fp1.0021.desc.defiled_longboat
+			}
+			triggered_desc = {
+				trigger = { scope:dispute_nature = flag:board_game }
+				desc = cop_slavic_yearly_fp1.0021.desc.board_game
+			}
+		}
+		desc = cop_slavic_yearly_fp1.0021.desc.outro
+	}
+	theme = unfriendly
+	left_portrait = {
+		character = scope:first_knight
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:second_knight
+		animation = disgust
+	}
+	override_background = { event_background = wilderness }
+
+	trigger = {
+		#DLC check.
+		has_fp1_dlc_trigger = yes
+		#Standard checks.
+		is_available_at_peace_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0021 }
+		is_landed = yes
+		#MOD replace trigger
+		OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+				religion = religion:slavic_religion
+			}
+		#Holmgangs must still be in fashion.
+		NOT = {
+			culture = { has_cultural_era_or_later = culture_era_high_medieval }
+		}
+		#Must have at least two knights available who can get into a dispute.
+		any_knight = {
+			count >= 2
+			suitable_knight_for_dispute_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0021
+			days = 1825
+		}
+		#Sort Actors.
+		##Grab capital barony for loc.
+		capital_barony = { save_scope_as = capital_barony }
+		##Grab the first knight.
+		random_knight = {
+			limit = { suitable_knight_for_dispute_trigger = yes }
+			save_scope_as = first_knight
+		}
+		##Grab the second knight.
+		random_knight = {
+			limit = {
+				suitable_knight_for_dispute_trigger = yes
+				NOT = { this = scope:first_knight }
+			}
+			save_scope_as = second_knight
+		}
+		##Just make them hate each other a little.
+		scope:first_knight = {
+			add_opinion = {
+				target = scope:second_knight
+				modifier = respect_opinion
+				opinion = -40
+			}
+			reverse_add_opinion = {
+				target = scope:second_knight
+				modifier = respect_opinion
+				opinion = -40
+			}
+			progress_towards_rival_effect = {
+				CHARACTER = scope:second_knight
+				OPINION = no
+			}
+		}
+		#Pick which dispute type they'll have.
+		##Eight options of 12.5% chance each.
+		random_list = {
+			#Dispute over a pet killed in an accident.
+			125 = {
+				#No trigger, fallback.
+				save_scope_value_as = {
+					name = dispute_nature
+					value = flag:doggo
+				}
+				# Means we'll need a particular animal to hunt.
+				select_local_animal_effect = yes
+				# And, if scope:second_knight actually has a doggo, kill it.
+				scope:second_knight = {
+					if = {
+						limit = {
+							any_owned_story = {
+								story_type = story_cycle_pet_dog
+								exists = story_owner.var:story_cycle_dog_name
+							}
+						}
+						random_owned_story = {
+							limit = {
+								story_type = story_cycle_pet_dog
+								exists = story_owner.var:story_cycle_dog_name
+							}
+							story_owner = {
+								add_character_flag = {
+									flag = dog_is_dying
+								}
+								trigger_event = pet_animal.1199
+							}
+						}
+					}
+				}
+			}
+			#Dispute over a spit of land that grows the best cabbages.
+			125 = {
+				#Both knights must care at least a little about money, and at least one a little too much.
+				trigger = {
+					NOR = {
+						scope:first_knight = {
+							OR = {
+								has_trait = generous
+								has_trait = profligate
+								has_trait = improvident
+							}
+						}
+						scope:second_knight = {
+							OR = {
+								has_trait = generous
+								has_trait = profligate
+								has_trait = improvident
+							}
+						}
+					}
+					OR = {
+						scope:first_knight = { has_trait = greedy }
+						scope:second_knight = { has_trait = greedy }
+					}
+				}
+				save_scope_value_as = {
+					name = dispute_nature
+					value = flag:spit_of_land
+				}
+			}
+			#Dispute over an unrepeatable insult involving a goat & a good drinking horn.
+			125 = {
+				#Both knights must be the type to let the insult escalate, and at least one to take it too far.
+				trigger = {
+					NOR = {
+						scope:first_knight = { has_trait = calm }
+						scope:second_knight = { has_trait = calm }
+					}
+					OR = {
+						scope:first_knight = { has_trait = wrathful }
+						scope:first_knight = { has_trait = wrathful}
+					}
+				}
+				save_scope_value_as = {
+					name = dispute_nature
+					value = flag:unrepeatable_insult
+				}
+			}
+			#Dispute resulting from an escalating prank war.
+			125 = {
+				#Both knights must be people who might get involved in such a thing, and one should be the type to take it too far.
+				trigger = {
+					NOR = {
+						scope:first_knight = {
+							OR = {
+								has_trait = shy
+								has_trait = reclusive
+							}
+						}
+						scope:second_knight = {
+							OR = {
+								has_trait = shy
+								has_trait = reclusive
+							}
+						}
+					}
+					OR = {
+						scope:first_knight = { has_trait = vengeful }
+						scope:second_knight = { has_trait = vengeful }
+					}
+				}
+				save_scope_value_as = {
+					name = dispute_nature
+					value = flag:escalating_prank_war
+				}
+			}
+			#Dispute over religious differences.
+			125 = {
+				#Both knights must find each other's faiths disagreeable.
+				trigger = {
+					scope:first_knight.faith = {
+						faith_hostility_level = {
+							target = scope:second_knight.faith
+							value >= faith_hostile_level
+						}
+					}
+					scope:second_knight.faith = {
+						faith_hostility_level = {
+							target = scope:first_knight.faith
+							value >= faith_hostile_level
+						}
+					}
+					#Quietly exclude sceptics also.
+					NOR = {
+						scope:first_knight = { has_trait = cynical }
+						scope:second_knight = { has_trait = cynical }
+					}
+				}
+				save_scope_value_as = {
+					name = dispute_nature
+					value = flag:religious_differences
+				}
+			}
+			#Dispute over a stolen pig.
+			125 = {
+				trigger = {
+					#Exempt faiths that don't eat pork: technically the pig could be as a pet or for non-edible purposes, but it scans best if we just don't bring this up.
+					NOR = {
+						scope:first_knight = {
+							OR = {
+								religion = religion:judaism_religion
+								religion = religion:islam_religion
+							}
+						}
+						scope:second_knight = {
+							OR = {
+								religion = religion:judaism_religion
+								religion = religion:islam_religion
+							}
+						}
+					}
+				}
+				save_scope_value_as = {
+					name = dispute_nature
+					value = flag:stolen_pig
+				}
+			}
+			#Dispute resulting from someone making a sea-going vessel a bit saltier.
+			125 = {
+				#Requires at least one knight to be a deviant.
+				trigger = {
+					OR = {
+						scope:first_knight = { deviant_knight_trigger = yes }
+						scope:second_knight = { deviant_knight_trigger = yes }
+					}
+				}
+				save_scope_value_as = {
+					name = dispute_nature
+					value = flag:defiled_longboat
+				}
+				#Specify who defiled who's longboat.
+				if = {
+					limit = {
+						scope:first_knight = { deviant_knight_trigger = yes }
+					}
+					scope:first_knight = { save_scope_as = defiling_knight }
+					scope:second_knight = { save_scope_as = unfortunate_knight }
+				}
+				else = {
+					scope:second_knight = { save_scope_as = defiling_knight }
+					scope:first_knight = { save_scope_as = unfortunate_knight }
+				}
+			}
+			#Dispute resulting from the mysterious Viking board game.
+			125 = {
+				#No trigger, fallback.
+				save_scope_value_as = {
+					name = dispute_nature
+					value = flag:board_game
+				}
+			}
+		}
+	}
+
+	#Strictly forbid them.
+	option = {
+		name = cop_slavic_yearly_fp1.0021.b
+
+		#Then, we see if your rule is feared or jeered.
+		duel = {
+			skill = intrigue
+			value = 12
+			#You successfully terrify them into not fighting.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0021.b.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0021.b.tt_success
+					left_icon = scope:first_knight
+					add_dread = medium_dread_gain
+					add_prestige = minor_prestige_gain
+				}
+			}
+			#They begrudgingly agree not to fight, but shit-talk you for it.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0021.b.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0021.b.tt_failure
+					left_icon = scope:first_knight
+					add_dread = medium_dread_loss
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+
+		#Regardless of outcome, they dislike you for this.
+		reverse_add_opinion = {
+			target = scope:first_knight
+			modifier = respect_opinion
+			opinion = -30
+		}
+		reverse_add_opinion = {
+			target = scope:second_knight
+			modifier = respect_opinion
+			opinion = -30
+		}
+
+		stress_impact = {
+			arbitrary = minor_stress_impact_loss
+			just = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.25
+				ai_vengefulness = -0.25
+				ai_rationality = -0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = arbitrary
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = just
+			}
+		}
+	}
+
+	#Bet on scope:first_knight.
+	option = {
+		name = cop_slavic_yearly_fp1.0021.c
+
+		#Sort the duel.
+		scope:first_knight = {
+			duel = {
+				skill = prowess
+				target = scope:second_knight
+				#scope:first_knight wins!
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 3.5
+						min = -49
+					}
+					desc = cop_slavic_yearly_fp1.0021.c.tt_success
+					root = {
+						send_interface_toast = {
+							title = cop_slavic_yearly_fp1.0021.c.tt_success
+							left_icon = scope:first_knight
+							add_gold = minor_gold_value
+							holmgang_results_effect = {
+								WINNER = scope:first_knight
+								LOSER = scope:second_knight
+							}
+						}
+					}
+				}
+				#scope:second_knight wins!
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -3.5
+						min = -49
+					}
+					desc = cop_slavic_yearly_fp1.0021.c.tt_failure
+					root = {
+						send_interface_toast = {	
+							title = cop_slavic_yearly_fp1.0021.c.tt_failure
+							left_icon = scope:second_knight
+							remove_short_term_gold = minor_gold_value
+							holmgang_results_effect = {
+								WINNER = scope:second_knight
+								LOSER = scope:first_knight
+							}
+						}
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_greed = 0.5
+				ai_compassion = -0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = greedy
+			}
+		}
+	}
+
+	#Bet on scope:second_knight.
+	option = {
+		name = cop_slavic_yearly_fp1.0021.d
+
+		#Sort the duel.
+		scope:first_knight = {
+			duel = {
+				skill = prowess
+				target = scope:second_knight
+				#scope:first_knight wins!
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 3.5
+						min = -49
+					}
+					desc = cop_slavic_yearly_fp1.0021.d.tt_failure
+					root = {
+						send_interface_toast = {
+							title = cop_slavic_yearly_fp1.0021.d.tt_failure
+							left_icon = scope:first_knight
+							remove_short_term_gold = minor_gold_value
+							holmgang_results_effect = {
+								WINNER = scope:first_knight
+								LOSER = scope:second_knight
+							}
+						}
+					}
+				}
+				#scope:second_knight wins!
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -3.5
+						min = -49
+					}
+					desc = cop_slavic_yearly_fp1.0021.d.tt_success
+					root = {
+						send_interface_toast = {	
+							title = cop_slavic_yearly_fp1.0021.d.tt_success
+							left_icon = scope:second_knight
+							add_gold = minor_gold_value
+							holmgang_results_effect = {
+								WINNER = scope:second_knight
+								LOSER = scope:first_knight
+							}
+						}
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_greed = 0.5
+				ai_compassion = -0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = greedy
+			}
+		}
+	}
+
+	#Grant them permission.
+	option = {
+		name = cop_slavic_yearly_fp1.0021.a
+
+		#Sort the duel.
+		scope:first_knight = {
+			duel = {
+				skill = prowess
+				target = scope:second_knight
+				#scope:first_knight wins!
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 3.5
+						min = -49
+					}
+					desc = cop_slavic_yearly_fp1.0021.a.tt_success
+					root = {
+						send_interface_toast = {
+							title = cop_slavic_yearly_fp1.0021.a.tt_success
+							left_icon = scope:first_knight
+							add_hook = {
+								type = favor_hook
+								target = scope:first_knight
+							}
+							holmgang_results_effect = {
+								WINNER = scope:first_knight
+								LOSER = scope:second_knight
+							}
+						}
+					}
+				}
+				#scope:second_knight wins!
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -3.5
+						min = -49
+					}
+					desc = cop_slavic_yearly_fp1.0021.a.tt_failure
+					root = {
+						send_interface_toast = {	
+							title = cop_slavic_yearly_fp1.0021.a.tt_failure
+							left_icon = scope:second_knight
+							add_hook = {
+								type = favor_hook
+								target = scope:second_knight
+							}
+							holmgang_results_effect = {
+								WINNER = scope:second_knight
+								LOSER = scope:first_knight
+							}
+						}
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			just = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_vengefulness = 0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = just
+			}
+		}
+	}
+}
+
+##################################################
+# [Russia/Steppe] Islamic Explorer Visits Court
+# by Ewan Cowhig Croft
+# 0041 - 0050
+##################################################
+
+#Mod comment: it's actually a shame that an event about RUSSIA is not available to non-norse characters.
+
+scripted_trigger suitable_islamic_realm_trigger = {
+	#First off, we need people who will consider root a savage.
+	NOT = { has_government = tribal_government }
+	#Next, filter down to the correct religion.
+	religion = religion:islam_religion
+	#Making sure to only grab rulers from the Middle East.
+	capital_province = {
+		OR = {
+			geographical_region = world_asia_minor
+			geographical_region = world_middle_east_jerusalem
+			geographical_region = world_middle_east_arabia
+			geographical_region = world_middle_east_persia
+			geographical_region = world_india_rajastan
+		}
+	}
+	#And then misc checks to make sure that the tone is correct.
+	top_liege = {
+		NOR = {
+			#Such as the liege not having much contact with Germanic Paganism.
+			religion = religion:germanic_religion
+			any_vassal_or_below = { religion = religion:germanic_religion }
+			#The realm not being positioned next door to root.
+			character_is_realm_neighbor = root.top_liege
+			#And the realm generally not being inside the same (admittedly large) area.
+			any_realm_county = {
+				title_province = { geographical_region = dlc_fp1_region_russian_steppe }
+			}
+		}
+	}
+}
+
+#	An Islamic explorer stops by for a visit.
+cop_slavic_yearly_fp1.0041 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0041.t
+	desc = cop_slavic_yearly_fp1.0041.desc
+	theme = stewardship
+	left_portrait = {
+		character = scope:explorer
+		animation = disapproval
+	}
+	right_portrait = {
+		character = scope:sponsoring_liege
+		animation = personality_rational
+	}
+	override_background = { event_background = throne_room }
+
+	trigger = {
+		#DLC check.
+		has_fp1_dlc_trigger = yes
+		#Standard checks.
+		is_available_even_at_war_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0041 }
+		is_landed = yes
+		#Must be a Slavic pagan tribal.
+		has_government = tribal_government
+		religion = religion:slavic_religion
+		#With a capital in the steppe/Russia.
+		capital_province = { geographical_region = dlc_fp1_region_russian_steppe }
+		#Just for good measure, you should probably be a small-ish realm.
+		realm_size <= medium_realm_size
+		#No same-realm Muslims.
+		top_liege = {
+			NOR = {
+				religion = religion:islam_religion
+				any_vassal_or_below = { religion = religion:islam_religion }
+			}
+		}
+		#A suitable Islamic realm for the explorer to have come from must exists.
+		any_kingdom = {
+			exists = holder
+			holder = { suitable_islamic_realm_trigger = yes }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0041
+			days = 3650
+		}
+		#Grab home barony for loc.
+		capital_barony = { save_scope_as = capital_barony }
+		#Assign a home realm for the explorer.
+		random_kingdom = {
+			limit = {
+				exists = holder
+				holder = { suitable_islamic_realm_trigger = yes}
+			}
+			holder = { save_scope_as = sponsoring_liege }
+		}
+		#Create the Islamic explorer.
+		create_character = {
+			location = root.capital_province
+			template = fp1_islamic_explorer_character
+			save_scope_as = explorer
+		}
+	}
+
+	#Host a small trisna.
+	option = {
+		name = cop_slavic_yearly_fp1.0041.a
+
+		#Diplomacy duel to see how well you present yourself.
+		duel = {
+			skill = diplomacy
+			value = decent_skill_rating
+			#Your blot impresses the explorer.
+			40 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0041.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0041.a.tt_success
+					left_icon = scope:explorer
+					add_prestige = medium_prestige_gain
+					add_character_modifier = {
+						modifier = exotic_foreign_lord_fp1_modifier
+						years = 10
+					}
+				}
+			}
+			#Your pagan ways disgust the explorer.
+			60 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0041.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0041.a.tt_failure
+					left_icon = scope:explorer
+					add_prestige = minor_prestige_loss
+					add_character_modifier = {
+						modifier = horrifying_foreign_lord_fp1_modifier
+						years = 5
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			zealous = medium_stress_impact_loss
+			cynical = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_zeal = 0.5
+				ai_sociability = 0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = zealous
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = cynical
+			}
+		}
+	}
+	
+	#Invite them to stay and convert you.
+	option = {
+		name = cop_slavic_yearly_fp1.0041.b
+		#Prohibit the AI from converting to far-away religions unless they're genuinely very interested in scope:explorer's faith.
+		trigger = {
+			OR = {
+				is_ai = no
+				AND = {
+					NOR = {
+						has_trait = zealous #Zealous characters never convert on a whim.
+						has_trait = cynical	#Cynical characters aren't really interested in what anyone is selling.
+						has_trait = arrogant #Arrogant characters believe their faith is already the best, even if they don't care much about it.
+						has_trait = paranoid #Paranoid characters don't trust scope:explorer's tales.
+					}
+					OR = {
+						has_trait = humble	#Humble characters like to give everyone a fair chance to explain their POV.
+						has_trait = trusting #Trusting characters can be talked into many things, given time & charisma.
+					}
+				}
+			}
+		}
+		
+		#Get scope:explorer as a courtier.
+		add_courtier = scope:explorer
+		#Sort conversion.
+		set_character_faith_with_conversion = scope:explorer.faith
+		#Get scope:sponsoring_liege as a friend, if possible.
+		if = {
+			limit = {
+				can_set_relation_friend_trigger = { CHARACTER = scope:sponsoring_liege }
+			}
+			set_relation_friend = scope:sponsoring_liege
+			reverse_add_opinion = {
+				target = scope:sponsoring_liege
+				modifier = pious_opinion
+				opinion = 50
+			}
+		}
+
+		stress_impact = {
+			humble = medium_stress_impact_loss
+			trusting = major_stress_impact_loss
+			paranoid = minor_stress_impact_gain
+			arrogant = medium_stress_impact_gain
+			zealous = massive_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.25
+				ai_zeal = -0.75
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = humble
+			}
+			modifier = {	#Weight up for stress.
+				add = 30
+				has_trait = trusting
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = paranoid
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = arrogant
+			}
+			modifier = {	#Weight down for stress.
+				add = -50
+				has_trait = zealous
+			}
+		}
+	}
+	
+	#Give them the boot.
+	option = {
+		name = cop_slavic_yearly_fp1.0041.c
+
+		#Consolation prize for giving them the boot.
+		## Stress loss handled in stress_impact.
+
+		stress_impact = {
+			base = minor_stress_loss
+			zealous = minor_stress_impact_loss
+			shy = major_stress_impact_loss
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_zeal = -0.25
+				ai_sociability = -0.5
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = zealous
+			}
+			modifier = {	#Weight down for stress.
+				add = -30
+				has_trait = shy
+			}
+		}
+	}
+
+	#Clean-up characters, if appropriate.
+	after = {
+		# We use a separate event delayed by a day so that scope:explorer isn't dead in the toasts.
+		trigger_event = {
+			id = cop_slavic_yearly_fp1.0042
+			days = 30
+		}
+	}
+}
+
+#	Clean up unused explorer.
+cop_slavic_yearly_fp1.0042 = {
+	hidden = yes
+
+	immediate = {
+		#Get rid of scope:explorer, unless they've decided to stay.
+		scope:explorer = {
+			if = {
+				limit = {
+					NOT = { is_courtier_of = root }
+				}
+				hidden_effect = {
+					death = { death_reason = death_vanished }
+				}
+			}
+		}
+	}
+}
+
+##################################################
+# [Rural] A Dead Character is Rumoured to have become a Draugr
+# by Ewan Cowhig Croft
+# 0051 - 0070
+##################################################
+
+#	You are informed of the reputed-draugr.
+cop_slavic_yearly_fp1.0051 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0051.t
+	desc = cop_slavic_yearly_fp1.0051.desc
+	theme = unfriendly
+	left_portrait = {
+		character = scope:draugr
+		animation = personality_vengeful
+	}
+	override_background = { event_background = throne_room }
+
+	trigger = {
+		#DLC check.
+		has_fp1_dlc_trigger = yes
+		#Standard checks.
+		is_available_even_at_war_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0051 }
+		is_landed = yes
+		#Must have a draugr candidate ready; this is set on the on_death on_action.
+		has_variable = potential_draugr
+		#Must be a tribal...
+		has_government = tribal_government
+		#With a rural, North Germanic capital.
+		capital_county = {
+			#Checking the capital, not the character, since it's a local superstition rather than something ye're insisiting on.
+			OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+			}
+			development_level <= terrible_development_level
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0051
+			days = 7300
+		}
+		#Grab our capital for loc.
+		capital_county = { save_scope_as = capital_county }
+		#Then grab our draugr.
+		var:potential_draugr = { save_scope_as = draugr }
+	}
+
+	#Investigate in person.
+	option = {
+		name = cop_slavic_yearly_fp1.0051.a
+
+		#You go off to investigate in person.
+		custom_tooltip = cop_slavic_yearly_fp1.0051.a.tt
+		##5 possible outcomes, weighing down the chance of nothing happening slightly due to low value, gives us x4 options of 22.5% & one of 10%.
+		hidden_effect = {
+			random_list = {
+				#A pack of wolves!
+				225 = {
+					trigger_event = {
+						id = cop_slavic_yearly_fp1.0061
+						months = 1
+					}
+				}
+				#A fearsome bear!
+				225 = {
+					trigger_event = {
+						id = cop_slavic_yearly_fp1.0062
+						months = 1
+					}
+				}
+				#A nithing living in the mound!
+				225 = {
+					trigger_event = {
+						id = cop_slavic_yearly_fp1.0063
+						months = 1
+					}
+				}
+				#An orphan living in the mound!
+				225 = {
+					trigger_event = {
+						id = cop_slavic_yearly_fp1.0064
+						months = 1
+					}
+				}
+				#Absolutely bugger-all!
+				100 = {
+					trigger_event = {
+						id = cop_slavic_yearly_fp1.0065
+						months = 1
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			diligent = medium_stress_impact_loss
+			brave = medium_stress_impact_loss
+			lazy = medium_stress_impact_gain
+			craven = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_energy = 0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = diligent
+			}
+			modifier = {	#Weight down for stress.
+				add = 20
+				has_trait = brave
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = lazy
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = craven
+			}
+		}
+	}
+	
+	#Try various folk solutions.
+	option = {
+		name = cop_slavic_yearly_fp1.0051.c
+
+		#Let's see how your hearth wisdom is, chummer.
+		duel = {
+			skill = learning
+			value = decent_skill_rating
+			#Your potions and spells reassure the locals.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0051.c.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0051.c.tt_success
+					left_icon = scope:draugr
+					capital_county = {
+						add_county_modifier = {
+							modifier = draugr_remedies_succeeded_fp1_modifier
+							years = 10
+						}
+					}
+					add_stress = medium_stress_loss
+				}
+			}
+			#Your rituals are insufficient.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0051.c.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0051.c.tt_failure
+					left_icon = scope:draugr
+					capital_county = {
+						add_county_modifier = {
+							modifier = draugr_remedies_failed_fp1_modifier
+							years = 10
+						}
+					}
+					add_stress = medium_stress_gain
+				}
+			}
+		}
+
+		stress_impact = {
+			lazy = minor_stress_impact_loss
+			diligent = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.5
+				ai_energy = 0.5
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = lazy
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = diligent
+			}
+		}
+	}
+
+	#Have them exhumed and the corpse destroyed.
+	option = {
+		name = cop_slavic_yearly_fp1.0051.b
+
+		#Peasants are happy.
+		send_interface_toast = {
+			title = cop_slavic_yearly_fp1.0051.b.body_destroyed
+			left_icon = root
+			capital_county = {
+				add_county_modifier = {
+					modifier = draugr_remedies_succeeded_fp1_modifier
+					years = 10
+				}
+			}
+		}
+
+		#But either the family of the deceased are not...
+		if = {
+			limit = {
+				scope:draugr = {
+					OR = {
+						#Nab their entire house.
+						AND = {
+							exists = house
+							house = {
+								any_house_member = {
+									count >= 1
+									is_alive = yes
+								}
+							}
+						}
+						#Any close family outside of that house (bastards, house-founder siblings, etc).
+						any_close_or_extended_family_member = {
+							count >= 1
+							is_alive = yes
+						}
+						#And any spouses still kicking around.
+						any_former_spouse = {
+							count >= 1
+							is_alive = yes
+						}
+					}
+				}
+			}
+			#Nab scope:draugr's nearest'n'dearest.
+			scope:draugr = {
+				if = {
+					limit = { exists = house }
+					house = {
+						every_house_member = {
+							limit = { is_alive = yes }
+							add_to_list = close_to_draugr_list
+						}
+					}
+				}
+				every_close_or_extended_family_member = {
+					limit = { is_alive = yes }
+					add_to_list = close_to_draugr_list
+				}
+				every_former_spouse = {
+					limit = { is_alive = yes }
+					add_to_list = close_to_draugr_list
+				}
+			}
+			#And make them unhappy at the thing wot u dun.
+			every_in_list = {
+				list = close_to_draugr_list
+				custom = cop_slavic_yearly_fp1.0051.b.list
+				add_opinion = {
+					target = root
+					modifier = fp1_desecrated_corpse_of_loved_one
+				}
+			}
+		}
+		#... Or you have to spend a little prestige for defiling the dead.
+		else = { add_prestige = medium_prestige_loss }
+
+		stress_impact = {
+			vengeful = minor_stress_impact_loss
+			callous = medium_stress_impact_loss
+			arbitrary = medium_stress_impact_loss
+			forgiving = minor_stress_impact_gain
+			compassionate = medium_stress_impact_gain
+			just = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = 0.25
+				ai_compassion = -0.25
+				ai_honor = -0.5
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = vengeful
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = callous
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = arbitrary
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = forgiving
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = compassionate
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = just
+			}
+		}
+	}
+}
+
+#	The draugr is earmarked.
+cop_slavic_yearly_fp1.0052 = {
+	hidden = yes
+
+	trigger = {
+		#DLC check.
+		has_fp1_dlc_trigger = yes
+		#Must be within the player's court.
+		is_knight = yes
+		court_owner = { is_ai = no }
+		#Must be an intimidating fighter.
+		prowess >= extremely_high_skill_rating
+		#Aaaaand must have a personality that makes people think they'd come back to harass the living.
+		calc_true_if = {
+			amount >= 2
+			has_trait = wrathful
+			has_trait = arrogant
+			has_trait = deceitful
+			has_trait = craven
+			has_trait = ambitious
+			has_trait = arbitrary
+			has_trait = cynical
+			has_trait = vengeful
+			has_trait = sadistic
+		}
+	}
+
+	immediate = {
+		save_scope_as = potential_draugr
+		court_owner = {
+			set_variable = {
+				name = potential_draugr
+				value = scope:potential_draugr
+				years = 5
+			}
+		}
+	}
+}
+
+#	The draugr was a pack of wolves!
+cop_slavic_yearly_fp1.0061 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0061.t
+	desc = cop_slavic_yearly_fp1.0061.desc
+	theme = martial
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	override_background = { event_background = wilderness }
+
+	trigger = {
+		is_available_even_at_war_adult = yes
+	}
+
+	#Fight the wolves.
+	option = {
+		name = cop_slavic_yearly_fp1.0061.a
+
+		#You rally your soldiers to fight off the pack!
+		duel = {
+			skill = martial
+			value = high_skill_rating
+			#You slaughter the pack!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0061.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0061.a.tt_success
+					left_icon = root
+					capital_county = {
+						add_county_modifier = {
+							modifier = draugr_remedies_succeeded_fp1_modifier
+							years = 10
+						}
+					}
+					add_prestige = medium_prestige_gain
+				}
+			}
+			#You barely escape with your life!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0061.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0061.a.tt_failure
+					left_icon = root
+					capital_county = {
+						add_county_modifier = {
+							modifier = draugr_monstrous_wolfpack_fp1_modifier
+							years = 10
+						}
+					}
+					increase_wounds_effect = { REASON = wolves }
+				}
+			}
+		}
+
+		stress_impact = {
+			brave = major_stress_impact_loss
+			craven = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	#Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	#Retreat!
+	option = {
+		name = cop_slavic_yearly_fp1.0061.b
+
+		#The wolves will be eating people for some time to come.
+		capital_county = {
+			add_county_modifier = {
+				modifier = draugr_monstrous_wolfpack_fp1_modifier
+				years = 10
+			}
+		}
+		#And e'eryone knows why.
+		add_prestige = medium_prestige_loss
+
+		stress_impact = {
+			craven = major_stress_impact_loss
+			brave = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.25
+				ai_boldness = -0.5
+			}
+			modifier = {	#Weight up for stress.
+				add = 30
+				has_trait = craven
+			}
+			modifier = {	#Weight down for stress.
+				add = -30
+				has_trait = brave
+			}
+		}
+	}
+}
+
+#	The draugr was a bear!
+cop_slavic_yearly_fp1.0062 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0062.t
+	desc = cop_slavic_yearly_fp1.0062.desc
+	theme = martial
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	override_background = { event_background = wilderness }
+
+	trigger = {
+		is_available_even_at_war_adult = yes
+	}
+
+	#Fight the bear.
+	option = {
+		name = cop_slavic_yearly_fp1.0062.a
+
+		#You meet the bear's challenge!
+		duel = {
+			skill = prowess
+			value = high_skill_rating
+			#You kill the bear!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0062.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0062.a.tt_success
+					left_icon = root
+					capital_county = {
+						add_county_modifier = {
+							modifier = draugr_remedies_succeeded_fp1_modifier
+							years = 10
+						}
+					}
+					add_prestige = medium_prestige_gain
+				}
+			}
+			#You only just escape with your life!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0062.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0062.a.tt_failure
+					left_icon = root
+					capital_county = {
+						add_county_modifier = {
+							modifier = draugr_monstrous_bear_fp1_modifier
+							years = 10
+						}
+					}
+					increase_wounds_effect = { REASON = bear }
+				}
+			}
+		}
+
+		stress_impact = {
+			brave = major_stress_impact_loss
+			craven = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	#Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	#Retreat!
+	option = {
+		name = cop_slavic_yearly_fp1.0062.b
+
+		#The bear will be eating people for some time to come.
+		capital_county = {
+			add_county_modifier = {
+				modifier = draugr_monstrous_bear_fp1_modifier
+				years = 10
+			}
+		}
+		#And e'eryone knows why.
+		add_prestige = medium_prestige_loss
+
+		stress_impact = {
+			craven = major_stress_impact_loss
+			brave = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.25
+				ai_boldness = -0.5
+			}
+			modifier = {	#Weight up for stress.
+				add = 30
+				has_trait = craven
+			}
+			modifier = {	#Weight down for stress.
+				add = -30
+				has_trait = brave
+			}
+		}
+	}
+}
+
+#	The draugr was a nithing!
+cop_slavic_yearly_fp1.0063 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0063.t
+	desc = cop_slavic_yearly_fp1.0063.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = disgust
+	}
+	right_portrait = {
+		character = scope:draugr_nithing
+		animation = shock
+	}
+	override_background = { event_background = wilderness }
+
+	trigger = {
+		is_available_even_at_war_adult = yes
+	}
+
+	immediate = {
+		#Create us a nithing!
+		create_character = {
+			location = root.capital_province
+			template = fp1_capital_county_nithing_character
+			save_scope_as = draugr_nithing
+		}
+		hidden_effect = {
+			scope:draugr_nithing = { nithing_character_creation_scripted_effect = yes }
+		}
+	}
+
+	#Try to catch the nithing before they slip away.
+	option = {
+		name = cop_slavic_yearly_fp1.0063.a
+
+		#You attempt to catch the criminal.
+		duel = {
+			skill = intrigue
+			value = high_skill_rating
+			#Your trap works!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0063.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0063.a.tt_success
+					left_icon = root
+					capital_county = {
+						add_county_modifier = {
+							modifier = draugr_remedies_succeeded_fp1_modifier
+							years = 10
+						}
+					}
+					add_prestige = medium_prestige_gain
+					#To the dungeon with you, m'nithing.
+					imprison = {
+						target = scope:draugr_nithing
+						type = dungeon
+					}
+				}
+			}
+			#The nithing slips the net!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0063.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0063.a.tt_failure
+					left_icon = root
+					capital_county = {
+						add_county_modifier = {
+							modifier = draugr_nithing_fp1_modifier
+							years = 10
+						}
+					}
+					custom_tooltip = cop_slavic_yearly_fp1.0063.a.tt_failure.draugr_nithing_escapes
+					hidden_effect = {
+						scope:draugr_nithing = {
+							death = { death_reason = death_vanished }
+						}
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			paranoid = minor_stress_impact_loss
+			vengeful = medium_stress_impact_loss
+			just = medium_stress_impact_loss
+			forgiving = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = paranoid
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = vengeful
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = just
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = forgiving
+			}
+		}
+	}
+	
+	#Leave them to it.
+	option = {
+		name = cop_slavic_yearly_fp1.0063.b
+
+		#The nithing will continue to do your capital a mischief for quite a while.
+		capital_county = {
+			add_county_modifier = {
+				modifier = draugr_nithing_fp1_modifier
+				years = 10
+			}
+		}
+		#But at least it's less ignoble than running from wild animals.
+		add_prestige = minor_prestige_loss
+
+		stress_impact = {
+			just = medium_stress_impact_loss
+			vengeful = medium_stress_impact_loss
+			arbitrary = minor_stress_impact_gain
+			forgiving = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.25
+				ai_honor = -0.25
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = just
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = vengeful
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = arbitrary
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = forgiving
+			}
+		}
+	}
+}
+
+#	The draugr was an orphan!
+cop_slavic_yearly_fp1.0064 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0064.t
+	desc = cop_slavic_yearly_fp1.0064.desc
+	theme = friendly
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:draugr_orphan
+		animation = fear
+	}
+	override_background = { event_background = wilderness }
+
+	trigger = {
+		is_available_even_at_war_adult = yes
+	}
+
+	immediate = {
+		#Create us an orphan!
+		create_character = {
+			location = root.capital_province
+			template = fp1_capital_county_orphan_character
+			save_scope_as = draugr_orphan
+		}
+		#And every possible result sorts the issue for you.
+		capital_county = {
+			add_county_modifier = {
+				modifier = draugr_remedies_succeeded_fp1_modifier
+				years = 10
+			}
+		}
+	}
+
+	#Move them on.
+	option = {
+		name = cop_slavic_yearly_fp1.0064.a
+
+		#The orphan disappears.
+		custom_tooltip = cop_slavic_yearly_fp1.0064.a.tt
+		hidden_effect = {
+			scope:draugr_orphan = {
+				death = { death_reason = death_vanished }
+			}
+		}
+
+		stress_impact = {
+			sadistic = minor_stress_impact_loss
+			callous = major_stress_impact_loss
+			compassionate = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.25
+				ai_compassion = -0.5
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = sadistic
+			}
+			modifier = {	#Weight up for stress.
+				add = 30
+				has_trait = callous
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = compassionate
+			}
+		}
+	}
+	
+	#Fling them into prison.
+	option = {
+		name = cop_slavic_yearly_fp1.0064.b
+
+		#You uhh, you get a prisoner.
+		imprison = {
+			target = scope:draugr_orphan
+			type = dungeon
+		}
+		reverse_add_opinion = {
+			target = scope:draugr_orphan
+			modifier = imprisoned_me
+		}
+		#... Just for good measure, let's make sure they won't forget this.
+		hidden_effect = { set_relation_potential_rival = scope:draugr_orphan }
+
+		stress_impact = {
+			callous = minor_stress_impact_loss
+			sadistic = major_stress_impact_loss
+			compassionate = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = 0.25
+				ai_compassion = -0.75
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = callous
+			}
+			modifier = {	#Weight up for stress.
+				add = 30
+				has_trait = sadistic
+			}
+			modifier = {	#Weight down for stress.
+				add = -30
+				has_trait = compassionate
+			}
+		}
+	}
+	
+	#Take them to court.
+	option = {
+		name = cop_slavic_yearly_fp1.0064.c
+
+		#One shiny new child for you.
+		add_courtier = scope:draugr_orphan
+		#And they're pretty happy about being whisked out of the grave they were living in.
+		reverse_add_opinion = {
+			target = scope:draugr_orphan
+			modifier = loyal_servant
+		}
+		add_hook = {
+			target = scope:draugr_orphan
+			type = loyalty_hook
+		}
+
+		stress_impact = {
+			trusting = minor_stress_impact_loss
+			compassionate = major_stress_impact_loss
+			paranoid = minor_stress_impact_gain
+			callous = medium_stress_impact_gain
+			sadistic = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = 0.25
+				ai_compassion = -0.75
+			}
+			modifier = {	#Weight up for stress.
+				add = 10
+				has_trait = trusting
+			}
+			modifier = {	#Weight up for stress.
+				add = 30
+				has_trait = compassionate
+			}
+			modifier = {	#Weight down for stress.
+				add = -10
+				has_trait = paranoid
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = callous
+			}
+			modifier = {	#Weight down for stress.
+				add = -20
+				has_trait = sadistic
+			}
+		}
+	}
+
+	#Adopt them.
+	option = {
+		name = cop_slavic_yearly_fp1.0064.d
+		#And, if you've no kids of your own right now...
+		trigger = {
+			any_child = {
+				count = 0
+				is_alive = yes
+			}
+		}
+
+		#One shiny new child for you.
+		if = {
+			limit = { is_female = yes }
+			scope:draugr_orphan = { set_mother = root }
+		}
+		else = {
+			scope:draugr_orphan = { set_father = root }
+		}
+		hidden_effect = {
+			#We take care of the sundries in a hidden effect so as not to put too much into the tooltip.
+			scope:draugr_orphan = { set_house = root.house }
+			add_courtier = scope:draugr_orphan
+		}
+		#And they're pretty happy about being the child of a lord all of a sudden.
+		reverse_add_opinion = {
+			target = scope:draugr_orphan
+			modifier = love_opinion
+			opinion = 100
+		}
+		add_hook = {
+			target = scope:draugr_orphan
+			type = loyalty_hook
+		}
+
+		stress_impact = {
+			trusting = medium_stress_impact_loss
+			compassionate = massive_stress_impact_loss
+			paranoid = medium_stress_impact_gain
+			callous = major_stress_impact_gain
+			sadistic = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = 0.25
+				ai_compassion = -0.75
+			}
+			modifier = {	#Weight up for stress.
+				add = 20
+				has_trait = trusting
+			}
+			modifier = {	#Weight up for stress.
+				add = 50
+				has_trait = compassionate
+			}
+			modifier = {	#Weight down for stress.
+				add = 20
+				has_trait = paranoid
+			}
+			modifier = {	#Weight down for stress.
+				add = -30
+				has_trait = callous
+			}
+			modifier = {	#Weight down for stress.
+				add = -30
+				has_trait = sadistic
+			}
+		}
+	}
+}
+
+#	The draugr was... didn't exist!
+cop_slavic_yearly_fp1.0065 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0065.t
+	desc = cop_slavic_yearly_fp1.0065.desc
+	theme = physical_health
+	left_portrait = {
+		character = root
+		animation = boredom
+	}
+	override_background = { event_background = fp1_tribal_temple }
+
+	trigger = {
+		is_available_even_at_war_adult = yes
+	}
+
+	#Must have been the wind?
+	option = {
+		name = cop_slavic_yearly_fp1.0065.a
+
+		#Welp, at least the fresh air does you good!
+		add_character_modifier = {
+			modifier = draugr_healthy_hiking_fp1_modifier
+			years = 10
+		}
+		
+		
+		#The locals grumble a little regardless.
+		send_interface_toast = {
+			title = cop_slavic_yearly_fp1.0065.a.locals_grumble
+			left_icon = root
+			capital_county = {
+				add_county_modifier = {
+					modifier = draugr_nothing_found_fp1_modifier
+					years = 10
+				}
+			}
+		}
+
+		stress_impact = {
+			#Usually bad form to give stress in one-event options, but it's a little funny to see your character's reaction to there being literally nothing to see.
+			trusting = miniscule_stress_impact_loss
+			paranoid = miniscule_stress_impact_gain
+		}
+		ai_chance = {
+			#Only option.
+			base = 100
+		}
+	}
+}
+
+##################################################
+# The Deep Places of the World
+# by Ewan Cowhig Croft
+# 0071 - 0090
+##################################################
+
+#Mod comment: Troll replaced with Leshy
+
+scripted_trigger fp1_0071_loveli_lakes_trigger = {
+	has_trait = shieldmaiden
+	is_courtier_of = root
+	is_available_ai_adult = yes
+	is_healthy = yes
+}
+
+scripted_trigger fp1_0071_valid_marshal_for_delegation_trigger = {
+	exists = this
+	is_available_ai_adult = yes
+}
+
+scripted_effect fp1_0071_apply_hungry_troll_modifier_effect = {
+	capital_county = {
+		add_county_modifier = {
+			modifier = cop_cop_slavic_yearly_fp1_0071_leshy_attacks_modifier
+			years = 30
+		}
+	}
+}
+
+#	[Rural] A Troll has been sighted & is attacking villages/peasants
+cop_slavic_yearly_fp1.0071 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0071.t
+	desc = {
+		desc = cop_slavic_yearly_fp1.0071.desc.intro
+		# Troll type.
+		first_valid = {
+			# A towering bear.
+			triggered_desc = {
+				trigger = { scope:troll_type = flag:bear }
+				desc = cop_slavic_yearly_fp1.0071.desc.troll_type.bear
+			}
+			# An ancient wolf.
+			triggered_desc = {
+				trigger = { scope:troll_type = flag:wolf }
+				desc = cop_slavic_yearly_fp1.0071.desc.troll_type.wolf
+			}
+			# A colossal wolverine.
+			triggered_desc = {
+				trigger = { scope:troll_type = flag:wolverine }
+				desc = cop_slavic_yearly_fp1.0071.desc.troll_type.wolverine
+			}
+			# A stealthy lynx.
+			triggered_desc = {
+				trigger = { scope:troll_type = flag:lynx }
+				desc = cop_slavic_yearly_fp1.0071.desc.troll_type.lynx
+			}
+			# An enraged moose.
+			triggered_desc = {
+				trigger = { scope:troll_type = flag:moose }
+				desc = cop_slavic_yearly_fp1.0071.desc.troll_type.moose
+			}
+		}
+		# Outro type.
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = scope:loveli_lakes }
+				desc = cop_slavic_yearly_fp1.0071.desc.outro.loveli_lakes
+			}
+			desc = cop_slavic_yearly_fp1.0071.desc.outro.fallback
+		}
+	}
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = disbelief
+	}
+	right_portrait = {
+		character = scope:marshal
+		animation = dismissal
+	}
+	lower_left_portrait = scope:loveli_lakes
+	override_background = { event_background = throne_room }
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0071 }
+		is_landed = yes
+		# Must be a tribal
+		has_government = tribal_government
+		# With a rural, North Germanic capital.
+		capital_county = {
+			# Checking the capital, not the character, since it's a local superstition rather than something ye're insisiting on.
+			OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+			}
+			development_level <= terrible_development_level
+			# And ensure it doesn't already have a troll problem.
+			NOT = { has_county_modifier = cop_cop_slavic_yearly_fp1_0071_leshy_attacks_modifier }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Weight down a little if you're a hunter, since it means you're probably trimming the local wildlife down quite dramatically.
+		modifier = {
+			add = -0.5
+			has_trait = lifestyle_hunter
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0071
+			days = 1825
+		}
+		# Roll to determine what type of beast we get.
+		## Five options of 20% each.
+		random_list = {
+			# A towering bear.
+			200 = {
+				save_scope_value_as = {
+					name = troll_type
+					value = flag:bear
+				}	
+			}
+			# An ancient wolf.
+			200 = {
+				save_scope_value_as = {
+					name = troll_type
+					value = flag:wolf
+				}
+			}
+			# A colossal wolverine.
+			200 = {
+				save_scope_value_as = {
+					name = troll_type
+					value = flag:wolverine
+				}
+			}
+			# A stealthy lynx.
+			200 = {
+				save_scope_value_as = {
+					name = troll_type
+					value = flag:lynx
+				}
+			}
+			# An enraged moose.
+			200 = {
+				save_scope_value_as = {
+					name = troll_type
+					value = flag:moose
+				}
+			}
+		}
+		## Did a møøse bite root's sister?
+		if = {
+			limit = {
+				scope:troll_type = flag:moose
+				# We could go for a more complex implementation, but as we want to keep the meme rare (and therefore less stale), we hard-lock it down to just shieldmaidens.
+				any_sibling = { fp1_0071_loveli_lakes_trigger = yes }
+			}
+			random_sibling = {
+				limit = { fp1_0071_loveli_lakes_trigger = yes }
+				save_scope_as = loveli_lakes
+			}
+		}
+		# Grab the martial, if possible, for delegation.
+		if = {
+			limit = {
+				any_martial_councillor = { fp1_0071_valid_marshal_for_delegation_trigger = yes }
+			}
+			random_martial_councillor = {
+				limit = { fp1_0071_valid_marshal_for_delegation_trigger = yes }
+				save_scope_as = marshal
+			}
+		}
+	}
+
+	# I'll kill the beast myself!
+	option = {
+		name = cop_slavic_yearly_fp1.0071.a
+
+		# Inform root that they'll get a follow-up event.
+		custom_tooltip = cop_slavic_yearly_fp1.0071.a.tt
+		# Calc which event to send out.
+		## A towering bear.
+		if = {
+			limit = { scope:troll_type = flag:bear }
+			trigger_event = {
+				id = cop_slavic_yearly_fp1.0081
+				days = 14
+			}
+		}
+		## An ancient wolf.
+		else_if = {
+			limit = { scope:troll_type = flag:wolf }
+			trigger_event = {
+				id = cop_slavic_yearly_fp1.0082
+				days = 14
+			}
+		}
+		## A colossal wolverine.
+		else_if = {
+			limit = { scope:troll_type = flag:wolverine }
+			trigger_event = {
+				id = cop_slavic_yearly_fp1.0083
+				days = 14
+			}
+		}
+		## A stealthy lynx.
+		else_if = {
+			limit = { scope:troll_type = flag:lynx }
+			trigger_event = {
+				id = cop_slavic_yearly_fp1.0084
+				days = 14
+			}
+		}
+		## An enraged moose.
+		else = {
+			trigger_event = {
+				id = cop_slavic_yearly_fp1.0085
+				days = 14
+			}
+		}
+
+		stress_impact = {
+			brave = minor_stress_impact_loss
+			craven = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_vengefulness = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = craven
+			}
+		}
+	}
+	
+	# Scope:marshal, take care of this.
+	option = {
+		name = cop_slavic_yearly_fp1.0071.b
+		trigger = { exists = scope:marshal }
+
+		# Martial duel for the marshal.
+		scope:marshal = {
+			duel = {
+				skill = martial
+				value = very_high_skill_rating
+				# Your marshal and their troops hunt down the beast.
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 3.5
+						min = -49
+					}
+					desc = cop_slavic_yearly_fp1.0071.b.tt_success
+					root = {
+						send_interface_toast = {
+							title = cop_slavic_yearly_fp1.0071.b.tt_success
+							left_icon = scope:marshal
+							# Huzzah! Everyone's a hero!
+							scope:marshal = { add_prestige = major_prestige_gain }
+							add_prestige = medium_prestige_gain
+						}
+					}
+				}
+				# The beast eludes scope:marshal and continues to stalk the province.
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -3.5
+						min = -49
+					}
+					desc = cop_slavic_yearly_fp1.0071.b.tt_failure
+					root = {
+						send_interface_toast = {	
+							title = cop_slavic_yearly_fp1.0071.b.tt_failure
+							left_icon = scope:marshal
+							# Welp, that's a lot of failure involved for everyone.
+							scope:marshal = { add_prestige = major_prestige_loss }
+							add_prestige = medium_prestige_loss
+							# Capital_county isn't happy.
+							fp1_0071_apply_hungry_troll_modifier_effect = yes
+						}
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			craven = minor_stress_impact_loss
+			lazy = medium_stress_impact_loss
+			brave = minor_stress_impact_gain
+			diligent = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.25
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = craven
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = lazy
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = diligent
+			}
+		}
+	}
+	
+	# It's probably just a bear. Deal with it yourselves, cravens.
+	option = {
+		name = cop_slavic_yearly_fp1.0071.c
+
+		# Gain some prestige for your toughness.
+		add_prestige = minor_prestige_gain
+		# But your capital county is upset.
+		fp1_0071_apply_hungry_troll_modifier_effect = yes
+
+		stress_impact = {
+			cynical = minor_stress_impact_loss
+			craven = medium_stress_impact_loss
+			brave = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = -0.25
+				ai_honor = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = cynical
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = craven
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = brave
+			}
+		}
+	}
+}
+
+scripted_effect fp1_0081_invalidation_toast_effect = {
+	send_interface_toast = {	
+		title = cop_slavic_yearly_fp1.0081.hunt_invalidated
+		left_icon = root
+		custom_tooltip = cop_slavic_yearly_fp1.0081.hunt_invalidated.tt
+	}
+}
+
+scripted_effect fp1_0081_troll_duel_victory_effect = {
+	# Add unique character modifier.
+	add_character_modifier = {
+		modifier = $MODIFIER$
+		years = 20
+	}
+	# And prestige.
+	add_prestige = major_prestige_gain
+}
+
+scripted_effect fp1_0081_troll_duel_effect = {
+	duel = {
+		skill = prowess
+		value = high_skill_rating
+		# You murderise the animal.
+		50 = {
+			compare_modifier = {
+				value = scope:duel_value
+				multiplier = 3.5
+				min = -49
+			}
+			desc = $SUCCESS_TITLE$
+			send_interface_toast = {
+				title = $SUCCESS_TITLE$
+				left_icon = root
+				# Apply victory effects.
+				fp1_0081_troll_duel_victory_effect = { MODIFIER = $MODIFIER$ }
+			}
+		}
+		# The animal wounds you and your retinue carries you off.
+		50 = {
+			compare_modifier = {
+				value = scope:duel_value
+				multiplier = -3.5
+				min = -49
+			}
+			desc = $FAILURE_TITLE$
+			send_interface_toast = {	
+				title = $FAILURE_TITLE$
+				left_icon = root
+				# Capital_county is unhappy.
+				fp1_0071_apply_hungry_troll_modifier_effect = yes
+				# The beast kills you.
+				death = { death_reason = $REASON$ }
+			}
+		}
+	}
+}
+
+scripted_effect fp1_0081_troll_duel_alternate_effect = {
+	duel = {
+		skill = $SKILL$
+		value = high_skill_rating
+		# You murderise the animal.
+		50 = {
+			compare_modifier = {
+				value = scope:duel_value
+				multiplier = 3.5
+				min = -49
+			}
+			desc = $SUCCESS_TITLE$
+			send_interface_toast = {
+				title = $SUCCESS_TITLE$
+				left_icon = root
+				# Apply victory effects.
+				fp1_0081_troll_duel_victory_effect = { MODIFIER = $MODIFIER$ }
+			}
+		}
+		# The animal wounds you and your retinue carries you off.
+		50 = {
+			compare_modifier = {
+				value = scope:duel_value
+				multiplier = -3.5
+				min = -49
+			}
+			desc = $FAILURE_TITLE$
+			send_interface_toast = {	
+				title = $FAILURE_TITLE$
+				left_icon = root
+				# The beast merely maims you.
+				custom_tooltip = $FAILURE_TITLE$.tt
+				hidden_effect = { maimed_in_battle_effect = yes }
+				# Capital_county is unhappy.
+				fp1_0071_apply_hungry_troll_modifier_effect = yes
+			}
+		}
+	}
+}
+
+scripted_effect fp1_0081_flee_option_effect = {
+	# Lose prestige.
+	add_prestige = medium_prestige_loss
+	# Your capital county doesn't do too well, either.
+	fp1_0071_apply_hungry_troll_modifier_effect = yes
+}
+
+#	Troll: towering bear.
+cop_slavic_yearly_fp1.0081 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0081.t
+	desc = cop_slavic_yearly_fp1.0081.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		is_landed = yes
+		# Must be a tribal...
+		has_government = tribal_government
+		# With a rural, North Germanic capital.
+		capital_county = {
+			# Checking the capital, not the character, since it's a local superstition rather than something ye're insisiting on.
+			OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+			}
+			development_level <= terrible_development_level
+		}
+	}
+
+	on_trigger_fail = { fp1_0081_invalidation_toast_effect = yes }
+
+	immediate = { play_music_cue = "mx_cue_combat_stinger" }
+
+	# Charge in, blade swinging.
+	option = {
+		name = cop_slavic_yearly_fp1.0081.a
+		trigger = {
+			NOT = { has_trait = berserker }
+		}
+
+		# Risky prowess duel.
+		fp1_0081_troll_duel_effect = {
+			SUCCESS_TITLE = cop_slavic_yearly_fp1.0081.a.tt_success
+			FAILURE_TITLE = cop_slavic_yearly_fp1.0081.a.tt_failure
+			MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_bear_modifier
+			REASON = death_bear
+		}
+
+		stress_impact = {
+			brave = major_stress_impact_loss
+			craven = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_vengefulness = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	# (Berserker) Auto-win due to Hulkery.
+	option = {
+		name = cop_slavic_yearly_fp1.0081.b
+		trigger = { has_trait = berserker }
+		trait = berserker
+
+		# Explain what's happening.
+		custom_tooltip = cop_slavic_yearly_fp1.0081.b.tt
+		# And apply victory effects.
+		fp1_0081_troll_duel_victory_effect = { MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_bear_modifier }
+
+		stress_impact = {
+			berserker = massive_stress_impact_loss
+			wrathful = major_stress_impact_loss
+			calm = major_stress_impact_gain
+		}
+		ai_chance = {
+			# The AI should basically always take this option, since it's both an automatic win and something representing a sudden & total loss of control.
+			base = 10000
+		}
+	}
+	
+	# Diplomacy: at it, Wolves of [Capital]!
+	option = {
+		name = cop_slavic_yearly_fp1.0081.c
+
+		# Risky diplomacy duel.
+		fp1_0081_troll_duel_alternate_effect = {
+			SKILL = diplomacy
+			SUCCESS_TITLE = cop_slavic_yearly_fp1.0081.c.tt_success
+			FAILURE_TITLE = cop_slavic_yearly_fp1.0081.c.tt_failure
+			MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_bear_modifier
+		}
+
+		stress_impact = {
+			brave = medium_stress_impact_loss
+			craven = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 0.5
+				ai_vengefulness = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	# FLEE!
+	option = {
+		name = cop_slavic_yearly_fp1.0081.d
+
+		# Apply flee effects.
+		fp1_0081_flee_option_effect = yes
+
+		stress_impact = {
+			craven = major_stress_impact_loss
+			brave = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.5
+				ai_vengefulness = -0.5
+			}
+			modifier = {	# Weight up for stress; weight up even further for cravens not wanting to immediately die.
+				add = 1000
+				has_trait = craven
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = brave
+			}
+		}
+	}
+}
+
+#	Troll: ancient wolf.
+cop_slavic_yearly_fp1.0082 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0082.t
+	desc = cop_slavic_yearly_fp1.0082.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		is_landed = yes
+		# Must be a tribal...
+		has_government = tribal_government
+		# With a rural, North Germanic capital.
+		capital_county = {
+			# Checking the capital, not the character, since it's a local superstition rather than something ye're insisiting on.
+			OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+			}
+			development_level <= terrible_development_level
+		}
+	}
+
+	on_trigger_fail = { fp1_0081_invalidation_toast_effect = yes }
+
+	immediate = { play_music_cue = "mx_cue_combat_stinger" }
+
+	# Charge in, blade swinging.
+	option = {
+		name = cop_slavic_yearly_fp1.0082.a
+		trigger = {
+			NOT = { has_trait = berserker }
+		}
+
+		# Risky prowess duel.
+		fp1_0081_troll_duel_effect = {
+			SUCCESS_TITLE = cop_slavic_yearly_fp1.0082.a.tt_success
+			FAILURE_TITLE = cop_slavic_yearly_fp1.0082.a.tt_failure
+			MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolf_modifier
+			REASON = death_wolf
+		}
+
+		stress_impact = {
+			brave = major_stress_impact_loss
+			craven = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_vengefulness = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	# (Berserker) Auto-win due to Hulkery.
+	option = {
+		name = cop_slavic_yearly_fp1.0082.b
+		trigger = { has_trait = berserker }
+		trait = berserker
+
+		# Explain what's happening.
+		custom_tooltip = cop_slavic_yearly_fp1.0082.b.tt
+		# And apply victory effects.
+		fp1_0081_troll_duel_victory_effect = { MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolf_modifier }
+
+		stress_impact = {
+			berserker = massive_stress_impact_loss
+			wrathful = major_stress_impact_loss
+			calm = major_stress_impact_gain
+		}
+		ai_chance = {
+			# The AI should basically always take this option, since it's both an automatic win and something representing a sudden & total loss of control.
+			base = 10000
+		}
+	}
+	
+	# Martial: rally! Form a circle!
+	option = {
+		name = cop_slavic_yearly_fp1.0082.c
+
+		# Risky martial duel.
+		fp1_0081_troll_duel_alternate_effect = {
+			SKILL = martial
+			SUCCESS_TITLE = cop_slavic_yearly_fp1.0082.c.tt_success
+			FAILURE_TITLE = cop_slavic_yearly_fp1.0082.c.tt_failure
+			MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolf_modifier
+		}
+
+		stress_impact = {
+			brave = medium_stress_impact_loss
+			craven = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 0.5
+				ai_vengefulness = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	# FLEE!
+	option = {
+		name = cop_slavic_yearly_fp1.0082.d
+
+		# Apply flee effects.
+		fp1_0081_flee_option_effect = yes
+
+		stress_impact = {
+			craven = major_stress_impact_loss
+			brave = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.5
+				ai_vengefulness = -0.5
+			}
+			modifier = {	# Weight up for stress; weight up even further for cravens not wanting to immediately die.
+				add = 1000
+				has_trait = craven
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = brave
+			}
+		}
+	}
+}
+
+#	Troll: colossal wolverine.
+cop_slavic_yearly_fp1.0083 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0083.t
+	desc = cop_slavic_yearly_fp1.0083.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		is_landed = yes
+		# Must be a tribal...
+		has_government = tribal_government
+		# With a rural, North Germanic capital.
+		capital_county = {
+			# Checking the capital, not the character, since it's a local superstition rather than something ye're insisiting on.
+			OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+			}
+			development_level <= terrible_development_level
+		}
+	}
+
+	on_trigger_fail = { fp1_0081_invalidation_toast_effect = yes }
+
+	immediate = { play_music_cue = "mx_cue_combat_stinger" }
+
+	# Charge in, blade swinging.
+	option = {
+		name = cop_slavic_yearly_fp1.0083.a
+		trigger = {
+			NOT = { has_trait = berserker }
+		}
+
+		# Risky prowess duel.
+		fp1_0081_troll_duel_effect = {
+			SUCCESS_TITLE = cop_slavic_yearly_fp1.0083.a.tt_success
+			FAILURE_TITLE = cop_slavic_yearly_fp1.0083.a.tt_failure
+			MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolverine_modifier
+			REASON = death_wolverine
+		}
+
+		#We need to check that they didn't die - if we apply stress to a dead character the error-log complains 
+		if = {
+			limit = {
+				is_alive = yes
+			}
+			stress_impact = {
+				brave = major_stress_impact_loss
+				craven = major_stress_impact_gain
+			}
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_vengefulness = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	# (Berserker) Auto-win due to Hulkery.
+	option = {
+		name = cop_slavic_yearly_fp1.0083.b
+		trigger = { has_trait = berserker }
+		trait = berserker
+
+		# Explain what's happening.
+		custom_tooltip = cop_slavic_yearly_fp1.0083.b.tt
+		# And apply victory effects.
+		fp1_0081_troll_duel_victory_effect = { MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolverine_modifier }
+
+		stress_impact = {
+			berserker = massive_stress_impact_loss
+			wrathful = major_stress_impact_loss
+			calm = major_stress_impact_gain
+		}
+		ai_chance = {
+			# The AI should basically always take this option, since it's both an automatic win and something representing a sudden & total loss of control.
+			base = 10000
+		}
+	}
+	
+	# Stewardship: there's a lodge near here, fall back for reinforcements!
+	option = {
+		name = cop_slavic_yearly_fp1.0083.c
+
+		# Risky stewardship duel.
+		fp1_0081_troll_duel_alternate_effect = {
+			SKILL = stewardship
+			SUCCESS_TITLE = cop_slavic_yearly_fp1.0083.c.tt_success
+			FAILURE_TITLE = cop_slavic_yearly_fp1.0083.c.tt_failure
+			MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolverine_modifier
+		}
+
+		stress_impact = {
+			brave = medium_stress_impact_loss
+			craven = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 0.5
+				ai_vengefulness = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	# FLEE!
+	option = {
+		name = cop_slavic_yearly_fp1.0083.d
+
+		# Apply flee effects.
+		fp1_0081_flee_option_effect = yes
+
+		stress_impact = {
+			craven = major_stress_impact_loss
+			brave = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.5
+				ai_vengefulness = -0.5
+			}
+			modifier = {	# Weight up for stress; weight up even further for cravens not wanting to immediately die.
+				add = 1000
+				has_trait = craven
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = brave
+			}
+		}
+	}
+}
+
+#	Troll: stealthy lynx.
+cop_slavic_yearly_fp1.0084 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0084.t
+	desc = cop_slavic_yearly_fp1.0084.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		is_landed = yes
+		# Must be a tribal...
+		has_government = tribal_government
+		# With a rural, North Germanic capital.
+		capital_county = {
+			# Checking the capital, not the character, since it's a local superstition rather than something ye're insisiting on.
+			OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+			}
+			development_level <= terrible_development_level
+		}
+	}
+
+	on_trigger_fail = { fp1_0081_invalidation_toast_effect = yes }
+
+	immediate = { play_music_cue = "mx_cue_combat_stinger" }
+
+	# Charge in, blade swinging.
+	option = {
+		name = cop_slavic_yearly_fp1.0084.a
+		trigger = {
+			NOT = { has_trait = berserker }
+		}
+
+		# Risky prowess duel.
+		fp1_0081_troll_duel_effect = {
+			SUCCESS_TITLE = cop_slavic_yearly_fp1.0084.a.tt_success
+			FAILURE_TITLE = cop_slavic_yearly_fp1.0084.a.tt_failure
+			MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_lynx_modifier
+			REASON = death_lynx
+		}
+
+		#We need to check that they didn't die - if we apply stress to a dead character the error-log complains 
+		if = {
+			limit = {
+				is_alive = yes
+			}
+			stress_impact = {
+				brave = major_stress_impact_loss
+				craven = major_stress_impact_gain
+			}
+		}
+
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_vengefulness = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	# (Berserker) Auto-win due to Hulkery.
+	option = {
+		name = cop_slavic_yearly_fp1.0084.b
+		trigger = { has_trait = berserker }
+		trait = berserker
+
+		# Explain what's happening.
+		custom_tooltip = cop_slavic_yearly_fp1.0084.b.tt
+		# And apply victory effects.
+		fp1_0081_troll_duel_victory_effect = { MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_lynx_modifier }
+
+		stress_impact = {
+			berserker = massive_stress_impact_loss
+			wrathful = major_stress_impact_loss
+			calm = major_stress_impact_gain
+		}
+		ai_chance = {
+			# The AI should basically always take this option, since it's both an automatic win and something representing a sudden & total loss of control.
+			base = 10000
+		}
+	}
+	
+	# Intrigue: quiet; you two flank it, we'll flush it towards you...
+	option = {
+		name = cop_slavic_yearly_fp1.0084.c
+
+		# Risky diplomacy duel.
+		fp1_0081_troll_duel_alternate_effect = {
+			SKILL = intrigue
+			SUCCESS_TITLE = cop_slavic_yearly_fp1.0084.c.tt_success
+			FAILURE_TITLE = cop_slavic_yearly_fp1.0084.c.tt_failure
+			MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_lynx_modifier
+		}
+
+		stress_impact = {
+			brave = medium_stress_impact_loss
+			craven = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 0.5
+				ai_vengefulness = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	# FLEE!
+	option = {
+		name = cop_slavic_yearly_fp1.0084.d
+
+		# Apply flee effects.
+		fp1_0081_flee_option_effect = yes
+
+		stress_impact = {
+			craven = major_stress_impact_loss
+			brave = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.5
+				ai_vengefulness = -0.5
+			}
+			modifier = {	# Weight up for stress; weight up even further for cravens not wanting to immediately die.
+				add = 1000
+				has_trait = craven
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = brave
+			}
+		}
+	}
+}
+
+#	Troll: enraged moose.
+cop_slavic_yearly_fp1.0085 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0085.t
+	desc = {
+		# Account for sibling violence.
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = scope:loveli_lakes }
+				desc = cop_slavic_yearly_fp1.0085.desc.loveli_lakes
+			}
+			desc = cop_slavic_yearly_fp1.0085.desc.fallback
+		}
+	}
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:loveli_lakes
+		animation = anger
+	}
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		is_landed = yes
+		# Must be a tribal...
+		has_government = tribal_government
+		# With a rural, North Germanic capital.
+		capital_county = {
+			# Checking the capital, not the character, since it's a local superstition rather than something ye're insisiting on.
+			OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+			}
+			development_level <= terrible_development_level
+		}
+	}
+
+	on_trigger_fail = { fp1_0081_invalidation_toast_effect = yes }
+
+	immediate = { play_music_cue = "mx_cue_combat_stinger" }
+
+	# Charge in, blade swinging.
+	option = {
+		name = cop_slavic_yearly_fp1.0085.a
+		trigger = {
+			NOT = { has_trait = berserker }
+		}
+
+		# Risky prowess duel.
+		fp1_0081_troll_duel_effect = {
+			SUCCESS_TITLE = cop_slavic_yearly_fp1.0085.a.tt_success
+			FAILURE_TITLE = cop_slavic_yearly_fp1.0085.a.tt_failure
+			MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_moose_modifier
+			REASON = death_moose
+		}
+		
+		#We need to check that they didn't die - if we apply stress to a dead character the error-log complains 
+		if = {
+			limit = {
+				is_alive = yes
+			}
+			stress_impact = {
+				brave = major_stress_impact_loss
+				craven = major_stress_impact_gain
+			}
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_vengefulness = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	# (Berserker) Auto-win due to Hulkery.
+	option = {
+		name = cop_slavic_yearly_fp1.0085.b
+		trigger = { has_trait = berserker }
+		trait = berserker
+
+		# Explain what's happening.
+		custom_tooltip = cop_slavic_yearly_fp1.0085.b.tt
+		# And apply victory effects.
+		fp1_0081_troll_duel_victory_effect = { MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_moose_modifier }
+
+		stress_impact = {
+			berserker = massive_stress_impact_loss
+			wrathful = major_stress_impact_loss
+			calm = major_stress_impact_gain
+		}
+		ai_chance = {
+			# The AI should basically always take this option, since it's both an automatic win and something representing a sudden & total loss of control.
+			base = 10000
+		}
+	}
+	
+	# Learning: remember its weak spot, spears and bows only!
+	option = {
+		name = cop_slavic_yearly_fp1.0085.c
+
+		# Risky learning duel.
+		fp1_0081_troll_duel_alternate_effect = {
+			SKILL = learning
+			SUCCESS_TITLE = cop_slavic_yearly_fp1.0085.c.tt_success
+			FAILURE_TITLE = cop_slavic_yearly_fp1.0085.c.tt_failure
+			MODIFIER = cop_cop_slavic_yearly_fp1_0071_leshy_victory_moose_modifier
+		}
+
+		stress_impact = {
+			brave = medium_stress_impact_loss
+			craven = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 0.5
+				ai_vengefulness = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = brave
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = craven
+			}
+		}
+	}
+	
+	# FLEE!
+	option = {
+		name = cop_slavic_yearly_fp1.0085.d
+
+		# Apply flee effects.
+		fp1_0081_flee_option_effect = yes
+
+		stress_impact = {
+			craven = major_stress_impact_loss
+			brave = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.5
+				ai_vengefulness = -0.5
+			}
+			modifier = {	# Weight up for stress; weight up even further for cravens not wanting to immediately die.
+				add = 1000
+				has_trait = craven
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = brave
+			}
+		}
+	}
+}
+
+##################################################
+# A Guest/Courtier Challenges you to Riddles
+# by Ewan Cowhig Croft
+# 0101 - 0110
+##################################################
+
+scripted_trigger fp1_valid_riddler_at_court_trigger = {
+	# We want characters of minor or major interest, ideally.
+	is_of_major_or_minor_interest_trigger = { CHARACTER = root }
+	# And we want to make sure they're available and can speak.
+	is_available_ai_adult = yes
+}
+
+#	Someone in your court challenges you to an idle game of riddles.
+cop_slavic_yearly_fp1.0101 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0101.t
+	desc = cop_slavic_yearly_fp1.0101.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:riddler
+		animation = schadenfreude
+	}
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0101 }
+		is_landed = yes
+		# Valid for North Germanics only.
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+		}
+		# Has a valid courtier/guest who can quiz you.
+		any_courtier_or_guest = { fp1_valid_riddler_at_court_trigger = yes }
+		# Doesn't have an established extreme hatred of riddles.
+		NOT = { has_character_flag = fp1_yearly_0101_really_hates_riddles }
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Weight up for traits that make you a known woman/man of letters.
+		modifier = {
+			add = 0.5
+			has_trait = journaller
+		}
+		modifier = {
+			add = 0.5
+			has_trait = scholar
+		}
+		modifier = {
+			add = 0.5
+			has_trait = theologian
+		}
+		modifier = {
+			add = 0.5
+			has_trait = administrator
+		}
+		modifier = {
+			add = 0.5
+			has_trait = architect
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0101
+			days = 1825
+		}
+		# Designate a suitable riddler.
+		## First, we grab all possibles & sort them into a list.
+		every_courtier_or_guest = {
+			limit = { fp1_valid_riddler_at_court_trigger = yes }
+			add_to_list = potential_valid_riddlers_list
+		}
+		## Then, we order that list appropriately.
+		ordered_in_list = {
+			list = potential_valid_riddlers_list
+			order_by = { value = fp1_best_available_riddler_value }
+			save_scope_as = riddler
+		}
+	}
+
+	# Entertaining, I'll play! [diplo]
+	option = {
+		name = cop_slavic_yearly_fp1.0101.a
+
+		# Duel the courtier for it.
+		duel = {
+			skill = diplomacy
+			target = scope:riddler
+			# You win the game!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0101.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0101.a.tt_success
+					left_icon = scope:riddler
+					# Gain opinion with your court for participating.
+					every_courtier_or_guest = {
+						limit = { is_available_adult = yes }
+						custom = cop_slavic_yearly_fp1.0101.a.every_courtier_and_guest
+						add_opinion = {
+							target = root
+							modifier = amused_opinion
+							opinion = 20
+						}
+					}
+					# And a little prestige as a side-prize.
+					add_prestige = miniscule_prestige_gain
+				}
+			}
+			# You lose the game!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0101.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0101.a.tt_failure
+					left_icon = scope:riddler
+					# Gain opinion with your court for participating.
+					every_courtier_or_guest = {
+						limit = { is_available_adult = yes }
+						custom = cop_slavic_yearly_fp1.0101.a.every_courtier_and_guest
+						add_opinion = {
+							target = root
+							modifier = amused_opinion
+							opinion = 20
+						}
+					}
+					# And lose a little prestige.
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+
+		stress_impact = {
+			arrogant = minor_stress_impact_loss
+			gregarious = medium_stress_impact_loss
+			shy = minor_stress_impact_gain
+			impatient = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_sociability = 0.75
+				ai_boldness = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = gregarious
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = shy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = impatient
+			}
+		}
+	}
+	
+	# Entertaining, I'll play! [learning]
+	option = {
+		name = cop_slavic_yearly_fp1.0101.b
+
+		duel = {
+			skill = learning
+			target = scope:riddler
+			# You win the game!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0101.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0101.a.tt_success
+					left_icon = scope:riddler
+					# Gain opinion with your court for participating.
+					every_courtier_or_guest = {
+						limit = { is_available_adult = yes }
+						custom = cop_slavic_yearly_fp1.0101.a.every_courtier_and_guest
+						add_opinion = {
+							target = root
+							modifier = amused_opinion
+							opinion = 20
+						}
+					}
+					# And a little prestige as a side-prize.
+					add_prestige = miniscule_prestige_gain
+				}
+			}
+			# You lose the game!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0101.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0101.a.tt_failure
+					left_icon = scope:riddler
+					# Gain opinion with your court for participating.
+					every_courtier_or_guest = {
+						limit = { is_available_adult = yes }
+						custom = cop_slavic_yearly_fp1.0101.a.every_courtier_and_guest
+						add_opinion = {
+							target = root
+							modifier = amused_opinion
+							opinion = 20
+						}
+					}
+					# And lose a little prestige.
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+
+		stress_impact = {
+			arrogant = minor_stress_impact_loss
+			gregarious = medium_stress_impact_loss
+			shy = minor_stress_impact_gain
+			impatient = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_sociability = 0.75
+				ai_boldness = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = gregarious
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = shy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = impatient
+			}
+		}
+	}
+	
+	# Here's one: who has no brain and belongs in the dungeon?
+	option = {
+		name = cop_slavic_yearly_fp1.0101.c
+
+		# Toss them in the dungeon.
+		imprison_character_effect = {
+			IMPRISONER = root
+			TARGET = scope:riddler
+		}
+		hidden_effect = {
+			# Make sure that it's _definitely_ the dungeon.
+			scope:riddler = { change_prison_type = dungeon }
+			# And that no one will ever try to get you involved in a game ever again.
+			add_character_flag = fp1_yearly_0101_really_hates_riddles
+		}
+		# Gain some dread to balance out that tyranny.
+		add_dread = medium_dread_gain
+		# People may remember your over-reaction...
+		if = {
+			limit = { has_any_nickname = no }
+			custom_tooltip = cop_slavic_yearly_fp1.0101.c.tt
+			hidden_effect = {
+				random_list = {
+					60 = {
+						# The court dares not mock you.
+					}
+					40 = {
+						# You hear a whispered nickname behind your back...
+						random_list = {
+							20 = {
+								send_interface_toast = {	
+									title = cop_slavic_yearly_fp1.0101.c.tt_nickname
+									left_icon = root
+									give_nickname = nick_the_stonefaced
+								}
+							}
+							20 = {
+								send_interface_toast = {	
+									title = cop_slavic_yearly_fp1.0101.c.tt_nickname
+									left_icon = root
+									give_nickname = nick_the_dry
+								}
+							}
+							20 = {
+								send_interface_toast = {	
+									title = cop_slavic_yearly_fp1.0101.c.tt_nickname
+									left_icon = root
+									give_nickname = nick_the_joyless
+								}
+							}
+							20 = {
+								send_interface_toast = {	
+									title = cop_slavic_yearly_fp1.0101.c.tt_nickname
+									left_icon = root
+									give_nickname = nick_lacks_laughs
+								}
+							}
+							20 = {
+								send_interface_toast = {	
+									title = cop_slavic_yearly_fp1.0101.c.tt_nickname
+									left_icon = root
+									give_nickname = nick_the_dull
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			sadistic = minor_stress_impact_loss
+			impatient = medium_stress_impact_loss
+			vengeful = medium_stress_impact_loss
+			gregarious = minor_stress_impact_gain
+			compassionate = medium_stress_impact_gain
+			patient = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = 0.5
+				ai_compassion = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = sadistic
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = impatient
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = vengeful
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = gregarious
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = compassionate
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = patient
+			}
+		}
+	}
+
+	# Thanks, but I'm a [title], and have things to do.
+	option = {
+		name = cop_slavic_yearly_fp1.0101.d
+
+		# Lose a little prestige, but less than if you were beaten.
+		add_prestige = miniscule_prestige_loss
+		# Scope:riddler is disappointed in you.
+		scope:riddler = {
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -20
+			}
+		}
+
+		stress_impact = {
+			shy = minor_stress_impact_loss
+			impatient = medium_stress_impact_loss
+			arrogant = minor_stress_impact_gain
+			gregarious = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = -0.5
+				ai_sociability = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = shy
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = impatient
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = gregarious
+			}
+		}
+	}
+}
+
+##################################################
+# A Child wants to run away to marry their beloved
+##################################################
+
+scripted_trigger suitable_child_to_leave = {
+	is_physically_able_adult = yes
+	has_personality_introverted_trigger = no
+	is_courtier_of = root
+	age <= 40
+	is_concubine = no
+	NOR = {
+		has_trait = celibate
+		has_trait = chaste
+		has_sexuality = asexual
+		has_character_modifier = mellowed_spirit
+		root = {
+			has_strong_hook = prev
+		}
+	}
+	can_be_knight_trigger = {
+		ARMY_OWNER = root
+	}
+}
+
+scripted_trigger suitable_lover_for_child = {
+	is_physically_able_adult = yes
+	allowed_to_marry_character_gender_trigger = { CHARACTER = scope:child_to_leave }
+	scope:child_to_leave = { allowed_to_marry_character_gender_trigger = { CHARACTER = prev } }
+	is_physically_able_adult = yes
+	age <= 35
+	is_married = no
+	can_marry_trigger = yes
+	is_concubine = no
+	is_attracted_to_gender_of = scope:child_to_leave
+	OR = {
+		can_set_relation_lover_trigger = { CHARACTER = scope:child_to_leave }
+		has_relation_lover = scope:child_to_leave
+	}
+}
+
+scripted_effect child_leaves_effect = {
+	hidden_effect = {
+		if = {
+			limit = {
+				is_betrothed = yes
+			}
+			break_betrothal = betrothed
+		}
+		scope:lover_of_child = {
+			if = {
+				limit = {
+					is_betrothed = yes
+				}
+				break_betrothal = scope:lover_of_child.betrothed
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:lover_of_child = {
+				is_alive = yes
+			}
+			is_married = yes
+			exists = scope:child_to_leave.primary_spouse
+			NOT = {
+				is_spouse_of = scope:lover_of_child
+			}
+		}
+		scope:child_to_leave.primary_spouse = {
+			save_scope_as = child_to_leave_divorcee
+		}
+		less_verbose_divorce_effect = {
+			DIVORCER = scope:child_to_leave
+			DIVORCEE = scope:child_to_leave_divorcee
+		}
+	}
+	if = {
+		limit = {
+			scope:child_to_leave = {
+				is_alive = yes
+			}
+			scope:lover_of_child = {
+				is_alive = yes
+				is_married = yes
+				exists = scope:lover_of_child.primary_spouse
+				NOT = {
+					is_spouse_of = scope:child_to_leave
+				}
+			}
+		}
+		hidden_effect = {
+			scope:lover_of_child.primary_spouse = {
+				save_scope_as = lover_of_child_divorcee
+			}
+			scope:lover_of_child = {
+				less_verbose_divorce_effect = {
+					DIVORCER = scope:lover_of_child
+					DIVORCEE = scope:lover_of_child_divorcee
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			is_female = yes
+			is_lowborn = no
+			scope:lover_of_child = {
+				is_lowborn = yes
+			}
+		}
+		marry_matrilineal = scope:lover_of_child
+	}
+	else_if = {
+		limit = {
+			is_male = yes
+			is_lowborn = yes
+			scope:lover_of_child = {
+				is_lowborn = no
+			}
+		}
+		marry_matrilineal = scope:lover_of_child
+	}
+	else = {
+		marry = scope:lover_of_child
+	}
+	move_to_pool_at = scope:somewhere_else
+	hidden_effect = {
+		scope:lover_of_child = {
+			move_to_pool_at = scope:somewhere_else
+		}
+	}
+	scope:parent = {
+		if = {
+			limit = {
+				has_hook = scope:child_to_leave
+			}
+			remove_hook = {
+				target = scope:child_to_leave
+			}
+		}
+	}
+	add_character_modifier = {
+		modifier = lust_for_adventure
+		years = 20
+	}
+}
+
+# A Child wants to run away to marry their beloved
+cop_slavic_yearly_fp1.2000 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.2000.t
+	desc = cop_slavic_yearly_fp1.2000.desc
+	theme = family
+	left_portrait = {
+		character = scope:child_to_leave
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:lover_of_child
+		animation = flirtation
+	}
+	override_background = { event_background = market_tribal }
+
+	trigger = {
+		#DLC check.
+		has_fp1_dlc_trigger = yes
+		
+		#Standard checks.
+		is_available_at_peace_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_2000 }
+		
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		
+		any_child = {
+			suitable_child_to_leave = yes
+			save_temporary_scope_as = child_to_leave
+		}
+		any_pool_character = {
+			province = root.capital_province
+			suitable_lover_for_child = yes
+		}
+
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_2000
+			days = 1825
+		}
+		random_child = {
+			limit = {
+				suitable_child_to_leave = yes
+				has_personality_dominant_trigger = yes
+				is_primary_heir_of = root
+			}
+			alternative_limit = {
+				suitable_child_to_leave = yes
+				has_personality_dominant_trigger = yes
+			}
+			alternative_limit = {
+				suitable_child_to_leave = yes
+			}
+			save_scope_as = child_to_leave
+		}
+		random_pool_character = {
+			province = root.capital_province
+			limit = {
+				suitable_lover_for_child = yes
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_relation_lover = scope:child_to_leave
+					}
+				}
+				hidden_effect = {
+					set_relation_lover = scope:child_to_leave
+				}
+			}
+			save_scope_as = lover_of_child
+		}
+		random_independent_ruler = {
+			limit = {
+				is_landed = yes
+				in_diplomatic_range = root
+			}
+			capital_province = {
+				save_scope_as = somewhere_else
+			}
+		}
+		save_scope_as = parent
+	}
+
+	option = { # Fight them to make them stay
+		name = cop_slavic_yearly_fp1.2000.a
+		
+		trigger = {
+			can_start_single_combat_trigger = yes
+			scope:child_to_leave = {
+				can_start_single_combat_trigger = yes
+			}
+		}
+		custom_tooltip = cop_slavic_yearly_fp1.2000.a.tt
+		
+		configure_start_single_combat_effect = {
+			SC_INITIATOR = scope:parent
+			SC_ATTACKER = scope:parent
+			SC_DEFENDER = scope:child_to_leave
+			FATALITY = no
+			FIXED = no
+			LOCALE = terrain_scope
+			OUTPUT_EVENT = cop_slavic_yearly_fp1.2001
+			INVALIDATION_EVENT = cop_slavic_yearly_fp1.2002
+		}
+
+		stress_impact = {
+			craven = major_stress_impact_gain
+			forgiving = medium_stress_impact_gain
+			compassionate = medium_stress_impact_gain
+			calm = medium_stress_impact_gain
+			temperate = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			
+			modifier = {
+				factor = 2
+				prowess > scope:child_to_leave.prowess
+			}
+			
+			modifier = {
+				factor = 0.1
+				ai_compassion >= medium_positive_ai_value
+			}
+			
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = craven
+					has_trait = forgiving
+					has_trait = calm
+				}
+			}
+		}
+	}
+
+	option = { # Remind them of their duties
+		name = cop_slavic_yearly_fp1.2000.b
+
+		stress_impact = {
+			impatient = major_stress_impact_gain
+			wrathful = major_stress_impact_gain
+			arrogant = medium_stress_impact_gain
+			fickle = medium_stress_impact_gain
+			vengeful = minor_stress_impact_gain
+		}
+		
+		duel = {
+			skill = diplomacy
+			value = scope:child_to_leave.diplomacy
+
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+
+				desc = cop_slavic_yearly_fp1.2000.b.success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.2000.b.success
+					left_icon = scope:child_to_leave
+
+
+					add_prestige = medium_prestige_gain
+					
+					scope:child_to_leave = {
+						custom_tooltip = cop_slavic_yearly_fp1.2000.b.tt
+						add_character_modifier = {
+							modifier = mellowed_spirit
+							years = 20
+						}
+					}
+				}
+			}
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+
+				desc = cop_slavic_yearly_fp1.2000.b.failure
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.2000.b.failure
+					left_icon = scope:child_to_leave
+
+					add_prestige = major_prestige_loss
+					
+					scope:child_to_leave = {
+						child_leaves_effect = yes
+					}
+				}
+			}
+		}
+		
+		ai_chance = {
+			base = 100
+			
+			modifier = {
+				factor = 2
+				diplomacy > scope:child_to_leave.diplomacy
+			}
+			
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = craven
+					has_trait = forgiving
+					has_trait = calm
+				}
+			}
+		}
+	}
+
+	option = { # Bribe them
+		name = cop_slavic_yearly_fp1.2000.c
+
+		stress_impact = {
+			greedy = major_stress_impact_gain
+			wrathful = major_stress_impact_gain
+			arrogant = medium_stress_impact_gain
+			vengeful = minor_stress_impact_gain
+		}
+			
+		custom_tooltip = cop_slavic_yearly_fp1.2000.c.tt
+		pay_short_term_gold = {
+			target = scope:child_to_leave
+			gold = minor_gold_value
+		}
+		
+		add_prestige = minor_prestige_loss
+		
+		
+		ai_chance = {
+			base = 100
+			
+			modifier = {
+				factor = 0
+				has_trait = greedy
+			}
+		}
+	}
+
+	option = { # Let them go, the fool...
+		name = cop_slavic_yearly_fp1.2000.d
+
+		stress_impact = {
+			arrogant = medium_stress_impact_gain
+			stubborn = major_stress_impact_gain
+			wrathful = major_stress_impact_gain
+			vengeful = medium_stress_impact_gain
+			ambitious = minor_stress_impact_gain
+		}
+		custom_tooltip = cop_slavic_yearly_fp1.2000.d.tt
+		
+		add_prestige = medium_prestige_loss
+		
+		scope:child_to_leave = {
+			child_leaves_effect = yes
+		}
+		
+		ai_chance = {
+			base = 100
+			
+			modifier = {
+				factor = 2
+				ai_compassion >= medium_positive_ai_value
+			}
+			
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = stubborn
+					has_trait = wrathful
+				}
+			}
+		}
+	}
+}
+
+cop_slavic_yearly_fp1.2001 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				scope:parent = scope:sc_victor
+			}
+			trigger_event = { id = cop_slavic_yearly_fp1.2003 days = 1 }
+		}
+		else = {
+			trigger_event = { id = cop_slavic_yearly_fp1.2004 days = 1 }
+		}
+	}
+}
+
+#	Bout has invalidated, inform affected parties.
+cop_slavic_yearly_fp1.2002 = {
+	hidden = yes
+
+	immediate = {
+		# Inform both parties that the duel has invalidated.
+		scope:parent = {
+			send_interface_toast = {	
+				title = cop_slavic_yearly_fp1.2000.trigger_failure
+				left_icon = scope:child_to_leave
+			}
+		}
+	}
+}
+
+# Beat child in combat
+cop_slavic_yearly_fp1.2003 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.2003.t
+	desc = cop_slavic_yearly_fp1.2003.desc
+	theme = family
+	left_portrait = {
+		character = scope:child_to_leave
+		animation = pain
+	}
+	right_portrait = {
+		character = scope:lover_of_child
+		animation = disapproval
+	}
+	override_background = { event_background = market_tribal }
+
+	trigger = {
+
+	}
+
+	immediate = {
+		
+	}
+
+	option = { # Father/Mother knows best!
+		name = cop_slavic_yearly_fp1.2003.a
+		
+		add_prestige = medium_prestige_gain
+		scope:child_to_leave = {
+			add_character_modifier = {
+				modifier = mellowed_spirit
+				years = 20
+			}
+		}
+		
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	option = { # Break it off!
+		name = cop_slavic_yearly_fp1.2003.b
+		
+		add_prestige = medium_prestige_gain
+		
+		scope:child_to_leave = {
+			add_character_modifier = {
+				modifier = mellowed_spirit
+				years = 20
+			}
+			remove_relation_lover = scope:lover_of_child
+		}
+		
+		ai_chance = {
+			base = 100
+		}
+	}
+}
+
+# Beaten by child in combat
+cop_slavic_yearly_fp1.2004 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.2004.t
+	desc = cop_slavic_yearly_fp1.2004.desc
+	theme = family
+	left_portrait = {
+		character = scope:child_to_leave
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = scope:lover_of_child
+		animation = ecstasy
+	}
+	override_background = { event_background = market_tribal }
+
+	trigger = {
+
+	}
+
+	immediate = {
+		
+	}
+
+	option = { # Ouch...
+		name = cop_slavic_yearly_fp1.2004.a
+		
+		pay_short_term_gold = {
+			target = scope:child_to_leave
+			gold = minor_gold_value
+		}
+		
+		add_prestige = medium_prestige_loss
+		
+		scope:child_to_leave = {
+			child_leaves_effect = yes
+		}
+		
+		ai_chance = {
+			base = 100
+		}
+	}
+}
+
+
+
+
+
+
+
+##################################################
+# FLAVOUR YEARLIES
+
+##################################################
+# FLAVOUR YEARLIES EFFECTS
+
+scripted_effect fp1_pick_outdoorsy_child_for_winter_effect = {
+	random_child = {
+		# Try to pick an outdoorsy child first.
+		limit = {
+			child_suitable_to_play_with_character_one_sided = { CHARACTER = root }
+			OR = {
+				childhood_loud_child_trigger = yes
+				childhood_nice_child_trigger = yes
+			}
+		}
+		# Otherwise, any is good.
+		alternative_limit = {
+			child_suitable_to_play_with_character_one_sided = { CHARACTER = root }
+		}
+		save_scope_as = child
+	}
+}
+
+##################################################
+# The Stench of Success
+# by Ewan Cowhig Croft
+# 0511 - 0520
+##################################################
+
+scripted_trigger fp1_keeps_stinking_hunting_trophy = {
+	# Standard checks.
+	is_available_ai_adult = yes
+	# Do they have the right personality?
+	calc_true_if = {
+		amount >= 2
+		has_trait = greedy
+		has_trait = lazy
+		has_trait = wrathful
+		has_trait = arrogant
+		has_trait = brave
+		has_trait = gregarious
+		has_trait = ambitious
+		has_trait = callous
+		has_trait = sadistic
+		has_trait = stubborn
+		has_trait = vengeful
+	}
+	NOR = {
+		has_trait = diligent
+		has_trait = humble
+		has_trait = shy
+		has_trait = fickle
+	}
+	# Filter out anyone who'd be a better hunter than this.
+	NOR = {
+		has_trait = lifestyle_hunter
+		has_court_position = master_of_hunt_court_position
+	}
+	# Finally, remove people who are currently hurt, so that berserkers can smash 'em up.
+	NOT = { has_trait = wounded }
+}
+
+#	One of your courtiers is extremely proud of a hunting trophy and won't let it go.
+cop_slavic_yearly_fp1.0511 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0511.t
+	desc = cop_slavic_yearly_fp1.0511.desc
+	theme = hunting
+	left_portrait = {
+		character = root
+		animation = disgust
+	}
+	right_portrait = {
+		character = scope:stinker
+		animation = personality_honorable
+	}
+	override_background = { event_background = study }
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0511 }
+		is_landed = yes
+		# Filter to flavour-appropriate characters.
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		# Must have a suitable random courtier.
+		any_courtier = { fp1_keeps_stinking_hunting_trophy = yes }
+	}
+
+	weight_multiplier = {
+		base = 1
+
+		# Weight up a little for special traits.
+		modifier = {
+			add = 0.5
+			has_trait = lifestyle_hunter
+		}
+		modifier = {
+			add = 0.5
+			has_trait = berserker
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0511
+			days = 1825
+		}
+		# Designate a suitable courtier.
+		random_courtier = {
+			# Try to grab someone relevant.
+			limit = {
+				fp1_keeps_stinking_hunting_trophy = yes
+				is_of_major_or_minor_interest_trigger = { CHARACTER = root }
+			}
+			# Otherwise, any valid character will do.
+			alternative_limit = { fp1_keeps_stinking_hunting_trophy = yes }
+			save_scope_as = stinker
+		}
+		# Pick a local animal for the head to be from.
+		select_local_animal_effect = yes
+		# Give them the trophy.
+		scope:stinker = {
+			add_character_modifier = {
+				modifier = fp1_0511_carries_stinking_trophy_modifier
+				years = 5
+			}
+		}
+	}
+
+	# It's very nice, scope:stinker. So very, very nice.
+	option = {
+		name = cop_slavic_yearly_fp1.0511.a
+
+		# Scope:stinker is very happy with you.
+		reverse_add_opinion = {
+			target = scope:stinker
+			modifier = pleased_opinion
+			opinion = 75
+		}
+		# Everyone else is not.
+		every_courtier_or_guest = {
+			custom = custom.every_courtier_and_guest
+			limit = {
+				NOT = { this = scope:stinker }
+			}
+			add_opinion = {
+				target = root
+				modifier = angry_opinion
+				opinion = -20
+			}
+		}
+
+		stress_impact = {
+			deceitful = minor_stress_impact_loss
+			patient = minor_stress_impact_loss
+			shy = medium_stress_impact_loss
+			impatient = minor_stress_impact_gain
+			honest = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.25
+				ai_sociability = -0.25
+				ai_boldness = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = deceitful
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = patient
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = shy
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = impatient
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = honest
+			}
+		}
+	}
+	
+	# [HighGod], [HealthGod], and [FortuneGod] too, get *rid* of it!
+	option = {
+		name = cop_slavic_yearly_fp1.0511.b
+
+		# Scope:stinker is incredibly upset.
+		reverse_add_opinion = {
+			target = scope:stinker
+			modifier = cruelty_opinion
+			opinion = -50
+		}
+		scope:stinker = { remove_character_modifier = fp1_0511_carries_stinking_trophy_modifier }
+		# Everyone else is not.
+		every_courtier_or_guest = {
+			custom = custom.every_courtier_and_guest
+			limit = {
+				NOT = { this = scope:stinker }
+			}
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 20
+			}
+		}
+
+		stress_impact = {
+			wrathful = minor_stress_impact_loss
+			impatient = medium_stress_impact_loss
+			compassionate = minor_stress_impact_gain
+			patient = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.25
+				ai_sociability = 0.25
+				ai_compassion = -0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = wrathful
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = impatient
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = compassionate
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = patient
+			}
+		}
+	}
+	
+	# (Berserker) root SMASH!
+	option = {
+		name = cop_slavic_yearly_fp1.0511.c
+		trigger = { has_trait = berserker }
+		trait = berserker
+
+		# Scope:stinker is incredibly upset.
+		reverse_add_opinion = {
+			target = scope:stinker
+			modifier = cruelty_opinion
+			opinion = -75
+		}
+		scope:stinker = { remove_character_modifier = fp1_0511_carries_stinking_trophy_modifier }
+		# Scope:stinker will remember this.
+		progress_towards_rival_effect = {
+			CHARACTER = scope:stinker
+			OPINION = no
+		}
+		# But man, wasn't that *therapeutic*?
+		## Stress loss handled in stress_impact.
+
+		stress_impact = {
+			berserker = massive_stress_loss
+			impatient = minor_stress_impact_loss
+			wrathful = minor_stress_impact_loss
+			patient = medium_stress_impact_gain
+			calm = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = 0.5
+				ai_boldness = 0.5
+				ai_compassion = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = impatient
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = wrathful
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = patient
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = calm
+			}
+		}
+	}
+
+	# (Hunter) How about we get you a *new* trophy this eve?
+	option = {
+		name = cop_slavic_yearly_fp1.0511.d
+		# Elite hunters who don't fly off the handle.
+		trigger = {
+			has_trait = lifestyle_hunter
+			NOT = { has_trait = berserker }
+		}
+		trait = hunter_1
+		trait = hunter_2
+		trait = hunter_3
+
+		# Scope:stinker benefits.
+		scope:stinker = {
+			# They're happy with you.
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 50
+			}
+			# And won't make the same mistake.
+			add_trait = hunter_1
+			# Plus they ditch the old trophy.
+			remove_character_modifier = fp1_0511_carries_stinking_trophy_modifier
+		}
+		# Best friends?
+		progress_towards_friend_effect = {
+			CHARACTER = scope:stinker
+			OPINION = no
+		}
+		# Everyone else is just glad the stink is gone.
+		every_courtier_or_guest = {
+			custom = custom.every_courtier_and_guest
+			limit = {
+				NOT = { this = scope:stinker }
+			}
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 10
+			}
+		}
+
+
+		stress_impact = {
+			compassionate = minor_stress_impact_loss
+			gregarious = minor_stress_impact_loss
+			patient = medium_stress_impact_loss
+			impatient = medium_stress_impact_gain
+			lazy = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.5
+				ai_energy = 0.5
+				ai_honor = 0.25
+				ai_sociability = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = compassionate
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = gregarious
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = patient
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = impatient
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = lazy
+			}
+		}
+	}
+
+	# Yes, scope:stinker, it's rank, now please leave.
+	option = {
+		name = cop_slavic_yearly_fp1.0511.e
+
+		# Scope:stinker is quite upset.
+		reverse_add_opinion = {
+			target = scope:stinker
+			modifier = cruelty_opinion
+			opinion = -25
+		}
+		# But people respect you telling it like it is.
+		add_prestige = minor_prestige_gain
+
+		stress_impact = {
+			honest = medium_stress_impact_loss
+			deceitful = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.25
+				ai_sociability = -0.25
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = honest
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = deceitful
+			}
+		}
+	}
+
+	after = {
+		remove_variable = local_animal
+	}
+}
+
+##################################################
+# The Beast of [Capital]
+# by Ewan Cowhig Croft
+# 0541 - 0550
+##################################################
+
+#MOD: Should be available everywhere IMO
+
+scripted_trigger fp1_0541_valid_child_prankster_trigger = {
+	# Is available for events.
+	is_available_ai_child = yes
+	# Child is in the correct age bracket.
+	child_not_infant_trigger = yes
+	child_not_teen_trigger = yes
+	# Must not be a quiet child.
+	childhood_quiet_child_trigger = no
+}
+
+scripted_trigger fp1_0541_valid_courtier_victim_trigger = {
+	# Is available for events.
+	is_available_ai_adult = yes
+	# Isn't especially brave or good at dealing with kids.
+	NOR = {
+		has_trait = calm
+		has_trait = patient
+		has_trait = humble
+		has_trait = brave
+		has_trait = shy
+		has_trait = gregarious
+		has_trait = trusting
+		has_trait = compassionate
+		has_trait = forgiving
+	}
+	# And, in case you act disproportionately, they aren't a good relationship.
+	has_friendly_relationship_with_root_trigger = no
+}
+
+#	Young child with animal furs is pretending to be a large animal.
+cop_slavic_yearly_fp1.0541 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0541.t
+	desc = cop_slavic_yearly_fp1.0541.desc
+	theme = family
+	left_portrait = {
+		character = scope:courtier
+		animation = rage
+	}
+	right_portrait = {
+		character = scope:child
+		animation = schadenfreude
+	}
+	override_background = { event_background = corridor_day }
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0541 }
+		is_landed = yes
+		# Intended for Norse-ish tribals.
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		# Has a valid child.
+		any_child = { fp1_0541_valid_child_prankster_trigger = yes }
+		# Has a valid courtier.
+		any_courtier = { fp1_0541_valid_courtier_victim_trigger = yes }
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Weight up for active/mean kids.
+		modifier = {
+			add = 1
+			any_child = { childhood_loud_child_trigger = yes }
+		}
+		modifier = {
+			add = 1
+			any_child = { childhood_mean_child_trigger = yes }
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0541
+			days = 1825
+		}
+		# Pick an appropriate child.
+		random_child = {
+			# Prefer rowdy or mean-spirited children.
+			limit = {
+				fp1_0541_valid_child_prankster_trigger = yes
+				OR = {
+					childhood_loud_child_trigger = yes
+					childhood_mean_child_trigger = yes
+				}
+			}
+			# Though otherwise any valid child is acceptable.
+			alternative_limit = { fp1_0541_valid_child_prankster_trigger = yes }
+			save_scope_as = child
+		}
+		# And an appropriate courtier.
+		random_courtier = {
+			limit = {
+				fp1_0541_valid_courtier_victim_trigger = yes
+				is_of_major_or_minor_interest_trigger = { CHARACTER = root }
+			}
+			alternative_limit = { fp1_0541_valid_courtier_victim_trigger = yes }
+			save_scope_as = courtier
+		}
+		# Then set up a suitable animal.
+		dangerous_animal_effect = { CHARACTER = root }
+	}
+
+	# This is honestly just bloody hilarious.
+	option = {
+		name = cop_slavic_yearly_fp1.0541.a
+
+		# Scope:child is pretty damned happy.
+		reverse_add_opinion = {
+			target = scope:child
+			modifier = amused_opinion
+			opinion = 40
+		}
+		# Scope:courtier loses opinion, though.
+		reverse_add_opinion = {
+			target = scope:courtier
+			modifier = respect_opinion
+			opinion = -50
+		}
+		# Other courtiers are sceptical.
+		every_courtier_or_guest = {
+			custom = custom.every_courtier_and_guest
+			limit = {
+				NOR = {
+					this = scope:child
+					this = scope:courtier
+				}
+			}
+			add_opinion = {
+				target = root
+				modifier = amused_opinion
+				opinion = -10
+			}
+		}
+
+		stress_impact = {
+			gregarious = minor_stress_impact_loss
+			vengeful = minor_stress_impact_loss
+			arbitrary = minor_stress_impact_loss
+			just = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.25
+				ai_vengefulness = 0.25
+				ai_sociability = 0.25
+				ai_compassion = -0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = gregarious
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = vengeful
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arbitrary
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = just
+			}
+		}
+	}
+	
+	# Punish scope:child.
+	option = {
+		name = cop_slavic_yearly_fp1.0541.b
+
+		# Scope:courtier is happy, and you gain a favour hook if possible.
+		if = {
+			limit = {
+				can_add_hook = {
+					type = favor_hook
+					target = scope:courtier
+				}
+			}
+			add_hook = {
+				type = favor_hook
+				target = scope:courtier
+				years = 5
+			}
+		}
+		reverse_add_opinion = {
+			target = scope:courtier
+			modifier = pleased_opinion
+			opinion = 20
+		}
+		# Scope:child is upset.
+		reverse_add_opinion = {
+			target = scope:child
+			modifier = hurt_opinion
+			opinion = -30
+		}
+
+		stress_impact = {
+			just = minor_stress_impact_loss
+			forgiving = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 0.25
+				ai_honor = 0.25
+				ai_vengefulness = -0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = just
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = forgiving
+			}
+		}
+	}
+	
+	# Evict scope:courtier.
+	option = {
+		name = cop_slavic_yearly_fp1.0541.c
+
+		# Scope:child is very happy.
+		reverse_add_opinion = {
+			target = scope:child
+			modifier = amused_opinion
+			opinion = 30
+		}
+		# Scope:courtier is gobsmacked, might become a rival, and leaves.
+		reverse_add_opinion = {
+			target = scope:courtier
+			modifier = respect_opinion
+			opinion = -30
+		}
+		progress_towards_rival_effect = {
+			CHARACTER = scope:courtier
+			OPINION = no
+		}
+		scope:courtier = { select_and_move_to_pool_effect = yes }
+
+		stress_impact = {
+			arbitrary = major_stress_impact_loss
+			just = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_vengefulness = 0.5
+				ai_compassion = -0.5
+				ai_rationality = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arbitrary
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = just
+			}
+		}
+	}
+
+	# I really, profoundly do not care.
+	option = {
+		name = cop_slavic_yearly_fp1.0541.d
+
+		# Gain a little prestige for telling them to sod off.
+		add_prestige = minor_prestige_gain
+		# Both scope:child & scope:courtier are a tad upset.
+		reverse_add_opinion = {
+			target = scope:courtier
+			modifier = disappointed_opinion
+			opinion = -10
+		}
+		reverse_add_opinion = {
+			target = scope:child
+			modifier = disappointed_opinion
+			opinion = -10
+		}
+
+		stress_impact = {
+			arbitrary = minor_stress_impact_loss
+			lazy = medium_stress_impact_loss
+			just = medium_stress_impact_gain
+			diligent = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = -0.5
+				ai_sociability = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arbitrary
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = lazy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = just
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = diligent
+			}
+		}
+	}
+}
+
+##################################################
+# My Arm Against Yours
+# by Ewan Cowhig Croft
+# 0561 - 0570
+##################################################
+
+scripted_trigger fp1_0561_is_friendly_knight_trigger = {
+	# Standard checks.
+	is_available_ai_adult = yes
+	is_landed = no
+	# Has some sociable qualities.
+	OR = {
+		ai_sociability >= low_positive_ai_value
+		ai_boldness >= low_positive_ai_value
+		ai_energy >= low_positive_ai_value
+		ai_honor >= low_positive_ai_value
+		has_trait = wrathful
+		has_trait = arrogant
+		has_trait = brave
+		has_trait = gregarious
+		has_trait = ambitious
+		has_trait = lifestyle_reveler
+	}
+	# No special relationship with root.
+	has_any_good_relationship_with_root_trigger = no
+	has_any_bad_relationship_with_root_trigger = no
+	# Doesn't absolutely hate root.
+	opinion = {
+		target = root
+		value >= low_negative_opinion
+	}
+}
+
+#	One of your knights challenges you to a friendly arm wrestle.
+cop_slavic_yearly_fp1.0561 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0561.t
+	desc = cop_slavic_yearly_fp1.0561.desc
+	theme = friendly
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:knight
+		animation = admiration
+	}
+	override_background = { event_background = tavern }
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_at_peace_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0561 }
+		is_landed = yes
+		# Filter to flavour-appropriate characters.
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+		}
+		has_government = tribal_government
+		# Has an appropriate available knight.
+		any_knight = { fp1_0561_is_friendly_knight_trigger = yes }
+		# Must be a suitable challengee.
+		prowess >= mediocre_skill_rating
+		is_healthy = yes
+		can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = root }
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Weight down/up a little according to prowess.
+		modifier = {
+			add = -0.25
+			prowess <= low_skill_rating
+		}
+		modifier = {
+			add = -0.25
+			prowess <= mediocre_skill_rating
+		}
+		modifier = {
+			add = 0.25
+			prowess >= high_skill_rating
+		}
+		modifier = {
+			add = 0.25
+			prowess >= very_high_skill_rating
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0561
+			days = 1825
+		}
+		# Grab an appropriate knight to wrassle.
+		random_knight = {
+			limit = {
+				fp1_0561_is_friendly_knight_trigger = yes
+				is_of_major_or_minor_interest_trigger = { CHARACTER = root }
+			}
+			alternative_limit = { fp1_0561_is_friendly_knight_trigger = yes }
+			# We want to weight up higher prowess knights, but not that dramatically.
+			weight = {
+				base = 0
+				modifier = {
+					add = {
+						value = prowess
+						multiply = 0.5
+					}
+				}
+			}
+			save_scope_as = knight
+		}
+	}
+
+	# Accept the challenge.
+	option = {
+		name = cop_slavic_yearly_fp1.0561.a
+		trigger = {
+			NOR = {
+				has_trait = strong
+				has_trait = physique_good
+			}
+		}
+
+		# Basic prowess challenge.
+		duel = {
+			skill = prowess
+			target = scope:knight
+			# You win: some minor prestige, more opinion.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0561.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0561.a.tt_success
+					left_icon = scope:knight
+					add_prestige = minor_prestige_gain
+					reverse_add_opinion = {
+						target = scope:knight
+						modifier = impressed_opinion
+						opinion = 30
+					}
+				}
+			}
+			# You lose: well, not a huge deal, and still good fun.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0561.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0561.a.tt_failure
+					left_icon = scope:knight
+					add_prestige = miniscule_prestige_loss
+					reverse_add_opinion = {
+						target = scope:knight
+						modifier = amused_opinion
+						opinion = 10
+					}
+				}
+			}
+		}
+		# Either way you step friendship.
+		progress_towards_friend_effect = {
+			CHARACTER = scope:knight
+			OPINION = no
+		}
+
+		stress_impact = {
+			gregarious = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_energy = 0.5
+				ai_honor = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = gregarious
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = shy
+			}
+		}
+	}
+
+	# (Strong/Physique_Good) *cracks knuckles*
+	option = {
+		name = cop_slavic_yearly_fp1.0561.b
+		trigger = {
+			OR = {
+				has_trait = strong
+				has_trait = physique_good
+			}
+		}
+		trait = strong
+		trait = physique_good_1
+		trait = physique_good_2
+		trait = physique_good_3
+
+		# Effortless victory grants prestige & opinion.
+		custom_tooltip = cop_slavic_yearly_fp1.0561.b.tt
+		add_prestige = medium_prestige_gain
+		reverse_add_opinion = {
+			target = scope:knight
+			modifier = impressed_opinion
+			opinion = 30
+		}
+
+		stress_impact = {
+			gregarious = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_energy = 0.5
+				ai_honor = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = gregarious
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = shy
+			}
+		}
+	}
+
+	# Attempt to cheat.
+	option = {
+		name = cop_slavic_yearly_fp1.0561.c
+
+		# Modest intrigue challenge.
+		duel = {
+			skill = intrigue
+			target = scope:knight
+			# You win, making it look *dramatic*!
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0561.c.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0561.c.tt_success
+					left_icon = scope:knight
+					# Gain prestige for your win!
+					add_prestige = medium_prestige_gain
+					# But your foe might know something...
+					reverse_add_opinion = {
+						target = scope:knight
+						modifier = suspicion_opinion
+						opinion = -5
+					}
+				}
+			}
+			# Your cheating is discovered...
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0561.c.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0561.c.tt_failure
+					left_icon = scope:knight
+					# This is embarrassing.
+					add_prestige = minor_prestige_loss
+					# Welp, scope:knight is pissed.
+					reverse_add_opinion = {
+						target = scope:knight
+						modifier = weak_opinion
+						opinion = -40
+					}
+					progress_towards_rival_effect = {
+						CHARACTER = scope:knight
+						OPINION = no
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			deceitful = medium_stress_impact_loss
+			honest = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_energy = 0.5
+				ai_honor = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = deceitful
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = honest
+			}
+		}
+	}
+
+	# Ignore scope:knight and continue eating.
+	option = {
+		name = cop_slavic_yearly_fp1.0561.d
+
+		# Gain minor prestige for just not bothering.
+		add_prestige = miniscule_prestige_gain
+		# Hurt the knight's feelings a little.
+		reverse_add_opinion = {
+			target = scope:knight
+			modifier = hurt_opinion
+			opinion = -10
+		}
+
+		stress_impact = {
+			arrogant = minor_stress_impact_loss
+			gluttonous = minor_stress_impact_loss
+			shy = medium_stress_impact_loss
+			lazy = medium_stress_impact_loss
+			humble = minor_stress_impact_gain
+			gregarious = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = -0.5
+				ai_sociability = -0.75
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = gluttonous
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = shy
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = lazy
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = humble
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = gregarious
+			}
+		}
+	}
+}
+
+##################################################
+# Raised Voices at the Veche
+# by Ewan Cowhig Croft
+# 0591 - 0600
+##################################################
+
+scripted_trigger fp1_0591_secondary_county_trigger = {
+	holder = root
+	OR = {
+		culture = { has_cultural_pillar = heritage_east_slavic }
+		culture = { has_cultural_pillar = heritage_west_slavic }
+		culture = { has_cultural_pillar = heritage_south_slavic }
+		religion = religion:slavic_religion
+	}
+}
+
+scripted_trigger fp1_0591_fighting_counties_at_thing_trigger = {
+	tier = tier_county
+	OR = {
+		culture = { has_cultural_pillar = heritage_east_slavic }
+		culture = { has_cultural_pillar = heritage_west_slavic }
+		culture = { has_cultural_pillar = heritage_south_slavic }
+		religion = religion:slavic_religion
+	}
+	any_neighboring_county = { fp1_0591_secondary_county_trigger = yes }
+}
+
+#	One of your counties is engaged in an argument with another.
+cop_slavic_yearly_fp1.0591 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0591.t
+	desc = {
+		desc = cop_slavic_yearly_fp1.0591.desc
+		random_valid = {
+			desc = cop_slavic_yearly_fp1.0591.desc.border_dispute		#
+			desc = cop_slavic_yearly_fp1.0591.desc.stolen_flocks		#
+			desc = cop_slavic_yearly_fp1.0591.desc.kidnapped_child		#
+			desc = cop_slavic_yearly_fp1.0591.desc.drunken_arson		#
+			desc = cop_slavic_yearly_fp1.0591.desc.lost_dog			#
+			desc = cop_slavic_yearly_fp1.0591.desc.disrupted_wedding	
+			desc = cop_slavic_yearly_fp1.0591.desc.suspicious_will		#
+			desc = cop_slavic_yearly_fp1.0591.desc.sheltered_criminal	#
+			desc = cop_slavic_yearly_fp1.0591.desc.bad_luck			#
+			desc = cop_slavic_yearly_fp1.0591.desc.fly_tipping			#
+		}
+	}
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = disgust
+	}
+	override_background = { event_background = fp1_runestone_circle }
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0591 }
+		is_landed = yes
+		# Filter to flavour-appropriate characters.
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		# Ensure you have at least two counties that can fight with each other.
+		any_held_title = { fp1_0591_fighting_counties_at_thing_trigger = yes }
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Weight up a little for mainland Scandinavia.
+		modifier = {
+			add = 0.5
+			fp1_is_in_scandinavia = yes
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0591
+			days = 1825
+		}
+		# Grab the counties.
+		random_held_title = {
+			limit = { fp1_0591_fighting_counties_at_thing_trigger = yes }
+			save_scope_as = county_a
+			random_neighboring_county = {
+				limit = { fp1_0591_secondary_county_trigger = yes }
+				save_scope_as = county_b
+			}
+		}
+		# Set a dummy gender for loc.
+		random_dummy_gender_soldier_effect = { SCOPE_NAME = dummy_gender }
+	}
+
+	# Side with scope:county_a.
+	option = {
+		name = cop_slavic_yearly_fp1.0591.a
+
+		# Levy bonus county modifier.
+		scope:county_a = {
+			add_county_modifier = {
+				modifier = slavic_fp1_yearly_0591_levy_modifier
+				years = 10
+			}
+		}
+		# And spurn the other county.
+		scope:county_b = {
+			add_county_modifier = {
+				modifier = fp1_yearly_0591_spurned_modifier
+				years = 10
+			}
+		}
+
+		stress_impact = {
+			lazy = minor_stress_impact_loss
+			diligent = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = lazy
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = diligent
+			}
+		}
+	}
+	
+	# Side with scope:county_b.
+	option = {
+		name = cop_slavic_yearly_fp1.0591.b
+
+		# Building cost county modifier.
+		scope:county_b = {
+			add_county_modifier = {
+				modifier = slavic_fp1_yearly_0591_building_modifier
+				years = 10
+			}
+		}
+		# And spurn the other county.
+		scope:county_a = {
+			add_county_modifier = {
+				modifier = fp1_yearly_0591_spurned_modifier
+				years = 10
+			}
+		}
+
+		stress_impact = {
+			lazy = minor_stress_impact_loss
+			diligent = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = lazy
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = diligent
+			}
+		}
+	}
+	
+	# Deliberately wind them both up.
+	option = {
+		name = cop_slavic_yearly_fp1.0591.c
+
+		# Popular opinion bonus modifiers in both (as they're too busy fighting each other).
+		scope:county_a = {
+			add_county_modifier = {
+				modifier = fp1_yearly_0591_otherwise_occupied_modifier
+				years = 10
+			}
+		}
+		scope:county_b = {
+			add_county_modifier = {
+				modifier = fp1_yearly_0591_otherwise_occupied_modifier
+				years = 10
+			}
+		}
+
+		stress_impact = {
+			deceitful = minor_stress_impact_loss
+			arbitrary = medium_stress_impact_loss
+			honest = minor_stress_impact_gain
+			just = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = 0.5
+				ai_vengefulness = 0.25
+				ai_honor = -0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = deceitful
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = arbitrary
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = honest
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = just
+			}
+		}
+	}
+
+	# Let them fight it out.
+	option = {
+		name = cop_slavic_yearly_fp1.0591.d
+
+		# Stress loss: not your problem, honestly.
+		## Covered in stress impact.
+
+		stress_impact = {
+			base = major_stress_loss
+			lazy = medium_stress_impact_loss
+			diligent = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = -0.25
+				ai_energy = -0.75
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = lazy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = diligent
+			}
+		}
+	}
+}
+
+##################################################
+# The Hardest Part of Ruling
+# by Ewan Cowhig Croft
+# 0601 - 0610
+##################################################
+
+scripted_trigger fp1_0601_valid_county_for_things_trigger = {
+	tier = tier_county
+	OR = {
+		culture = { has_cultural_pillar = heritage_east_slavic }
+		culture = { has_cultural_pillar = heritage_west_slavic }
+		culture = { has_cultural_pillar = heritage_south_slavic }
+		religion = religion:slavic_religion
+	}
+}
+
+#	An incredibly boring local assembly tries your patience.
+cop_slavic_yearly_fp1.0601 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0601.t
+	desc = cop_slavic_yearly_fp1.0601.desc
+	theme = realm
+	left_portrait = {
+		character = root
+		animation = boredom
+	}
+	override_background = { event_background = fp1_runestone_circle }
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0601 }
+		is_landed = yes
+		# Filter to flavour-appropriate characters.
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		any_held_title = { fp1_0601_valid_county_for_things_trigger = yes }
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Weight up a little for mainland Scandinavia.
+		modifier = {
+			add = 0.5
+			fp1_is_in_scandinavia = yes
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0601
+			days = 1825
+		}
+		# Designate a suitable random county.
+		random_held_title = {
+			limit = { fp1_0601_valid_county_for_things_trigger = yes }
+			save_scope_as = county
+		}
+		# Set a dummy gender for loc.
+		random_dummy_gender_soldier_effect = { SCOPE_NAME = dummy_gender }
+	}
+
+	# Fight to stay awake.
+	option = {
+		name = cop_slavic_yearly_fp1.0601.a
+
+		# Diplomacy duel to see how well you disguise it.
+		duel = {
+			skill = diplomacy
+			value = decent_skill_rating
+			# You power through and remain composed.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0601.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0601.a.tt_success
+					left_icon = root
+					add_prestige = medium_prestige_gain
+				}
+			}
+			# You slump right out of your seat.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0601.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0601.a.tt_failure
+					left_icon = root
+					add_prestige = medium_prestige_loss
+				}
+			}
+		}
+
+		stress_impact = {
+			just = minor_stress_impact_loss
+			diligent = medium_stress_impact_loss
+			arbitrary = minor_stress_impact_gain
+			lazy = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = 1
+				ai_sociability = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = just
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = diligent
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = arbitrary
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = lazy
+			}
+		}
+	}
+	
+	# (Diplomacy) Daydream of more interesting diplomatic problems.
+	option = {
+		name = cop_slavic_yearly_fp1.0601.b
+		trigger = { has_trait = education_diplomacy }
+		trait = education_diplomacy_1
+		trait = education_diplomacy_2
+		trait = education_diplomacy_3
+		trait = education_diplomacy_4
+
+		# Gain a minor modifier boosting diplomacy.
+		add_character_modifier = {
+			modifier = fp1_daydreaming_about_diplomacy_modifier
+			years = 5
+		}
+
+		stress_impact = {
+			lazy = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			diligent = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_sociability = -0.25
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = lazy
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = diligent
+			}
+		}
+	}
+	
+	# (Martial) Daydream up new strategies.
+	option = {
+		name = cop_slavic_yearly_fp1.0601.c
+		trigger = { has_trait = education_martial }
+		trait = education_martial_1
+		trait = education_martial_2
+		trait = education_martial_3
+		trait = education_martial_4
+
+		# Gain a minor modifier boosting martial.
+		add_character_modifier = {
+			modifier = fp1_daydreaming_about_martial_modifier
+			years = 5
+		}
+
+		stress_impact = {
+			lazy = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			diligent = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_sociability = -0.25
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = lazy
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = diligent
+			}
+		}
+	}
+	
+	# (Stewardship) Daydream up new taxes to charge them.
+	option = {
+		name = cop_slavic_yearly_fp1.0601.d
+		trigger = { has_trait = education_stewardship }
+		trait = education_stewardship_1
+		trait = education_stewardship_2
+		trait = education_stewardship_3
+		trait = education_stewardship_4
+
+		# Gain a minor modifier boosting stewardship.
+		add_character_modifier = {
+			modifier = fp1_daydreaming_about_stewardship_modifier
+			years = 5
+		}
+
+		stress_impact = {
+			lazy = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			diligent = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_sociability = -0.25
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = lazy
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = diligent
+			}
+		}
+	}
+	
+	# (Intrigue) Daydream up new ways to keep them under control.
+	option = {
+		name = cop_slavic_yearly_fp1.0601.e
+		trigger = { has_trait = education_intrigue }
+		trait = education_intrigue_1
+		trait = education_intrigue_2
+		trait = education_intrigue_3
+		trait = education_intrigue_4
+
+		# Gain a minor modifier boosting intrigue.
+		add_character_modifier = {
+			modifier = fp1_daydreaming_about_intrigue_modifier
+			years = 5
+		}
+
+		stress_impact = {
+			lazy = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			diligent = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_sociability = -0.25
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = lazy
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = diligent
+			}
+		}
+	}
+	
+	# (Learning) Daydream of your favourite book.
+	option = {
+		name = cop_slavic_yearly_fp1.0601.f
+		trigger = { has_trait = education_learning }
+		trait = education_learning_1
+		trait = education_learning_2
+		trait = education_learning_3
+		trait = education_learning_4
+
+		# Gain a minor modifier boosting learning.
+		add_character_modifier = {
+			modifier = fp1_daydreaming_about_learning_modifier
+			years = 5
+		}
+
+		stress_impact = {
+			lazy = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+			diligent = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_sociability = -0.25
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = lazy
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = diligent
+			}
+		}
+	}
+	
+	# Give in and doze off.
+	option = {
+		name = cop_slavic_yearly_fp1.0601.g
+
+		# Lose stress since... I mean, who cares?
+		## Stress loss handled in stress_impact.
+		# Buuuuut also lose prestige.
+		add_prestige = minor_prestige_loss
+		# Low-random chance for players to occasionally become known as "the Snorer" here.
+		hidden_effect = {
+			if = {
+				limit = {
+					is_ai = no
+					has_any_nickname = no
+				}
+				random = {
+					chance = 1
+					send_interface_toast = {	
+						title = cop_slavic_yearly_fp1.0601.g.nickname
+						left_icon = root
+						give_nickname = nick_the_snorer
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			base = major_stress_loss
+			lazy = medium_stress_impact_loss
+			diligent = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.25
+				ai_sociability = -0.5
+				ai_energy = -1
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = lazy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = diligent
+			}
+		}
+	}
+}
+
+##################################################
+# Leading by Example
+# by Ewan Cowhig Croft
+# 0611 - 0620
+##################################################
+
+scripted_trigger fp1_0611_aggressive_child_candidate_trigger = {
+	# Age gate so that they're never the same as scope:child_b.
+	age >= 10
+	# Must be around.
+	child_suitable_to_play_with_character_one_sided = { CHARACTER = root }
+	# And have the right personality for this.
+	OR = {
+		childhood_mean_child_trigger = yes
+		childhood_loud_child_trigger = yes
+	}
+}
+
+scripted_trigger fp1_0611_victim_child_candidate_trigger = {
+	# Age gate so that they're never the same as scope:child_a.
+	age < 10
+	# Must be around.
+	child_suitable_to_play_with_character_one_sided = { CHARACTER = root }
+	# We're not fussed about personality here, anything is good.
+}
+
+#	One of your children wounds another whilst imitating you.
+cop_slavic_yearly_fp1.0611 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0611.t
+	desc = cop_slavic_yearly_fp1.0611.desc
+	theme = education
+	left_portrait = {
+		character = scope:child_a
+		animation = shame
+	}
+	right_portrait = {
+		character = scope:child_b
+		animation = anger
+	}
+	override_background = { event_background = bedchamber }
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_even_at_war_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0611 }
+		is_landed = yes
+		# Filter to flavour-appropriate characters.
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		has_government = tribal_government
+		# You must qualify for imitation in some way.
+		OR = {
+			has_trait = viking
+			has_trait = berserker
+			has_trait = adventurer
+			has_character_flag = has_recently_performed_raid
+		}
+		# Gotta have one child who qualifies as the aggressor.
+		any_child = { fp1_0611_aggressive_child_candidate_trigger = yes }
+		# And one child who qualifies as the bully.
+		any_child = { fp1_0611_victim_child_candidate_trigger = yes }
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Weight up a little for each qualifying trait.
+		modifier = {
+			add = 0.25
+			has_trait = viking
+		}
+		modifier = {
+			add = 0.25
+			has_trait = berserker
+		}
+		modifier = {
+			add = 0.25
+			has_trait = adventurer
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0611
+			days = 1825
+		}
+		# Grab the first child.
+		random_child = {
+			limit = { fp1_0611_aggressive_child_candidate_trigger = yes }
+			save_scope_as = child_a
+		}
+		# And the second.
+		random_child = {
+			limit = { fp1_0611_victim_child_candidate_trigger = yes }
+			save_scope_as = child_b
+		}
+		# Wound scope:child_b.
+		scope:child_b = {
+			increase_wounds_no_death_effect = { REASON = duel }
+		}
+	}
+
+	# Explain to scope:child_a that they need to wait till they're older.
+	option = {
+		name = cop_slavic_yearly_fp1.0611.a
+
+		# Diplomacy duel to see if you manage the feelings involved.
+		duel = {
+			skill = diplomacy
+			value = high_skill_rating
+			# You successfully explain that fighting is not playing.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0611.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0611.a.tt_success
+					left_icon = scope:child_a
+					right_icon = scope:child_b
+					scope:child_b = {
+						progress_towards_friend_effect = {
+							CHARACTER = scope:child_a
+							OPINION = 50
+						}
+					}
+				}
+			}
+			# You only engender feelings of bitterness between the two.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0611.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0611.a.tt_failure
+					left_icon = scope:child_a
+					right_icon = scope:child_b
+					scope:child_b = {
+						progress_towards_rival_effect = {
+							CHARACTER = scope:child_a
+							OPINION = -50
+						}
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			honest = minor_stress_impact_loss
+			forgiving = minor_stress_impact_loss
+			vengeful = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.5
+				ai_honor = 0.25
+				ai_vengefulness = -0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = honest
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = forgiving
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = vengeful
+			}
+		}
+	}
+	
+	# Laud scope:child_a for their goals.
+	option = {
+		name = cop_slavic_yearly_fp1.0611.b
+
+		# Scope:child_a is very happy & gains some prowess.
+		scope:child_a = { add_prowess_skill = medium_skill_bonus }
+		reverse_add_opinion = {
+			target = scope:child_a
+			modifier = love_opinion
+			opinion = 40
+		}
+		# Scope:child_b is very unhappy and grows close to a rivalry with scope:child_a.
+		scope:child_b = {
+			progress_towards_rival_effect = {
+				CHARACTER = scope:child_a
+				OPINION = -20
+			}
+		}
+		reverse_add_opinion = {
+			target = scope:child_b
+			modifier = trust_opinion
+			opinion = -20
+		}
+
+		stress_impact = {
+			callous = minor_stress_impact_loss
+			sadistic = minor_stress_impact_loss
+			compassionate = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = -0.5
+				ai_honor = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = callous
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = sadistic
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = compassionate
+			}
+		}
+	}
+	
+	# Teach scope:child_b how to deal with bullies.
+	option = {
+		name = cop_slavic_yearly_fp1.0611.c
+
+		# Scope:child_b is very happy & gains some prowess.
+		scope:child_b = { add_prowess_skill = medium_skill_bonus }
+		reverse_add_opinion = {
+			target = scope:child_b
+			modifier = love_opinion
+			opinion = 40
+		}
+		# Scope:child_a is unhappy.
+		reverse_add_opinion = {
+			target = scope:child_a
+			modifier = trust_opinion
+			opinion = -20
+		}
+
+		stress_impact = {
+			fickle = minor_stress_impact_loss
+			compassionate = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.5
+				ai_honor = 0.5
+				ai_vengefulness = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = fickle
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = compassionate
+			}
+		}
+	}
+
+	# Tell them to take it to their nurse.
+	option = {
+		name = cop_slavic_yearly_fp1.0611.d
+
+		# Lose stress.
+		## Stress loss handled in stress_impact.
+		# But also opinion with both children.
+		reverse_add_opinion = {
+			target = scope:child_a
+			modifier = trust_opinion
+			opinion = -20
+		}
+		reverse_add_opinion = {
+			target = scope:child_b
+			modifier = hurt_opinion
+			opinion = -20
+		}
+		# And we set up a hidden rivalry anyway.
+		hidden_effect = {
+			scope:child_b = {
+				if = {
+					limit = {
+						can_set_relation_potential_rival_trigger = { CHARACTER = scope:child_a }
+					}
+					set_relation_potential_rival = scope:child_a
+				}
+			}
+		}
+
+		stress_impact = {
+			base = medium_stress_loss
+			lazy = minor_stress_impact_loss
+			callous = minor_stress_impact_loss
+			diligent = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = -0.5
+				ai_energy = -0.5
+				ai_boldness = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = lazy
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = callous
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = diligent
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = compassionate
+			}
+		}
+	}
+}
+
+##################################################
+# A Shiny New Toy
+# by Ewan Cowhig Croft
+# 0621 - 0630
+##################################################
+
+scripted_trigger fp1_0621_valid_child_wants_loot_trigger = {
+	# Must be around.
+	child_suitable_to_play_with_character_one_sided = { CHARACTER = scope:raider }
+	# Quiet children aren't going to come down to the beach.
+	childhood_quiet_child_trigger = no
+}
+
+#	Your child asks you which piece of raid loot is theirs.
+cop_slavic_yearly_fp1.0621 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0621.t
+	desc = cop_slavic_yearly_fp1.0621.desc
+	theme = war
+	left_portrait = {
+		character = scope:raider
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:child
+		animation = admiration
+	}
+	override_background = { event_background = fp1_beached_longships }
+
+	# Triggers handled in the setup event.
+
+	# Weight multipliers handled in the setup event.
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0621
+			days = 1825
+		}
+		# Grab a suitable child.
+		random_child = {
+			limit = { fp1_0621_valid_child_wants_loot_trigger = yes }
+			# Weight up greedier children.
+			weight = {
+				base = 0
+				modifier = { add = ai_greed }
+			}
+			save_scope_as = child
+		}
+		# Save a dummy gender for raid victims; reflects your child's biases rather than your actual experiences.
+		random_dummy_gender_soldier_effect = { SCOPE_NAME = dummy_gender }
+	}
+
+	# Of course you can take the big trophy.
+	option = {
+		name = cop_slavic_yearly_fp1.0621.a
+
+		# Scope:child gains lots of opinion of you.
+		reverse_add_opinion = {
+			target = scope:child
+			modifier = love_opinion
+			opinion = 50
+		}
+		# But you lose some gold.
+		remove_short_term_gold = minor_gold_value
+
+		stress_impact = {
+			generous = medium_stress_impact_loss
+			greedy = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.5
+				ai_greed = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = greedy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = generous
+			}
+		}
+	}
+	
+	# Nothing now: maybe when you're older, you can earn your own.
+	option = {
+		name = cop_slavic_yearly_fp1.0621.b
+
+		# Scope:child gains some opinion of you.
+		reverse_add_opinion = {
+			target = scope:child
+			modifier = respect_opinion
+			opinion = 10
+		}
+
+		# A fairly mild response, so no stress to be garnered.
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_boldness = 0.5
+			}
+		}
+	}
+	
+	# Away with you! This is for the adults.
+	option = {
+		name = cop_slavic_yearly_fp1.0621.c
+
+		# Gain some prestige.
+		add_prestige = minor_prestige_gain
+		# Scope:child is upset.
+		reverse_add_opinion = {
+			target = scope:child
+			modifier = hurt_opinion
+			opinion = -20
+		}
+
+		stress_impact = {
+			impatient = minor_stress_impact_loss
+			greedy = medium_stress_impact_loss
+			patient = minor_stress_impact_gain
+			generous = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_rationality = 0.25
+				ai_compassion = -0.25
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = impatient
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = greedy
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = patient
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = generous
+			}
+		}
+	}
+}
+
+#	Setup event to sort triggers, scopes, etc.
+cop_slavic_yearly_fp1.0622 = {
+	hidden = yes
+	type = empty
+	scope = army
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Root must have been leading the army personally.
+		army_commander = scope:raider
+		# And some actual loot must have been recovered.
+		raid_loot >= 10
+		# In which case we take a look at scope:raider & see how they stack up.
+		scope:raider = {
+			# Standard checks.
+			is_available_adult_or_is_commanding = yes
+			NOT = { has_character_flag = had_event_fp1_yearly_0621 }
+			is_landed = yes
+			# Filter to flavour-appropriate characters.
+			OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+				religion = religion:slavic_religion
+			}
+			has_government = tribal_government
+			# And must have a valid child laying about.
+			any_child = { fp1_0621_valid_child_wants_loot_trigger = yes}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+
+		# Weight up a little for dedicated raiders.
+		modifier = {
+			add = 1
+			scope:raider = { has_trait = viking }
+		}
+		# Or if you've brought home a truly excessive amount of loot.
+		modifier = {
+			add = 1
+			raid_loot >= 200
+		}
+	}
+
+	immediate = {
+		save_scope_as = raiding_army
+		scope:raider = { trigger_event = cop_slavic_yearly_fp1.0621 }
+	}
+}
+
+##################################################
+# A Cynical Bent
+# by Ewan Cowhig Croft
+# 0631 - 0640
+##################################################
+
+scripted_trigger fp1_0631_suitable_cynical_knight_trigger = {
+	# Must be in the correct army.
+	exists = knight_army
+	knight_army = $ARMY$
+	# Has to share scope:raider's faith.
+	faith = scope:raider.faith
+	# Can't be zealous.
+	NOT = { has_trait = zealous }
+	# And must have at least decent learning.
+	learning >= decent_skill_rating
+}
+
+#	You notice a courtier refuses to sacrifice after a raid.
+cop_slavic_yearly_fp1.0631 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0631.t
+	desc = cop_slavic_yearly_fp1.0631.desc
+	theme = faith
+	left_portrait = {
+		character = scope:cynic
+		animation = personality_cynical
+	}
+	override_background = { event_background = fp1_beached_longships }
+
+	# Triggers handled in the setup event.
+
+	# Weight multipliers handled in the setup event.
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0631
+			days = 1825
+		}
+		# Grab an appropriate knight.
+		random_knight = {
+			limit = { 
+				fp1_0631_suitable_cynical_knight_trigger = { ARMY = scope:raiding_army }
+			}
+			# Weight up cynical knights.
+			weight = {
+				base = 0
+				modifier = {
+					add = {
+						value = ai_zeal
+						multiply = -1
+					}
+				}
+			}
+			save_scope_as = cynic
+		}
+	}
+
+	# Lecture them for their impiety.
+	option = {
+		name = cop_slavic_yearly_fp1.0631.a
+
+		# Learning duel over piety.
+		duel = {
+			skill = learning
+			target = scope:cynic
+			# You succeed in shaming scope:knight.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0631.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0631.a.tt_success
+					left_icon = scope:cynic
+					add_piety = medium_piety_gain
+					reverse_add_opinion = {
+						target = scope:cynic
+						modifier = annoyed_opinion
+						opinion = -20
+					}
+				}
+			}
+			# Scope:knight makes you look like a fool.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0631.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0631.a.tt_failure
+					left_icon = scope:cynic
+					add_piety = minor_piety_loss
+					reverse_add_opinion = {
+						target = scope:cynic
+						modifier = respect_opinion
+						opinion = -30
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			gregarious = minor_stress_impact_loss
+			generous = minor_stress_impact_loss
+			vengeful = minor_stress_impact_loss
+			zealous = major_stress_impact_loss
+			greedy = major_stress_impact_loss
+			shy = medium_stress_impact_gain
+			forgiving = medium_stress_impact_gain
+			# Event cannot be triggered if you have cynical.
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_zeal = 0.5
+				ai_greed = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = gregarious
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = generous
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = vengeful
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = zealous
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = greedy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = shy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = forgiving
+			}
+		}
+	}
+	
+	# Quietly keep your own tribute too.
+	option = {
+		name = cop_slavic_yearly_fp1.0631.b
+
+		# Gain a little gold.
+		add_gold = tiny_gold_value
+		# Lose a little piety.
+		add_piety = miniscule_piety_loss
+
+		stress_impact = {
+			greedy = medium_stress_impact_loss
+			generous = medium_stress_impact_gain
+			zealous = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_greed = 0.5
+				ai_zeal = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = greedy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = generous
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = zealous
+			}
+		}
+	}
+	
+	# Shrug and move on.
+	option = {
+		name = cop_slavic_yearly_fp1.0631.c
+
+		# Gain opinion with scope:knight.
+		reverse_add_opinion = {
+			target = scope:cynic
+			modifier = grateful_opinion
+			opinion = 20
+		}
+
+		stress_impact = {
+			forgiving = medium_stress_impact_loss
+			vengeful = medium_stress_impact_gain
+			zealous = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_zeal = -0.25
+				ai_greed = -0.25
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = forgiving
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = vengeful
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = zealous
+			}
+		}
+	}
+}
+
+#	Setup event to sort triggers, scopes, etc.
+cop_slavic_yearly_fp1.0632 = {
+	hidden = yes
+	type = empty
+	scope = army
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Root must have been leading the army personally.
+		army_commander = scope:raider
+		# And some actual loot must have been recovered.
+		raid_loot >= 10
+		# In which case we take a look at scope:raider & see how they stack up.
+		scope:raider = {
+			# Standard checks.
+			is_available_adult_or_is_commanding = yes
+			NOT = { has_character_flag = had_event_fp1_yearly_0631 }
+			is_landed = yes
+			# Filter to flavour-appropriate characters.
+			OR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+				religion = religion:slavic_religion
+			}
+			has_government = tribal_government
+			# And there's an appropriate knightly target.
+			any_knight = {
+				fp1_0631_suitable_cynical_knight_trigger = { ARMY = root }
+			}
+			# And remove any dedicated cynics.
+			NOT = { has_trait = cynical }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+
+		# Weight up a little for the zealous, who are more likely to notice.
+		modifier = {
+			add = 1
+			scope:raider = { has_trait = zealous }
+		}
+	}
+
+	immediate = {
+		save_scope_as = raiding_army
+		scope:raider = { trigger_event = cop_slavic_yearly_fp1.0631 }
+	}
+}
+
+##################################################
+# Why Can't I Come?
+# by Ewan Cowhig Croft
+# 0681 - 0690
+##################################################
+
+scripted_trigger fp1_0681_haughty_knights_trigger = {
+	# Has enough prowess that they're proud of it.
+	prowess >= medium_skill_rating
+	# And lacks any humbling traits.
+	NOR = {
+		has_trait = humble
+		has_trait = compassionate
+		has_trait = forgiving
+	}
+}
+
+scripted_trigger fp1_0681_child_that_might_like_raiding_trigger = {
+	# Must be around.
+	child_suitable_to_play_with_character_one_sided = { CHARACTER = root }
+	# We want basically anyone who might think it's exciting.
+	NOT = { has_trait = pensive }
+}
+
+#	One of your children wants to know why they can't come raiding.
+cop_slavic_yearly_fp1.0681 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0681.t
+	desc = cop_slavic_yearly_fp1.0681.desc
+	theme = war
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	right_portrait = {
+		character = scope:child
+		animation = admiration
+	}
+	override_background = { event_background = study }
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_at_peace_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0681 }
+		is_landed = yes
+		# Filter to flavour-appropriate characters.
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		has_government = tribal_government
+		# Raiding must be recent or ever-present.
+		OR = {
+			has_trait = viking
+			has_character_flag = has_recently_performed_raid
+		}
+		# At least some of your knights should be snobbish.
+		any_knight = { fp1_0681_haughty_knights_trigger = yes }
+		# And you must have a suitable child.
+		any_child = { fp1_0681_child_that_might_like_raiding_trigger = yes }
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Weight up a bit for adventurers & vikings.
+		modifier = {
+			add = 0.5
+			has_trait = adventurer
+		}
+		modifier = {
+			add = 0.5
+			has_trait = viking
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0681
+			days = 1825
+		}
+		# Grab a suitable child.
+		random_child = {
+			limit = { fp1_0681_child_that_might_like_raiding_trigger = yes }
+			save_scope_as = child
+		}
+	}
+
+	# I'm leaving you to guard [capital], ok?
+	option = {
+		name = cop_slavic_yearly_fp1.0681.a
+
+		# Gain opinion with scope:child.
+		reverse_add_opinion = {
+			target = scope:child
+			modifier = trust_opinion
+			opinion = 20
+		}
+
+		stress_impact = {
+			compassionate = minor_stress_impact_loss
+			callous = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.75
+				ai_sociability = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = compassionate
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = callous
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = sadistic
+			}
+		}
+	}
+	
+	# _Hah_! You'll never be a true warrior, child.
+	option = {
+		name = cop_slavic_yearly_fp1.0681.b
+
+		# Gain opinion with all of your haughty knights.
+		every_knight = {
+			limit = { fp1_0681_haughty_knights_trigger = yes }
+			custom = cop_slavic_yearly_fp1.0681.b.haughty_knights
+			add_opinion = {
+				target = root
+				modifier = respect_opinion
+				opinion = 15
+			}
+		}
+		# Lose opinion with scope:child.
+		reverse_add_opinion = {
+			target = scope:child
+			modifier = hurt_opinion
+			opinion = -30
+		}
+		# Add hidden potential rivalry if possible.
+		hidden_effect = {
+			if = {
+				limit = {
+					can_set_relation_potential_rival_trigger = { CHARACTER = scope:child }
+				}
+				set_relation_potential_rival = scope:child
+			}
+		}
+
+		stress_impact = {
+			callous = minor_stress_impact_loss
+			sadistic = minor_stress_impact_loss
+			compassionate = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 0.25
+				ai_compassion = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = callous
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = sadistic
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = compassionate
+			}
+		}
+	}
+	
+	# We'll talk about it when you're older.
+	option = {
+		name = cop_slavic_yearly_fp1.0681.c
+
+		# Gain some minor opinion with your knights.
+		every_knight = {
+			custom = custom.every_knight
+			add_opinion = {
+				target = root
+				modifier = respect_opinion
+				opinion = 5
+			}
+		}
+		# But lose opinion with scope:child.
+		reverse_add_opinion = {
+			target = scope:child
+			modifier = disappointed_opinion
+			opinion = -10
+		}
+
+		# Mild response, incurs no stress.
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = -0.25
+				ai_boldness = -0.25
+				ai_sociability = -0.25
+			}
+		}
+	}
+}
+
+##################################################
+# Attempted Atonement
+# by Ewan Cowhig Croft
+# 0691 - 0700
+##################################################
+
+scripted_trigger fp1_0692_valid_convertable_knight_trigger = {
+	# Must be in the army's location.
+	location = root.location
+	# & share scope:raider's faith, which isn't reformed.
+	faith = {
+		this = scope:raider.faith
+		has_doctrine = unreformed_faith_doctrine
+	}
+	# Shouldn't have anything that might block them from converting.
+	NOR = {
+		has_trait = arrogant
+		has_trait = content
+		has_trait = cynical
+		has_trait = zealous
+		has_trait = paranoid
+		# Sadists are too busy for introspection.
+		has_trait = sadistic
+	}
+	# And should be landless.
+	is_courtier_of = scope:raider
+	# Children can be rebellious, but we should probably filter them out too.
+	NOT = {
+		any_parent = { this = scope:raider }
+	}
+}
+
+scripted_trigger fp1_0691_knight_still_valid_convertable_trigger = {
+	# Has all the appropriate variables; they come as a matched pair, but just in case.
+	has_variable = raid_convert_county
+	has_variable = raid_convert_faith
+	# Standard checks.
+	is_available_ai_adult = yes
+	is_courtier_of = root
+	# Make sure that they're still of root's faith, and that root hasn't converted to their new faith.
+	faith = root.faith
+	NOT = { this.var:raid_convert_faith = root.faith }
+	# Shouldn't have become committed to a religious stance, but just check they've not managed to sneak-acquire traits in the meanwhilst.
+	NOR = {
+		has_trait = zealous
+		has_trait = cynical
+	}
+}
+
+#	One of your knights finds new faith after a raid.
+cop_slavic_yearly_fp1.0691 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.0691.t
+	desc = cop_slavic_yearly_fp1.0691.desc
+	theme = war
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	right_portrait = {
+		character = scope:knight
+		animation = personality_zealous
+	}
+	override_background = { event_background = throne_room }
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_at_peace_adult = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_0691 }
+		is_landed = yes
+		# Filter to flavour-appropriate characters.
+		religion = religion:slavic_religion
+		has_government = tribal_government
+		# There must be at least one knight who's had a crisis of conscience.
+		any_knight = { fp1_0691_knight_still_valid_convertable_trigger = yes }
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Knights feel more comfortable converting away if you're not particularly religious.
+		modifier = {
+			add = 0.5
+			has_trait = cynical
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_0691
+			days = 3650
+		}
+		# Grab a suitable knight.
+		random_knight = {
+			limit = { fp1_0691_knight_still_valid_convertable_trigger = yes }
+			weight = {
+				base = 0
+				# Weight up fickle & trusting characters.
+				## Fickle characters are more likely to heel-face-turn on their pillaging faith.
+				modifier = {
+					add = 100
+					has_trait = fickle
+				}
+				## Trusting characters are more gullible, and they *did* take thralls.
+				modifier = {
+					add = 100
+					has_trait = trusting
+				}
+			}
+			save_scope_as = knight
+		}
+		# Convert them & boost their zeal.
+		scope:knight = {
+			set_character_faith = this.var:raid_convert_faith
+			add_trait = zealous
+		}
+		# Grab the source county for loc.
+		scope:knight.var:raid_convert_county = { save_scope_as = county }
+	}
+
+	# Surely I can talk you out of this foreign faith?
+	option = {
+		name = cop_slavic_yearly_fp1.0691.a
+
+		# Learning duel to get them to recant & stay.
+		duel = {
+			skill = learning
+			target = scope:knight
+			# You bring them back to the light.
+			40 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0691.a.tt_success
+				send_interface_toast = {
+					title = cop_slavic_yearly_fp1.0691.a.tt_success
+					left_icon = scope:knight
+					# They reconvert.
+					scope:knight = { set_character_faith = root.faith }
+					# And you either get a hook on them...
+					if = {
+						limit = {
+							can_add_hook = {
+								target = scope:knight
+								type = favor_hook
+							}
+						}
+						add_hook = {
+							target = scope:knight
+							type = favor_hook
+						}
+					}
+					# Or a goodly chunk of opinion.
+					else = {
+						reverse_add_opinion = {
+							target = scope:knight
+							modifier = grateful_opinion
+							opinion = 30
+						}
+					}
+				}
+			}
+			# They refuse and leave.
+			60 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_yearly_fp1.0691.a.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_yearly_fp1.0691.a.tt_failure
+					left_icon = scope:knight
+					# They leave.
+					scope:knight = { select_and_move_to_pool_effect = yes }
+					# And they're none too happy with you.
+					reverse_add_opinion = {
+						target = scope:knight
+						modifier = insult_opinion
+						opinion = -25
+					}
+				}
+			}
+		}
+
+		stress_impact = {
+			humble = minor_stress_impact_loss
+			zealous = major_stress_impact_loss
+			arrogant = minor_stress_impact_gain
+			cynical = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_zeal = 0.75
+				ai_boldness = 0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = humble
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = zealous
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = arrogant
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = cynical
+			}
+		}
+	}
+	
+	# GetFaith.GetReligion.GetName? You've gone mad. Guards!
+	option = {
+		name = cop_slavic_yearly_fp1.0691.b
+
+		# Quietly move scope:knight to the pool so you're no longer their liege.
+		hidden_effect = {
+			scope:knight = { move_to_pool = yes }
+		}
+		# Throw scope:knight in the dungeon immediately.
+		rightfully_imprison_character_effect = {
+			TARGET = scope:knight
+			IMPRISONER = root
+		}
+		hidden_effect = {
+			scope:knight = { change_prison_type = dungeon }
+		}
+		# Scope:knight is understandably angry.
+		reverse_add_opinion = {
+			target = scope:knight
+			modifier = hate_opinion
+			opinion = -50
+		}
+		# Quietly mark them for future rivalry.
+		hidden_effect = {
+			if = {
+				limit = {
+					can_set_relation_potential_rival_trigger = { CHARACTER = scope:knight }
+				}
+				set_relation_potential_rival = scope:knight
+			}
+		}
+		# But, hey, piety & same-faith courtier & guest opinion.
+		every_courtier_or_guest = {
+			limit = {
+				faith = root.faith
+				NOT = { has_trait = cynical }
+			}
+			custom = cop_slavic_yearly_fp1.0691.b.same_faith_courtiers_and_guests
+			add_opinion = {
+				target = root
+				modifier = pious_opinion
+				opinion = 10
+			}
+		}
+
+		stress_impact = {
+			vengeful = major_stress_impact_loss
+			zealous = major_stress_impact_loss
+			forgiving = major_stress_impact_gain
+			cynical = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_zeal = 0.5
+				ai_vengefulness = 0.5
+				ai_energy = -0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = vengeful
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = zealous
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = forgiving
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = cynical
+			}
+		}
+	}
+	
+	# You may go if you wish.
+	option = {
+		name = cop_slavic_yearly_fp1.0691.c
+
+		# Gain a little prestige.
+		add_prestige = minor_prestige_gain
+		# And the knight's gratitude.
+		reverse_add_opinion = {
+			target = scope:knight
+			modifier = grateful_opinion
+			opinion = 35
+		}
+		# But lose the knight.
+		scope:knight = { select_and_move_to_pool_effect = yes }
+
+		stress_impact = {
+			forgiving = major_stress_impact_loss
+			cynical = major_stress_impact_loss
+			vengeful = major_stress_impact_gain
+			zealous = major_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = 0.5
+				ai_vengefulness = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = forgiving
+			}
+			modifier = {	# Weight up for stress.
+				add = 30
+				has_trait = cynical
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = vengeful
+			}
+			modifier = {	# Weight down for stress.
+				add = -30
+				has_trait = zealous
+			}
+		}
+	}
+}
+
+#	Set-up event for raiding.
+cop_slavic_yearly_fp1.0692 = {
+	hidden = yes
+	type = empty
+	scope = army
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# We only want to convert to reformed faiths.
+		scope:county.faith = {
+			NOT = { has_doctrine = unreformed_faith_doctrine }
+		}
+		# Check various prerequisites with scope:raider.
+		scope:raider = {
+			# Scope:raider shouldn't have had this event recently either.
+			#NOT = { has_character_flag = had_event_fp1_yearly_0691 }
+			# We don't want all raiding to result in tons of variables floating about.
+			religion = religion:slavic_religion
+			has_government = tribal_government
+			# There must be at least one eligible knight in the raid army.
+			any_knight = { fp1_0692_valid_convertable_knight_trigger = yes }
+		}
+	}
+
+	immediate = {
+		# Designate a suitable knight.
+		scope:raider = {
+			random_knight = {
+				# Preferring those who might be more open to new ideas.
+				limit = {
+					fp1_0692_valid_convertable_knight_trigger = yes
+					OR = {
+						has_trait = humble
+						has_trait = honest
+						has_trait = ambitious
+						has_trait = gregarious
+						has_trait = arbitrary
+						has_trait = trusting
+						has_trait = fickle
+					}
+				}
+				# But otherwise just anyone valid.
+				alternative_limit = { fp1_0692_valid_convertable_knight_trigger = yes }
+				# Remember the county it happened in.
+				set_variable = {
+					name = raid_convert_county
+					value = scope:county
+					years = 5
+				}
+				# And the faith they'd like to convert to.
+				set_variable = {
+					name = raid_convert_faith
+					value = scope:county.faith
+					years = 5
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+##################################################
+# SPECIAL YEARLIES
+
+##################################################
+# Sparklingly Clean
+# by Ewan Cowhig Croft
+# 1071 - 1080
+##################################################
+
+#	You decide to put a little extra effort into your appearance.
+cop_slavic_yearly_fp1.1071 = {
+	type = character_event
+	title = cop_slavic_yearly_fp1.1071.t
+	desc = cop_slavic_yearly_fp1.1071.desc
+	theme = physical_health
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	override_background = { event_background = bedchamber }
+
+	trigger = {
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		# Standard checks.
+		is_available_at_peace_adult = yes
+		is_healthy = yes
+		NOT = { has_character_flag = had_event_fp1_yearly_1071 }
+		is_landed = yes
+		# Filter to flavour-appropriate characters.
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Weight up a bit for the healthy types.
+		modifier = {
+			add = 0.5
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.5
+			has_trait = whole_of_body
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_event_fp1_yearly_1071
+			days = 3650
+		}
+	}
+
+	# Hygiene is the key to a long life!
+	option = {
+		name = cop_slavic_yearly_fp1.1071.a
+
+		# Add a modifier boosting health.
+		add_character_modifier = {
+			modifier = fp1_bathing_health_modifier
+			years = 10
+		}
+
+		stress_impact = {
+			diligent = medium_stress_impact_loss
+			lazy = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = 0.75
+				ai_sociability = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = diligent
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = lazy
+			}
+		}
+	}
+	
+	# I suppose I could take a little extra care...
+	option = {
+		name = cop_slavic_yearly_fp1.1071.b
+
+		# Add a modifier boosting attraction.
+		add_character_modifier = {
+			modifier = fp1_bathing_attraction_modifier
+			years = 10
+		}
+
+		stress_impact = {
+			diligent = medium_stress_impact_loss
+			lazy = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_sociability = 0.75
+				ai_energy = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = diligent
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = lazy
+			}
+		}
+	}
+	
+	# Just the usual is fine.
+	option = {
+		name = cop_slavic_yearly_fp1.1071.c
+
+		# Lose a bit of stress for taking it easy.
+		## Stress loss handled in stress_impact.
+
+		stress_impact = {
+			base = medium_stress_loss
+			lazy = medium_stress_impact_loss
+			diligent = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_sociability = -0.1
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = lazy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = diligent
+			}
+		}
+	}
+}

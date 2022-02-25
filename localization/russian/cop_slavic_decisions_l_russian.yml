@@ -1,0 +1,18 @@
+﻿l_russian:
+rus_conversion_decision:0 "Выбрать для Руси новую веру"
+ rus_conversion_decision_desc:0 "Предки мои жили в язычестве, и хорошо жили. Однако купцы и воины наши с благоговением сказывают о монотеистических [Concept( 'faith' 'верах' )|E] соседних [Concept( 'realm' 'стран' )|E], о величественных [Concept( 'temple' 'храмах' )|E], необыкновенных обрядах и влиятельных священниках. Не пришел ли день, когда за плечом великого [Concept( 'ruler' 'правителя' )|E] должен встать единый бог?"
+ rus_conversion_decision_tooltip:0 "Созвать проповедников монотеистических религий"
+ rus_conversion_decision_custom_tooltip:0 "К вашему двору прибудут посланцы соседствующих [Concept( 'ruler' 'правителей' )|E], исповедующих монотеистические религии, дабы обратить вас в свою [Concept( 'faith' 'веру' )|E]."
+ rus_conversion_decision_confirm:0 "Спешите, гонцы!"
+
+select_personal_deity_slavic_decision:0 "Определить личное божество"
+ select_personal_deity_slavic_decision_tooltip:0 "[ROOT.Char.GetFaith.PantheonTerm] занимает все мысли"
+ select_personal_deity_slavic_decision_desc:1 "#F Довольно часто [ROOT.Char.GetFaith.GetAdherentNamePluralNoTooltip|l] уделяют особое внимание какому-то одному божеству, отвечающему их личным предпочтениям и целям.\n\nМне стоит поразмыслить об этих божественных сущностях и решить, кто из них мне ближе.#!"
+ select_personal_deity_slavic_decision_confirm:0 "Станьте последователем одного конкретного бога"
+ select_personal_deity_slavic_decision_tt:1 "Вы начинаете жить так, как заповедует"
+ select_personal_deity_slavic_decision.select_perun:0 "Перун, Громовержец"
+ select_personal_deity_slavic_decision.select_veles:0 "Велес, скотий бог"
+ select_personal_deity_slavic_decision.select_dazhbog:0 "Дажьбог, Солнце-царь"
+ select_personal_deity_slavic_decision.select_stribog:0 "Стрибог, всеведающий"
+ select_personal_deity_slavic_decision.select_svarog:0 "Сварог, Задира"
+ select_personal_deity_slavic_decision.select_mokosh:0 "Мокошь, мать сыра земля"

@@ -1,0 +1,142 @@
+﻿random_yearly_playable_pulse = {
+	random_on_action = {
+		4 = slavic_flavour_yearly_events
+	}
+}
+
+slavic_flavour_yearly_events = {
+	trigger = {
+		basic_is_valid_for_yearly_events_trigger = yes
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+	}
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			factor = -0.33
+			religion = religion:slavic_religion
+			NOR = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				culture = { has_cultural_pillar = heritage_west_slavic }
+				culture = { has_cultural_pillar = heritage_south_slavic }
+			}
+		}
+	}
+	
+	random_events = {
+		chance_to_happen = 65
+
+		200 = 0
+		
+		#Slavic Events
+		## Religious Festivals
+		200 = cop_slavic_yearly.0010 # Festival of Perun	aka a clubbing event
+		200 = cop_slavic_yearly.0020 # Festival of Veles with an optional race
+		200 = cop_slavic_yearly.0080 # Maslenitsa
+		## Religious Incidents
+		200 = cop_slavic_yearly.0031 # Veles's Fire Allowed to Burn Out
+		100 = cop_slavic_yearly.0041 # Christian Priest Performs an Offensive Ritual
+		200 = cop_slavic_yearly.0050 # Rampant Skomorokhs
+		200 = cop_slavic_yearly.0070 # Wife caught weaving on Friday
+		## Princely Life
+		200 = cop_slavic_yearly.0060 # Druzhina wants silver spoons
+		200 = cop_slavic_yearly.0090 # Dispute over Beekeeping Rights
+
+		# FP1 General Yearlies
+		200 = cop_slavic_yearly_fp1.0001 # Escaped Thrall - A thrall leaves your court in the night.
+		200 = cop_slavic_yearly_fp1.0021 # A Matter of Life and Death - Two knights fight to the death over nothing.
+		100 = cop_slavic_yearly_fp1.0041 # Explorers from the South - An Islamic explorer stops by for a visit.
+		200 = cop_slavic_yearly_fp1.0051 # The Unquiet Dead - You are informed of a reputed-draugr.
+		200 = cop_slavic_yearly_fp1.0071 # In the Deep Places of the World - locals in your Scandi capital report a troll.
+		200 = cop_slavic_yearly_fp1.0101 # A Game of Riddles - a courtier challenges you to a game of riddles.
+		200 = cop_slavic_yearly_fp1.2000 # A Child wants to run away to marry their beloved
+		# FP1 Flavour Yearlies
+		200 = cop_slavic_yearly_fp1.0511 # The Stench of Success - a courtier won't let an old trophy go.
+		200 = cop_slavic_yearly_fp1.0541 # The Beast of [Capital] - your child is playing pranks on courtiers.
+		200 = cop_slavic_yearly_fp1.0561 # My Arm Against Yours - a knight challenges you to arm-wrestling.
+		200 = cop_slavic_yearly_fp1.0591 # Raised Voices at the Thing - two of your counties are fighting at a regional thing.
+		200 = cop_slavic_yearly_fp1.0601 # The Hardest Part of Ruling - you're incredibly bored in a protracted thing session.
+		200 = cop_slavic_yearly_fp1.0611 # Leading by Example - one of your children hurts another whilst imitating you.
+		200 = cop_slavic_yearly_fp1.0681 # Why Can't I Come? - your child wants to come raiding.
+		200 = cop_slavic_yearly_fp1.0691 # Attempted Atonement - a knight has converted after raiding a reformed faith.
+		# FP1 Special Yearlies
+		50 = cop_slavic_yearly_fp1.1071 # Sparklingly Clean
+	}
+}
+
+on_death = {
+	events = {
+		cop_slavic_yearly_fp1.0052 #Rumoured Upir
+	}
+}
+
+on_3rd_birthday = {
+	events = {
+		cop_slavic_yearly.0100 #Postrig rite for your heir
+	}
+}
+
+on_raid_loot_delivered = {
+	on_actions = {
+		on_raid_slavic_loot_delivered
+	}
+}
+
+on_raid_slavic_loot_delivered = {
+	random_events = {
+		chance_to_happen = 25
+		200 = 0
+
+		100 = cop_slavic_yearly_fp1.0622	# FP1 - setup event for a child demanding some of your loot.
+		100 = cop_slavic_yearly_fp1.0632	# FP1 - setup event for noticing a cynical knight refuse to sacrifice.
+	}
+}
+
+on_raid_action_start = {
+	random_events = {
+		100 = cop_slavic_yearly_fp1.0692	# FP1 - setup event for one of your knights converting to a reformed faith.
+	}
+}
+
+on_game_start = {
+	events = {
+		cop_setup.0001 #Give Russians relevant innovations
+		cop_setup.0002 #Set up South Slavic Faith
+	}
+}
+
+# on_raid_action_completion = {
+# 	events = {
+# 		cop_slavic_war.0001 #You capture female prisoners for your tribe
+# 	}
+# }
+
+five_year_playable_pulse = {
+	on_actions = {
+		cop_pagan_conversion_pulse
+	}
+}
+
+cop_pagan_conversion_pulse = {
+	trigger = { #Is the character ready to convert?
+		is_ai = yes
+		has_government = tribal_government
+		faith = { has_doctrine_parameter = unreformed }
+		NOT = { has_trait = zealous }
+	}
+
+	events = {
+		cop_conversion.0001 #Pagan reformed by neighbor, spouse, soulmate, friend, or geographic location
+	}
+}
+
+on_faith_created = {
+	events = {
+		cop_conversion.0003
+		delay = { days = 10 }
+	}
+}

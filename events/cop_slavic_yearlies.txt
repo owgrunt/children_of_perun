@@ -1,0 +1,3046 @@
+﻿################
+# SLAVIC YEARLY EVENTS
+################
+# By Artem Samarsky
+##
+# EVENT LIST
+#  cop_slavic_yearly.0010 - Festival of Perun aka a clubbing event
+#  cop_slavic_yearly.0020 - Veles's Bull Race
+#  cop_slavic_yearly.0031 - Veles's Fire Allowed to Burn Out
+#  cop_slavic_yearly.0041 - Christian Priest Performs an Offensive Ritual
+#  cop_slavic_yearly.0050 - Rampant Skomorokhs
+#  cop_slavic_yearly.0060 - Druzhina wants silver spoons
+#  cop_slavic_yearly.0070 - Wife caught weaving on Friday
+#  cop_slavic_yearly.0080 - Maslenitsa
+#  cop_slavic_yearly.0090 - Dispute over Beekeeping Rights
+#  cop_slavic_yearly.0100 - The Postrig Rite for your Heir
+
+namespace = cop_slavic_yearly
+
+#########################
+# Festival of Perun		#
+# aka a clubbing event	#
+# by Artem Samarsky		#
+#########################
+
+#Check triggers and schedule the event for the traditional date
+cop_slavic_yearly.0010 = {
+	hidden = yes
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		NOT = { has_character_flag = had_cop_slavic_yearly_0011 }
+	}
+
+	immediate = {
+		trigger_event = {
+			id = cop_slavic_yearly.0011
+			trigger_on_next_date = 7.20
+		}
+	}
+}
+
+#Present a choice to participate in the fight
+cop_slavic_yearly.0011 = {
+	type = character_event
+	title = cop_slavic_yearly.0011.t
+	desc = cop_slavic_yearly.0011.desc
+	theme = martial
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	override_background = { event_background = courtyard }
+
+	immediate = {
+		add_character_flag = {
+			flag = had_cop_slavic_yearly_0011
+			years = 5
+		}
+	}
+
+	option = { #Fight with a club
+		name = cop_slavic_yearly.0011.a
+		duel = {
+			skill = prowess
+			value = medium_skill_rating
+			20 = {
+				desc = cop_slavic_yearly.0011.a_success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1
+					min = -19
+				}
+				show_as_tooltip = {
+					add_prestige = medium_prestige_gain
+					add_character_modifier = {
+						modifier = perun_warrior 
+						days = 1825
+					}
+				}
+				hidden_effect = {
+					trigger_event = cop_slavic_yearly.0012 #Gain an improved prowess modifier
+				}
+			}
+			20 = {
+				desc = cop_slavic_yearly.0011.a_failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1
+					min = -19
+				}
+				show_as_tooltip = {
+					increase_wounds_effect = {
+						REASON = fight
+					}
+					add_prestige = minor_prestige_loss
+				}
+				hidden_effect = {
+					trigger_event = cop_slavic_yearly.0013
+				}
+			}
+		}
+		hidden_effect = {
+			root = { add_character_flag = perun_bout_chose_mace }
+		}
+		stress_impact = {
+			craven = medium_stress_impact_gain
+			lazy = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = -50
+				has_trait_rank = {
+					trait = wounded
+					rank >= 2
+				}
+			}
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_energy = 0.5
+			}
+		}
+	}
+
+	option = { #Fight with fists
+		name = cop_slavic_yearly.0011.b
+		duel = {
+			skill = prowess
+			value = low_skill_rating
+			20 = {
+				desc = cop_slavic_yearly.0011.b_success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1
+					min = -19
+				}
+				show_as_tooltip = {
+					add_prestige = minor_prestige_gain
+					add_character_modifier = {
+						modifier = perun_warrior 
+						days = 730
+					}
+				}
+				hidden_effect = {
+					trigger_event = cop_slavic_yearly.0012 #Gain an improved prowess modifier
+				}
+			}
+			20 = {
+				desc = cop_slavic_yearly.0011.b_failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1
+					min = -19
+				}
+				show_as_tooltip = {
+					increase_wounds_effect = {
+						REASON = fight
+					}
+					add_prestige = miniscule_prestige_loss
+				}
+				hidden_effect = {
+					trigger_event = cop_slavic_yearly.0013
+				}
+			}
+		}
+		stress_impact = {
+			craven = medium_stress_impact_gain
+			lazy = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = -50
+				has_trait_rank = {
+					trait = wounded
+					rank >= 2
+				}
+			}
+			ai_value_modifier = {
+				ai_boldness = 0.5
+				ai_energy = 0.5
+			}
+		}
+	}
+
+	option = { #Not for me
+		name = cop_slavic_yearly.0011.c
+		add_prestige = minor_prestige_loss
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			brave = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 50
+		}
+	}
+}
+
+#You beat everyone
+cop_slavic_yearly.0012 = {
+	type = character_event
+	title = cop_slavic_yearly.0012.t
+	desc = {
+		desc = cop_slavic_yearly.0012.opening
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = perun_bout_chose_mace
+				}
+				desc = cop_slavic_yearly.0012.mace
+			}
+			triggered_desc = {
+				desc = cop_slavic_yearly.0012.fists
+			}
+		}
+	}
+
+	theme = martial_chivalry_focus
+	override_background = {
+		event_background = courtyard
+	}
+
+	left_portrait = {
+		character = root
+		animation = war_over_win
+	}
+	
+	option = { #You beat everyone with a mace
+		name = cop_slavic_yearly.0012.a
+		trigger = { has_character_flag = perun_bout_chose_mace }
+		add_prestige = medium_prestige_gain	
+		add_character_modifier = {
+			modifier = perun_warrior 
+			days = 1825
+		}
+		hidden_effect = { remove_character_flag = perun_bout_chose_mace }
+	}
+	option = { #You beat everyone with your fists
+		name = cop_slavic_yearly.0012.a
+		trigger = { not = { has_character_flag = perun_bout_chose_mace  } }
+		add_prestige = minor_prestige_gain
+		add_character_modifier = {
+			modifier = perun_warrior 
+			days = 730
+		}
+	}
+}
+
+#You are beaten
+cop_slavic_yearly.0013 = {
+	type = character_event
+	title = cop_slavic_yearly.0013.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = perun_bout_chose_mace
+				}
+				desc = cop_slavic_yearly.0013.mace
+			}
+			triggered_desc = {
+				desc = cop_slavic_yearly.0013.fists
+			}
+		}
+		desc = {
+			first_valid = {
+				triggered_desc = { #ded
+					trigger = {
+						has_trait_rank = {
+							trait = wounded
+							rank = 3
+						}
+					}
+					desc = cop_slavic_yearly.0013.dead
+				}
+				triggered_desc = { #I was stupid enough to participate with an injury
+					trigger = {
+						has_trait_rank = {
+							trait = wounded
+							rank > 0
+						}
+					}
+					desc = cop_slavic_yearly.0013.heavy
+				}
+				triggered_desc = {
+					desc = cop_slavic_yearly.0013.light
+				}
+			}
+		}
+	}
+
+	theme = martial_chivalry_focus
+	override_background = {
+		event_background = courtyard
+	}
+	left_portrait = {
+		character = root
+		animation = pain
+	}
+	
+	immediate = {
+		increase_wounds_effect = {
+			REASON = fight
+		}
+		create_character = {
+			location = root.capital_province
+			template = soldier_friend_character
+			gender_female_chance = root_soldier_female_chance
+			save_scope_as = perun_bout_victor
+		}
+	}
+
+	option = { #You lose a fight with a mace
+		name = cop_slavic_yearly.0013.a
+		trigger = { has_character_flag = perun_bout_chose_mace }
+		add_prestige = minor_prestige_loss
+		hidden_effect = { remove_character_flag = perun_bout_chose_mace }
+	}
+	option = { #You lose a fist fight
+		name = cop_slavic_yearly.0013.a
+		trigger = { not = { has_character_flag = perun_bout_chose_mace  } }
+		add_prestige = miniscule_prestige_loss
+	}
+	option = { #I could use such a soldier! (mace)
+		name = cop_slavic_yearly.0013.b
+		trigger = {
+			and = {
+				has_character_flag = perun_bout_chose_mace
+				NOT = {
+					has_trait_rank = {
+						trait = wounded
+						rank = 3
+					}
+				}
+			}
+		}
+		add_prestige = minor_prestige_loss
+		root = { recruit_courtier = scope:perun_bout_victor }
+	}
+	option = { #I could use such a soldier! (fists)
+		name = cop_slavic_yearly.0013.b
+		trigger = {
+			NOR = {
+				has_character_flag = perun_bout_chose_mace
+				has_trait_rank = {
+					trait = wounded
+					rank = 3
+				}
+			}
+		}
+		add_prestige = miniscule_prestige_loss
+		root = { recruit_courtier = scope:perun_bout_victor }
+	}
+	option = { #He will pay for it! (mace)
+		name = cop_slavic_yearly.0013.c
+		trigger = {
+			and = {
+				has_character_flag = perun_bout_chose_mace
+				NOT = {
+					has_trait_rank = {
+						trait = wounded
+						rank = 3
+					}
+				}
+			}
+		}
+		add_prestige = minor_prestige_loss
+		imprison = { 
+			target = scope:perun_bout_victor 
+			type = dungeon
+		}
+		add_tyranny = minor_tyranny_gain
+	}
+	option = { #He will pay for it! (fists)
+		name = cop_slavic_yearly.0013.c
+		trigger = {
+			NOR = {
+				has_character_flag = perun_bout_chose_mace
+				has_trait_rank = {
+					trait = wounded
+					rank = 3
+				}
+			}
+		}
+		add_prestige = miniscule_prestige_loss
+		imprison = {
+			target = scope:perun_bout_victor
+			type = dungeon
+		}
+		add_tyranny = minor_tyranny_gain
+	}
+}
+
+#########################
+# Veles's Bull Race		#
+# by Artem Samarsky		#
+#########################
+
+#Check triggers and schedule the event for the traditional date
+cop_slavic_yearly.0020 = {
+	hidden = yes
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		NOT = { has_character_flag = had_cop_slavic_yearly_0021 }
+		has_councillor_for_skill = learning
+	}
+
+	immediate = {
+		trigger_event = {
+			id = cop_slavic_yearly.0021
+			trigger_on_next_date = 2.28
+		}
+	}
+}
+
+# Give an overview of the festival and choices
+cop_slavic_yearly.0021 = {
+	type = character_event
+	title = cop_slavic_yearly.0021.t
+	desc = cop_slavic_yearly.0021.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:veles_priest
+		animation = happiness
+	}
+	override_background = { event_background = farmland }
+
+	immediate = {
+		add_character_flag = {
+			flag = had_cop_slavic_yearly_0021
+			years = 5
+		}
+		cp:councillor_court_chaplain = { save_scope_as = veles_priest }
+	}
+
+	option = { #Participate in the race
+		name = cop_slavic_yearly.0021.a
+		custom_tooltip = cop_slavic_yearly.0021.a.tt
+		add_piety = medium_piety_gain
+		remove_short_term_gold = medium_gold_value
+		hidden_effect = {
+			random_list = {
+				40 = { trigger_event = cop_slavic_yearly.0022 }
+				40 = { trigger_event = cop_slavic_yearly.0023 }
+				20 = { trigger_event = cop_slavic_yearly.0024 }
+			}
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+			lazy = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 0.5
+				ai_energy = 0.5
+			}
+		}
+	}
+
+	option = { #Just the procession
+		name = cop_slavic_yearly.0021.b
+		add_piety = miniscule_piety_gain
+		remove_short_term_gold = minor_gold_value
+		ai_chance = {
+			base = 10
+		}
+	}
+
+	option = { #Not for me
+		name = cop_slavic_yearly.0021.c
+		add_piety = minor_piety_loss
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 5
+			ai_value_modifier = {
+				ai_greed = 0.5
+			}
+		}
+	}
+}
+
+# Victory
+cop_slavic_yearly.0022 = {
+	type = character_event
+	title = cop_slavic_yearly.0022.t
+	desc = cop_slavic_yearly.0022.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	override_background = { event_background = farmland }
+
+	option = {
+		name = cop_slavic_yearly.0022.a
+		add_prestige = minor_prestige_gain
+	}
+}
+
+# Defeat
+cop_slavic_yearly.0023 = {
+	type = character_event
+	title = cop_slavic_yearly.0023.t
+	desc = cop_slavic_yearly.0023.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = shame
+	}
+	override_background = { event_background = farmland }
+
+	option = {
+		name = cop_slavic_yearly.0023.a
+		add_prestige = miniscule_prestige_loss
+	}
+}
+
+# Disaster
+cop_slavic_yearly.0024 = {
+	type = character_event
+	title = cop_slavic_yearly.0024.t
+	desc = cop_slavic_yearly.0024.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+	override_background = { event_background = farmland }
+
+	option = {
+		name = cop_slavic_yearly.0024.a
+		add_prestige = medium_prestige_loss
+		remove_short_term_gold = major_gold_value
+	}
+}
+
+#########################
+# Veles's Fire Allowed to Burn Out
+# by Artem Samarsky
+#########################
+
+# Сказание о построении града Ярославля
+
+# The bishop allowed a sacred fire to burn out and needs to be killed
+cop_slavic_yearly.0031 = {
+	type = character_event
+	title = cop_slavic_yearly.0031.t
+	desc = cop_slavic_yearly.0031.desc
+	theme = faith
+	left_portrait = {
+		character = scope:blundering_priest
+		animation = fear
+	}
+	right_portrait = {
+		character = scope:murderous_priest
+		animation = anger
+	}
+	override_background = { event_background = farmland }
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		NOT = { has_character_flag = had_cop_slavic_yearly_0031 }
+		has_councillor_for_skill = learning
+		#The councillor's skill should be sufficiently low for the blunder
+		cp:councillor_court_chaplain = { 
+			learning < medium_skill_rating
+			can_be_fired_from_council_trigger = { COURT_OWNER = root }
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_cop_slavic_yearly_0031
+			years = 5
+		}
+		cp:councillor_court_chaplain = { save_scope_as = blundering_priest }
+		#To avoid a weird loc bug
+		cp:councillor_court_chaplain = { save_scope_as = target_character }
+		#Creating a chaplain's replacement
+		create_character = {
+			employer = root
+			template = slavic_priest_character_template
+			save_scope_as = murderous_priest
+		}
+		#Dummy check to avoid errors since the flag is only checked in portrait modifiers otherwise
+		if = {
+			limit = {
+				has_character_flag = need_priest_outfit
+			}
+			#Please dress properly!
+		}
+		#Grab our capital for loc.
+		capital_county = { save_scope_as = capital_county }
+	}
+
+	option = { #Deserves to die
+		name = cop_slavic_yearly.0031.a
+		root = { fire_councillor = cp:councillor_court_chaplain }
+		custom_tooltip = cop_slavic_yearly.0031.a_tt
+		hidden_effect = {
+			root = {
+				assign_councillor_type = {
+					type = councillor_court_chaplain
+					target = scope:murderous_priest
+				}
+			}
+		}
+		scope:blundering_priest = {
+			death = {
+				killer = scope:murderous_priest
+				death_reason = death_sacrificed_to_gods
+			}
+		}
+		stress_impact = {
+			compassionate = medium_stress_impact_gain
+			forgiving = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 0.5
+			}
+		}
+	}
+
+	option = { #why would you even consider this option?
+		name = cop_slavic_yearly.0031.b
+		add_piety = medium_piety_loss
+		#The locals are unhappy
+		send_interface_toast = {
+			title = cop_slavic_yearly.0031.b.locals_outraged
+			left_icon = scope:blundering_priest
+			capital_county = {
+				add_county_modifier = {
+					modifier = slavic_blundering_priest_spared
+					years = 10
+				}
+			}
+		}
+		reverse_add_opinion = {
+			target = scope:blundering_priest
+			modifier = slavic_blundering_priest_saved
+		}
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+			vengeful = medium_stress_impact_gain
+			wrathful = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 5
+			ai_value_modifier = {
+				ai_compassion = 0.5
+			}
+		}
+	}
+}
+
+#########################
+# Christian Priest Performs an Offensive Ritual
+# by Artem Samarsky
+#########################
+
+# According to Helmold of Bosau, on one occasion, shortly before the main Ranove religious festival in November, a large number of German traders and fish merchants arrived on the island. At a certain stage, the Christian priest Gottschalk, who accompanied these merchants, performed a service for them. In outrage Sventovit’s high priest summoned the “king” and tribal assembly, and demanded that the German priest be sacrificed to the deity for offending it. The tribal assembly then offered the German merchants the amount of 100 marks (presumably of silver) for the priest, which was a relatively high price.  However, the merchants and their priest managed to depart from the island before the Ranove became aware of their escape.
+
+scripted_trigger cop_slavic_yearly_0041_christian_ruler_trigger = {
+	is_adult = yes
+	basic_is_available_ai = yes
+	in_diplomatic_range = root
+	religion = religion:christianity_religion
+	NOR = { 
+		is_at_war_with = root
+		#Theocracies/zealots likely would not trade with us
+		has_government = theocracy_government
+		has_trait = zealous
+	}
+	is_landed = yes
+	is_independent_ruler = yes
+	highest_held_title_tier >= tier_duchy
+}
+
+# A trade delegation comes, accompanied by a Christian priest
+cop_slavic_yearly.0041 = {
+	type = character_event
+	title = cop_slavic_yearly.0041.t
+	desc = cop_slavic_yearly.0041.desc
+	theme = faith
+	left_portrait = {
+		character = scope:trade_partner
+		animation = personality_greedy
+	}
+	right_portrait = {
+		character = scope:christian_priest
+		animation = personality_zealous
+	}
+	override_background = { event_background = market }
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		NOT = { has_character_flag = had_cop_slavic_yearly_0041 }
+		OR = {
+			any_neighboring_and_across_water_top_liege_realm_owner = {
+				cop_slavic_yearly_0041_christian_ruler_trigger = yes
+			}
+			any_ruler = {
+				cop_slavic_yearly_0041_christian_ruler_trigger = yes
+			}
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_cop_slavic_yearly_0041
+			years = 5
+		}
+		every_neighboring_and_across_water_top_liege_realm_owner = {
+			limit = { cop_slavic_yearly_0041_christian_ruler_trigger = yes }
+			add_to_list = christian_rulers
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_neighboring_and_across_water_top_liege_realm_owner = {
+						cop_slavic_yearly_0041_christian_ruler_trigger = yes
+					}
+				}
+			}
+			every_ruler = {
+				limit = { cop_slavic_yearly_0041_christian_ruler_trigger = yes }
+				add_to_list = christian_rulers
+			}
+		}
+		random_in_list = {
+			list = christian_rulers
+			weight = {
+				base = 1
+				modifier = {
+					factor = 5
+					highest_held_title_tier = tier_kingdom
+				}
+				modifier = {
+					factor = 10
+					highest_held_title_tier = tier_empire
+				}
+				modifier = {
+					factor = 10
+					OR = {
+						has_trait = education_stewardship_1
+						has_trait = education_stewardship_2
+						has_trait = education_stewardship_3
+						has_trait = education_stewardship_4
+					}
+				}
+				modifier = {
+					factor = 10
+					has_trait = greedy
+				}
+			}
+			save_scope_as = trade_partner
+		}
+		#Creating a priest
+		create_character = {
+			employer = scope:trade_partner
+			template = orthodox_emissary_character
+			faith = scope:trade_partner.faith
+			culture = scope:trade_partner.culture
+			save_scope_as = christian_priest
+		}
+		#Dummy check to avoid errors since the flag is only checked in portrait modifiers otherwise
+		if = {
+			limit = {
+				has_character_flag = need_priest_outfit
+			}
+			#Please dress properly!
+		}
+		#Grab our capital for loc.
+		capital_county = { save_scope_as = capital_county }
+		#Bring the priest to us
+		scope:christian_priest = { visit_court_of = root }
+	}
+
+	option = { #Let them come
+		name = cop_slavic_yearly.0041.a
+		custom_tooltip = cop_slavic_yearly.0041.a_tt
+		add_gold = massive_gold_value
+		add_piety = miniscule_piety_loss
+		#Get development from more trade
+		send_interface_toast = {
+			title = cop_slavic_yearly.0041.a.trade_developed
+			left_icon = root
+			capital_county = {
+				add_county_modifier = {
+					modifier = cop_slavic_yearly_0041_trade_developed
+					years = 5
+				}
+			}
+		}
+		#Set up the next event with enraged priest
+		hidden_effect = {
+			trigger_event = {
+				id = cop_slavic_yearly.0042
+				days = { 15 30 }
+			}
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_greed = 0.5
+				ai_zeal = -0.25
+			}
+		}
+	}
+
+	option = { #Don't want the likes of you here
+		name = cop_slavic_yearly.0041.b
+		custom_tooltip = cop_slavic_yearly.0041.b_tt
+		add_piety = medium_piety_gain
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+		}
+		send_interface_toast = {
+			title = cop_slavic_yearly.0041.b.trade_stifled
+			left_icon = root
+			capital_county = {
+				add_county_modifier = {
+					modifier = cop_slavic_yearly_0041_trade_stifled
+					years = 5
+				}
+			}
+		}
+		ai_chance = {
+			base = 5
+			ai_value_modifier = {
+				ai_greed = -0.5
+				ai_zeal = 0.5
+			}
+		}
+	}
+}
+
+#Volkhv is upset
+cop_slavic_yearly.0042 = {
+	type = character_event
+	title = cop_slavic_yearly.0042.t
+	desc = cop_slavic_yearly.0042.desc
+	theme = faith
+	left_portrait = {
+		character = scope:christian_priest
+		animation = fear
+	}
+	right_portrait = {
+		character = scope:enraged_priest
+		animation = anger
+	}
+	override_background = { event_background = fp1_tribal_temple }
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		has_councillor_for_skill = learning
+		exists = scope:christian_priest
+	}
+
+	immediate = { 
+		cp:councillor_court_chaplain = { save_scope_as = enraged_priest }
+	}
+
+	option = { #Go to the veche
+		name = cop_slavic_yearly.0042.a
+		custom_tooltip = cop_slavic_yearly.0042.a_tt
+		#Set up the veche event
+		hidden_effect = {
+			trigger_event = {
+				id = cop_slavic_yearly.0043
+				days = { 1 3 }
+			}
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 0.5
+			}
+		}
+	}
+
+	option = { #Refuse to consider this
+		name = cop_slavic_yearly.0042.b
+		add_piety = medium_piety_loss
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+		}
+		reverse_add_opinion = {
+			target = scope:enraged_priest
+			modifier = cop_slavic_yearly_041_refused
+		}
+		send_interface_toast = {
+			title = cop_slavic_yearly.0042.b.locals_outraged
+			left_icon = scope:enraged_priest
+			capital_county = {
+				add_county_modifier = {
+					modifier = cop_slavic_yearly_0041_priest_spared
+					years = 5
+				}
+			}
+		}
+		ai_chance = {
+			base = 5
+			ai_value_modifier = {
+				ai_zeal = -0.5
+			}
+		}
+	}
+}
+
+#We consult the veche gathering
+cop_slavic_yearly.0043 = {
+	type = character_event
+	title = cop_slavic_yearly.0043.t
+	desc = cop_slavic_yearly.0043.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:enraged_priest
+		animation = personality_bold
+	}
+	override_background = { event_background = courtyard }
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		exists = scope:christian_priest
+		exists = scope:enraged_priest
+	}
+
+	option = { #Try to buy the priest
+		name = cop_slavic_yearly.0043.a
+		duel = {
+			skill = diplomacy
+			value = high_skill_rating
+			20 = {
+				desc = cop_slavic_yearly.0043.a_success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1
+					min = -19
+				}
+				show_as_tooltip = {
+					remove_short_term_gold = medium_gold_value
+					reverse_add_opinion = {
+						target = scope:enraged_priest
+						modifier = cop_slavic_yearly_041_succeeded
+					}
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = cop_slavic_yearly.0044 #Success
+						days = 1
+					}
+				}
+			}
+			40 = {
+				desc = cop_slavic_yearly.0043.a_failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1
+					min = -19
+				}
+				show_as_tooltip = {
+					add_prestige = minor_prestige_loss
+					reverse_add_opinion = {
+						target = scope:enraged_priest
+						modifier = cop_slavic_yearly_041_failed
+					}
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = cop_slavic_yearly.0045 #Failure
+						days = 1
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			root = { add_character_flag = slavic_041_chose_peace }
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 0.5
+			}
+		}
+	}
+
+	
+	option = { #Try to steal the priest
+		name = cop_slavic_yearly.0043.b
+		send_interface_toast = {
+			title = cop_slavic_yearly.0041.b.trade_stifled
+			left_icon = root
+			capital_county = {
+				remove_county_modifier = cop_slavic_yearly_0041_trade_developed
+				add_county_modifier = {
+					modifier = cop_slavic_yearly_0041_trade_stifled
+					years = 5
+				}
+			}
+		}
+		duel = {
+			skill = martial
+			value = medium_skill_rating
+			20 = {
+				desc = cop_slavic_yearly.0043.b_success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1
+					min = -19
+				}
+				show_as_tooltip = {					
+					add_prestige = minor_prestige_loss
+					reverse_add_opinion = {
+						target = scope:enraged_priest
+						modifier = cop_slavic_yearly_041_succeeded
+					}
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = cop_slavic_yearly.0044 #Success
+						days = 1
+					}
+				}
+			}
+			20 = {
+				desc = cop_slavic_yearly.0043.b_failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1
+					min = -19
+				}
+				show_as_tooltip = {
+					add_prestige = medium_prestige_loss
+					reverse_add_opinion = {
+						target = scope:enraged_priest
+						modifier = cop_slavic_yearly_041_failed
+					}
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = cop_slavic_yearly.0045 #Failure
+						days = 1
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			root = { add_character_flag = slavic_041_chose_violence }
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 0.5
+			}
+		}
+	}
+
+	option = { #Try to persuade the veche to back down
+		name = cop_slavic_yearly.0043.c
+		reverse_add_opinion = {
+			target = scope:enraged_priest
+			modifier = cop_slavic_yearly_041_refused
+		}
+		duel = {
+			skill = learning
+			value = high_skill_rating
+			20 = {
+				desc = cop_slavic_yearly.0043.c_success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1
+					min = -19
+				}
+				send_interface_toast = {
+					title = cop_slavic_yearly.0043.c_success
+					left_icon = root
+					add_prestige = medium_prestige_gain
+				}
+			}
+			40 = {
+				desc = cop_slavic_yearly.0043.c_failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1
+					min = -19
+				}
+				send_interface_toast = {
+					title = cop_slavic_yearly.0043.c_success
+					left_icon = root
+					add_prestige = medium_prestige_loss
+				}
+				hidden_effect = {
+					trigger_event = cop_slavic_yearly.0046
+				}
+			}
+		}
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 5
+			ai_value_modifier = {
+				ai_zeal = -0.5
+			}
+		}
+	}
+
+	option = { #Refuse to consider this
+		name = cop_slavic_yearly.0043.d
+		add_piety = medium_piety_loss
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+		}
+		reverse_add_opinion = {
+			target = scope:enraged_priest
+			modifier = cop_slavic_yearly_041_refused
+		}
+		send_interface_toast = {
+			title = cop_slavic_yearly.0043.d.locals_outraged
+			left_icon = scope:enraged_priest
+			capital_county = {
+				add_county_modifier = {
+					modifier = cop_slavic_yearly_0041_priest_spared
+					years = 5
+				}
+			}
+		}
+		ai_chance = {
+			base = 5
+			ai_value_modifier = {
+				ai_zeal = -0.5
+			}
+		}
+	}
+}
+
+#We got the priest
+cop_slavic_yearly.0044 = {
+	type = character_event
+	title = cop_slavic_yearly.0044.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = slavic_041_chose_peace
+				}
+				desc = cop_slavic_yearly.0044.buy_intro
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = slavic_041_chose_violence
+				}
+				desc = cop_slavic_yearly.0044.capture_intro
+			}
+		}
+		desc = cop_slavic_yearly.0044.main
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = slavic_041_chose_peace
+				}
+				desc = cop_slavic_yearly.0044.buy_outro
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = slavic_041_chose_violence
+				}
+				desc = cop_slavic_yearly.0044.capture_outro
+			}
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = scope:christian_priest
+		animation = grief
+	}
+	right_portrait = {
+		character = scope:enraged_priest
+		animation = personality_vengeful
+	}
+	override_background = { event_background = army_camp }
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		exists = scope:christian_priest
+		exists = scope:enraged_priest
+	}
+
+	option = { #We bought the priest
+		name = cop_slavic_yearly.0044.a
+		trigger = {
+			has_character_flag = slavic_041_chose_peace
+		}
+		remove_short_term_gold = medium_gold_value
+		reverse_add_opinion = {
+			target = scope:enraged_priest
+			modifier = cop_slavic_yearly_041_succeeded
+		}
+		scope:christian_priest = {
+			death = {
+				killer = scope:enraged_priest
+				death_reason = death_sacrificed_to_gods
+			}
+		}
+		hidden_effect = { remove_character_flag = slavic_041_chose_peace }
+	}
+
+	
+	option = { #We got the priest by force
+		name = cop_slavic_yearly.0044.a
+		trigger = {
+			has_character_flag = slavic_041_chose_violence
+		}
+		add_prestige = minor_prestige_loss
+		reverse_add_opinion = {
+			target = scope:enraged_priest
+			modifier = cop_slavic_yearly_041_succeeded
+		}
+		scope:christian_priest = {
+			death = {
+				killer = scope:enraged_priest
+				death_reason = death_sacrificed_to_gods
+			}
+		}
+		hidden_effect = { remove_character_flag = slavic_041_chose_violence }
+	}
+}
+
+#The priest escaped
+cop_slavic_yearly.0045 = {
+	type = character_event
+	title = cop_slavic_yearly.0045.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = slavic_041_chose_peace
+				}
+				desc = cop_slavic_yearly.0045.buy_intro
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = slavic_041_chose_violence
+				}
+				desc = cop_slavic_yearly.0045.capture_intro
+			}
+		}
+		desc = cop_slavic_yearly.0045.main
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = slavic_041_chose_peace
+				}
+				desc = cop_slavic_yearly.0045.buy_outro
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = slavic_041_chose_violence
+				}
+				desc = cop_slavic_yearly.0045.capture_outro
+			}
+		}
+	}
+	theme = faith
+	left_portrait = {
+		character = scope:christian_priest
+		animation = ecstasy
+	}
+	right_portrait = {
+		character = scope:enraged_priest
+		animation = disapproval
+	}
+	override_background = { event_background = army_camp }
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		exists = scope:christian_priest
+		exists = scope:enraged_priest
+	}
+
+	option = { #We failed to buy the priest
+		name = cop_slavic_yearly.0045.a
+		trigger = {
+			has_character_flag = slavic_041_chose_peace
+		}
+		add_prestige = minor_prestige_loss
+		reverse_add_opinion = {
+			target = scope:enraged_priest
+			modifier = cop_slavic_yearly_041_failed
+		}
+		scope:christian_priest = { return_to_court = yes }
+		hidden_effect = { remove_character_flag = slavic_041_chose_peace }
+	}
+
+	
+	option = { #We failed to capture the priest by force
+		name = cop_slavic_yearly.0045.a
+		trigger = {
+			has_character_flag = slavic_041_chose_violence
+		}
+		add_prestige = medium_prestige_loss
+		reverse_add_opinion = {
+			target = scope:enraged_priest
+			modifier = cop_slavic_yearly_041_failed
+		}
+		scope:christian_priest = { return_to_court = yes }
+		hidden_effect = { remove_character_flag = slavic_041_chose_violence }
+	}
+}
+
+#We failed to persuade the veche, still need a decision
+cop_slavic_yearly.0046 = {
+	type = character_event
+	title = cop_slavic_yearly.0046.t
+	desc = cop_slavic_yearly.0046.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = disapproval
+	}
+	right_portrait = {
+		character = scope:enraged_priest
+		animation = personality_honorable
+	}
+	override_background = { event_background = courtyard }
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		exists = scope:christian_priest
+	}
+
+	option = { #Try to buy the priest
+		name = cop_slavic_yearly.0046.a
+		duel = {
+			skill = diplomacy
+			value = high_skill_rating
+			80 = {
+				desc = cop_slavic_yearly.0046.a_success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1
+					min = -19
+				}
+				show_as_tooltip = {
+					remove_short_term_gold = medium_gold_value
+					reverse_add_opinion = {
+						target = scope:enraged_priest
+						modifier = cop_slavic_yearly_041_succeeded
+					}
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = cop_slavic_yearly.0044 #Success
+						days = 1
+					}
+				}
+			}
+			40 = {
+				desc = cop_slavic_yearly.0046.a_failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1
+					min = -19
+				}
+				show_as_tooltip = {
+					add_prestige = minor_prestige_loss
+					reverse_add_opinion = {
+						target = scope:enraged_priest
+						modifier = cop_slavic_yearly_041_failed
+					}
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = cop_slavic_yearly.0045 #Failure
+						days = 1
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			root = { add_character_flag = slavic_041_chose_peace }
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 0.5
+			}
+		}
+	}
+
+	
+	option = { #Try to steal the priest
+		name = cop_slavic_yearly.0046.b
+		send_interface_toast = {
+			title = cop_slavic_yearly.0041.b.trade_stifled
+			left_icon = root
+			capital_county = {
+				remove_county_modifier = cop_slavic_yearly_0041_trade_developed
+				add_county_modifier = {
+					modifier = cop_slavic_yearly_0041_trade_stifled
+					years = 5
+				}
+			}
+		}
+		duel = {
+			skill = martial
+			value = medium_skill_rating
+			20 = {
+				desc = cop_slavic_yearly.0046.b_success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1
+					min = -19
+				}
+				show_as_tooltip = {					
+					add_prestige = minor_prestige_loss
+					reverse_add_opinion = {
+						target = scope:enraged_priest
+						modifier = cop_slavic_yearly_041_succeeded
+					}
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = cop_slavic_yearly.0044 #Success
+						days = 1
+					}
+				}
+			}
+			20 = {
+				desc = cop_slavic_yearly.0046.b_failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1
+					min = -19
+				}
+				show_as_tooltip = {
+					add_prestige = medium_prestige_loss
+					reverse_add_opinion = {
+						target = scope:enraged_priest
+						modifier = cop_slavic_yearly_041_failed
+					}
+				}
+				hidden_effect = {
+					trigger_event = {
+						id = cop_slavic_yearly.0045 #Failure
+						days = 1
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			root = { add_character_flag = slavic_041_chose_violence }
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 0.5
+			}
+		}
+	}
+
+	option = { #Refuse to consider this
+		name = cop_slavic_yearly.0046.c
+		add_piety = medium_piety_loss
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+		}
+		send_interface_toast = {
+			title = cop_slavic_yearly.0043.d.locals_outraged
+			left_icon = scope:enraged_priest
+			capital_county = {
+				add_county_modifier = {
+					modifier = cop_slavic_yearly_0041_priest_spared
+					years = 5
+				}
+			}
+		}
+		ai_chance = {
+			base = 5
+			ai_value_modifier = {
+				ai_zeal = -0.5
+			}
+		}
+	}
+}
+
+#########################
+# Rampant Skomorokhs
+# by Artem Samarsky
+#########################
+
+cop_slavic_yearly.0050 = {
+	type = character_event
+	title = cop_slavic_yearly.0050.t
+	desc = cop_slavic_yearly.0050.desc
+	theme = faith
+	left_portrait = {
+		character = scope:realm_steward
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = scope:realm_priest
+		animation = personality_zealous
+	}
+	override_background = { event_background = farmland }
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		NOT = { has_character_flag = had_cop_slavic_yearly_0050 }
+		has_councillor_for_skill = learning
+		has_councillor_for_skill = stewardship
+		capital_county = { faith.religion = religion:slavic_religion }
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_cop_slavic_yearly_0050
+			years = 5
+		}
+		cp:councillor_court_chaplain = { save_scope_as = realm_priest }
+		cp:councillor_steward = { save_scope_as = realm_steward }
+		#Grab our capital for loc.
+		capital_county = { save_scope_as = capital_county }
+	}
+
+	option = { #Expell them
+		name = cop_slavic_yearly.0050.a
+		add_piety = medium_piety_loss
+		reverse_add_opinion = {
+			target = scope:realm_priest
+			modifier = cop_slavic_yearly_050_expelled
+			opinion = -15
+		}
+		reverse_add_opinion = {
+			target = scope:realm_steward
+			modifier = cop_slavic_yearly_050_expelled
+			opinion = 15
+		}
+		stress_impact = {
+			gregarious = minor_stress_impact_gain
+			zealous = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = -0.5
+				ai_greed = 0.5
+			}
+		}
+	}
+
+	option = { #Let them be
+		name = cop_slavic_yearly.0050.b
+		add_piety = minor_piety_gain
+		#The locals are unhappy
+		send_interface_toast = {
+			title = cop_slavic_yearly.0031.b.locals_outraged
+			left_icon = scope:realm_priest
+			capital_county = {
+				add_county_modifier = {
+					modifier = cop_slavic_yearly_0050_rampant_skomorokhs
+					years = 10
+				}
+			}
+		}
+		reverse_add_opinion = {
+			target = scope:realm_priest
+			modifier = cop_slavic_yearly_050_protected
+			opinion = 15
+		}
+		reverse_add_opinion = {
+			target = scope:realm_steward
+			modifier = cop_slavic_yearly_050_protected
+			opinion = -15
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 0.5
+				ai_greed = -0.5
+			}
+		}
+	}
+
+	option = { #Join them
+		name = cop_slavic_yearly.0050.c
+		add_piety = minor_piety_gain
+		#The locals are unhappy
+		send_interface_toast = {
+			title = cop_slavic_yearly.0031.b.locals_outraged
+			left_icon = scope:realm_priest
+			capital_county = {
+				add_county_modifier = {
+					modifier = cop_slavic_yearly_0050_rampant_skomorokhs
+					years = 10
+				}
+			}
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_yearly_0050_joined_skomorokhs 
+			days = 365
+		}
+		reverse_add_opinion = {
+			target = scope:realm_priest
+			modifier = cop_slavic_yearly_050_protected
+			opinion = 15
+		}
+		reverse_add_opinion = {
+			target = scope:realm_steward
+			modifier = cop_slavic_yearly_050_protected
+			opinion = -15
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 5
+			ai_value_modifier = {
+				ai_zeal = 0.5
+				ai_greed = -0.5
+			}
+		}
+	}
+}
+
+#########################
+# Druzhina wants silver spoons
+# by Artem Samarsky
+#########################
+
+# Primary Chronicle, years 6502-6504
+
+cop_slavic_yearly.0060 = {
+	type = character_event
+	title = cop_slavic_yearly.0060.t
+	desc = cop_slavic_yearly.0060.desc
+	theme = martial
+	left_portrait = {
+		character = scope:realm_marshal
+		animation = personality_bold
+	}
+	override_background = { event_background = fp1_viking_feast }
+
+	trigger = {
+		is_available_adult = yes
+		NOT = { has_character_flag = had_cop_slavic_yearly_0060 }
+		has_councillor_for_skill = martial
+		has_government = tribal_government
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_cop_slavic_yearly_0060
+			years = 5
+		}
+		cp:councillor_marshal = { save_scope_as = realm_marshal }
+		#Grab our capital for loc.
+		capital_county = { save_scope_as = capital_county }
+	}
+
+	option = { #Give them silver spoons
+		name = cop_slavic_yearly.0060.a
+		remove_short_term_gold = medium_gold_value
+		reverse_add_opinion = {
+			target = scope:realm_marshal
+			modifier = cop_slavic_yearly_0060_druzhina_positive
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_yearly_0060_druzhina_positive
+			years = 5
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_honor = 0.5
+				ai_greed = -0.5
+			}
+		}
+	}
+
+	option = { #Refuse to give them silver spoons
+		name = cop_slavic_yearly.0060.b
+		reverse_add_opinion = {
+			target = scope:realm_marshal
+			modifier = cop_slavic_yearly_0060_druzhina_negative
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_yearly_0060_druzhina_negative
+			years = 5
+		}
+		stress_impact = {
+			generous = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_honor = -0.5
+				ai_greed = 0.5
+			}
+		}
+	}
+}
+
+#########################
+# Wife caught weaving on Friday
+# by Artem Samarsky
+#########################
+
+cop_slavic_yearly.0070 = {
+	type = character_event
+	title = cop_slavic_yearly.0070.t
+	desc = cop_slavic_yearly.0070.desc
+	theme = martial
+	left_portrait = {
+		character = scope:offending_wife
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:angered_priest
+		animation = personality_bold
+	}
+	override_background = { event_background = fp1_tribal_temple }
+
+	trigger = {
+		is_available_adult = yes
+		NOT = { has_character_flag = had_cop_slavic_yearly_0070 }
+		any_spouse = {
+			is_available = yes
+			is_female = yes
+			OR = {
+				has_trait = cynical
+				learning < medium_skill_rating
+			}
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_cop_slavic_yearly_0070
+			years = 5
+		}
+		cp:councillor_court_chaplain = { save_scope_as = angered_priest }
+		random_spouse = {
+			limit = {
+				is_female = yes
+				has_trait = cynical
+			}
+			alternative_limit = {
+				is_female = yes
+				learning < medium_skill_rating
+			}
+			save_scope_as = offending_wife
+		}
+	}
+
+	option = { #A sacrifice is due
+		name = cop_slavic_yearly.0070.a
+		scope:offending_wife = {
+			add_character_modifier = {
+				modifier = cop_slavic_yearly_0070_shaved
+				years = 5
+			}
+		}
+		reverse_add_opinion = {
+			target = scope:angered_priest
+			modifier = cop_slavic_yearly_0070_forced_sacrifice
+			opinion = 15
+		}
+		reverse_add_opinion = {
+			target = scope:offending_wife
+			modifier = cop_slavic_yearly_0070_forced_sacrifice
+			opinion = -15
+		}
+		stress_impact = {
+			forgiving = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 1
+				ai_compassion = -0.5
+			}
+		}
+	}
+
+	option = { #Refuse the sacrifice
+		name = cop_slavic_yearly.0070.b
+		add_piety = minor_piety_loss
+		reverse_add_opinion = {
+			target = scope:angered_priest
+			modifier = cop_slavic_yearly_0070_denied_sacrifice
+			opinion = -15
+		}
+		reverse_add_opinion = {
+			target = scope:offending_wife
+			modifier = cop_slavic_yearly_0070_denied_sacrifice
+			opinion = 15
+		}
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = -1
+				ai_compassion = 0.5
+			}
+		}
+	}
+
+	option = { #Satisfy both
+		name = cop_slavic_yearly.0070.c
+		trigger = {
+			learning > medium_skill_rating
+		}
+		skill = learning
+		add_piety = minor_piety_gain
+		reverse_add_opinion = {
+			target = scope:angered_priest
+			modifier = cop_slavic_yearly_0070_resolved_sacrifice
+		}
+		reverse_add_opinion = {
+			target = scope:offending_wife
+			modifier = cop_slavic_yearly_0070_resolved_sacrifice
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = -1
+				ai_compassion = 0.5
+			}
+		}
+	}
+}
+
+#########################
+# Maslenitsa
+# by Artem Samarsky
+#########################
+
+#Check triggers and schedule the event for the traditional date
+cop_slavic_yearly.0080 = {
+	hidden = yes
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		NOT = { has_character_flag = had_cop_slavic_yearly_0081 }
+	}
+
+	immediate = {
+		trigger_event = {
+			id = cop_slavic_yearly.0081
+			trigger_on_next_date = 3.6
+		}
+	}
+}
+
+#Overview of the festival and the choices
+cop_slavic_yearly.0081 = {
+	type = character_event
+	title = cop_slavic_yearly.0081.t
+	desc = cop_slavic_yearly.0081.desc
+	theme = feast_activity
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	override_background = { event_background = maslenitsa }
+
+	trigger = {
+		is_available_adult = yes
+		religion = religion:slavic_religion
+		NOT = { has_character_flag = had_cop_slavic_yearly_0081 }
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_cop_slavic_yearly_0081
+			years = 5
+		}
+		#Grab our capital for loc.
+		capital_county = { save_scope_as = capital_county }
+	}
+
+	option = { #Burn the dummy
+		name = cop_slavic_yearly.0081.a
+		show_as_tooltip = {
+			stress_impact = {
+				base = medium_stress_loss
+				vengeful = minor_stress_impact_loss
+				forgiving = minor_stress_impact_gain
+			}
+		}
+		hidden_effect = {
+			trigger_event = cop_slavic_yearly.0082
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 1
+			}
+		}
+	}
+
+	option = { #Jump over fire
+		name = cop_slavic_yearly.0081.b
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = cop_slavic_yearly_0081_jumped
+				years = 1
+			}
+		}
+		hidden_effect = {
+			trigger_event = cop_slavic_yearly.0083
+		}
+		stress_impact = {
+			brave = minor_stress_impact_loss
+			craven = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = -1
+			}
+		}
+	}
+
+	option = { #Eat the pancakes
+		name = cop_slavic_yearly.0081.c
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = cop_slavic_yearly_0081_ate
+				years = 1
+			}	
+		}
+		hidden_effect = { trigger_event = cop_slavic_yearly.0084 }
+		stress_impact = {
+			vengeful = minor_stress_impact_loss
+			forgiving = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 1
+			}
+		}
+	}
+
+	option = { #Watch a lewd performance
+		name = cop_slavic_yearly.0081.d
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = cop_slavic_yearly_0081_skomorokh
+				years = 1
+			}	
+		}
+		hidden_effect = {
+			trigger_event = cop_slavic_yearly.0085
+		}
+		stress_impact = {
+			vengeful = minor_stress_impact_loss
+			forgiving = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 10
+			ai_value_modifier = {
+				ai_zeal = 1
+			}
+		}
+	}
+}
+
+#Burning the effigy
+cop_slavic_yearly.0082 = {
+	type = character_event
+	title = cop_slavic_yearly.0082.t
+	desc = cop_slavic_yearly.0082.desc
+	theme = feast_activity
+	right_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	override_background = { event_background = maslenitsa }
+
+	option = { #Burn the dummy
+		name = cop_slavic_yearly.0082.a
+		stress_impact = {
+			base = medium_stress_loss
+			vengeful = minor_stress_impact_loss
+			forgiving = minor_stress_impact_gain
+		}
+	}
+}
+
+#Jumping over the fire
+cop_slavic_yearly.0083 = {
+	type = character_event
+	title = cop_slavic_yearly.0083.t
+	desc = cop_slavic_yearly.0083.desc
+	theme = feast_activity
+	right_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	override_background = { event_background = maslenitsa }
+
+	option = {
+		name = cop_slavic_yearly.0083.a
+		add_character_modifier = {
+			modifier = cop_slavic_yearly_0081_jumped
+			years = 1
+		}
+	}
+}
+
+#Eating crepes
+cop_slavic_yearly.0084 = {
+	type = character_event
+	title = cop_slavic_yearly.0084.t
+	desc = cop_slavic_yearly.0084.desc
+	theme = feast_activity
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	override_background = { event_background = maslenitsa }
+
+	option = {
+		name = cop_slavic_yearly.0084.a
+		add_character_modifier = {
+			modifier = cop_slavic_yearly_0081_ate
+			years = 1
+		}
+	}
+}
+
+#An erotic performance
+cop_slavic_yearly.0085 = {
+	type = character_event
+	title = cop_slavic_yearly.0085.t
+	desc = cop_slavic_yearly.0085.desc
+	theme = feast_activity
+	right_portrait = {
+		character = root
+		animation = flirtation_left
+	}
+	override_background = { event_background = maslenitsa }
+
+	option = {
+		name = cop_slavic_yearly.0085.a
+		add_character_modifier = {
+			modifier = cop_slavic_yearly_0081_skomorokh
+			years = 1
+		}
+	}
+}
+
+#########################
+# Dispute over Beekeeping Rights
+# by Artem Samarsky
+#########################
+
+# Inspired by http://gramoty.ru/birchbark/document/show/tver/5/
+
+scripted_trigger cop_slavic_yearly_0091_offender_trigger = {
+	tier = tier_county
+	holder = root.cp:councillor_steward
+	title_province = {
+		OR = {
+			terrain = taiga
+			terrain = forest
+		}
+	}
+	OR = {
+		culture = { has_cultural_pillar = heritage_east_slavic }
+		culture = { has_cultural_pillar = heritage_west_slavic }
+		culture = { has_cultural_pillar = heritage_south_slavic }
+		religion = religion:slavic_religion
+	}
+}
+
+scripted_trigger cop_slavic_yearly_0091_victim_trigger = {
+	tier = tier_county
+	NOR = {
+		holder = root
+		holder = root.cp:councillor_steward
+	}
+	title_province = {
+		OR = {
+			terrain = taiga
+			terrain = forest
+		}
+	}
+	OR = {
+		culture = { has_cultural_pillar = heritage_east_slavic }
+		culture = { has_cultural_pillar = heritage_west_slavic }
+		culture = { has_cultural_pillar = heritage_south_slavic }
+		religion = religion:slavic_religion
+	}
+	any_neighboring_county = { cop_slavic_yearly_0091_offender_trigger = yes }
+}
+
+# Your stewart's county is infringing on the beekeeping rights of another county
+cop_slavic_yearly.0090 = {
+	type = character_event
+	title = cop_slavic_yearly.0090.t
+	desc = cop_slavic_yearly.0090.desc
+	theme = realm
+	left_portrait = {
+		character = scope:offender
+		animation = personality_greedy
+	}
+	right_portrait = {
+		character = scope:victim
+		animation = disapproval
+	}
+	override_background = { event_background = wilderness_forest_pine }
+
+	trigger = {
+		is_available_even_at_war_adult = yes
+		is_landed = yes
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		has_councillor_for_skill = stewardship
+		cp:councillor_steward = {
+			is_performing_council_task = task_collect_taxes
+			NOT = { has_trait = honest }
+		}
+		NOT = { has_character_flag = had_cop_slavic_yearly_0090 }
+		# Ensure you have at least two counties that can fight with each other.
+		any_realm_county = { cop_slavic_yearly_0091_victim_trigger = yes }
+	}
+
+	weight_multiplier = {
+		base = 1
+		
+		# Weight up a little for mainland Scandinavia.
+		modifier = {
+			add = 0.5
+			cp:councillor_steward = { has_trait = deceitful }
+		}
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = had_cop_slavic_yearly_0090
+			days = 1825
+		}
+		cp:councillor_steward = { save_scope_as = offender }
+		# Grab the counties.
+		random_realm_county = {
+			limit = { cop_slavic_yearly_0091_victim_trigger = yes }
+			save_scope_as = victim_county
+			random_neighboring_county = {
+				limit = { cop_slavic_yearly_0091_offender_trigger = yes }
+				save_scope_as = offender_county
+			}
+		}
+		scope:victim_county.holder = { save_scope_as = victim }
+	}
+
+	# Side with the steward
+	option = {
+		name = cop_slavic_yearly.0090.a
+
+		add_character_modifier = {
+			modifier = cop_slavic_yearly_0090_tax
+			years = 1
+		}
+
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+			just = minor_stress_impact_gain
+		}
+
+		scope:offender_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_yearly_0090_honey_good
+				years = 10
+			}
+		}
+		scope:victim_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_yearly_0090_honey_bad
+				years = 10
+			}
+		}
+		
+		reverse_add_opinion = {
+			target = scope:offender
+			modifier = cop_slavic_yearly_0090_support_claim
+		}
+		reverse_add_opinion = {
+			target = scope:victim
+			modifier = cop_slavic_yearly_0090_deny_claim
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = just
+			}
+		}
+	}
+	
+	# Side with the victim
+	option = {
+		name = cop_slavic_yearly.0090.b
+
+		stress_impact = {
+			just = minor_stress_impact_loss
+			greedy = minor_stress_impact_gain
+		}
+
+		# Building cost county modifier.
+		scope:victim_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_yearly_0090_honey_good
+				years = 10
+			}
+		}
+		# And spurn the other county.
+		scope:offender_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_yearly_0090_honey_bad
+				years = 10
+			}
+		}
+		
+		reverse_add_opinion = {
+			target = scope:victim
+			modifier = cop_slavic_yearly_0090_support_claim
+		}
+		reverse_add_opinion = {
+			target = scope:offender
+			modifier = cop_slavic_yearly_0090_deny_claim
+		}
+
+		scope:victim = {
+			pay_short_term_gold = {
+				target = root
+				gold = minor_gold_value
+			}
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_energy = 0.5
+				ai_honor = 0.25
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = just
+			}
+			modifier = {	# Weight down for stress.
+				add = -10
+				has_trait = greedy
+			}
+		}
+	}
+
+	# Let them fight it out.
+	option = {
+		name = cop_slavic_yearly.0090.c
+		# Not princely to abstain from the decision
+		add_prestige = minor_prestige_loss
+		# Stress loss: not your problem, honestly.
+		stress_impact = {
+			base = major_stress_loss
+			lazy = medium_stress_impact_loss
+			diligent = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = -0.25
+				ai_energy = -0.75
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = lazy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = diligent
+			}
+		}
+	}
+}
+
+#########################
+# The Postrig Rite for your Heir
+# by Artem Samarsky
+#########################
+
+#This rite was popular with royalty and nobility in both East and West Slavic countries
+
+#Check triggers and schedule the event
+cop_slavic_yearly.0100 = {
+	hidden = yes
+
+	trigger = {
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		# Check that there is at least one parent for the rite
+		OR = {
+			AND = {
+				exists = root.mother
+				is_primary_heir_of = root.mother
+			}
+			AND = {
+				exists = root.father
+				is_primary_heir_of = root.father
+			}
+		}
+	}
+
+	immediate = {
+		trigger_event = {
+			id = cop_slavic_yearly.0101
+			#Wait a few days after your child gets a childhood trait
+			days = 10
+		}
+	}
+}
+
+#Fire the event for the parent
+cop_slavic_yearly.0101 = {
+	hidden = yes
+
+	trigger = {
+		#Checking again won't hurt, they could die
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		OR = {
+			AND = {
+				exists = root.mother
+				is_primary_heir_of = root.mother
+			}
+			AND = {
+				exists = root.father
+				is_primary_heir_of = root.father
+			}
+		}
+	}
+
+	immediate = {
+		root = { save_scope_as = postrig_heir }
+		#If both parents are landed, need to get the one with a higher title
+		if = {
+			limit = {
+				AND = {
+					AND = {
+						exists = root.mother
+						is_primary_heir_of = root.mother
+					}
+					AND = {
+						exists = root.father
+						is_primary_heir_of = root.father
+					}
+				}
+			}
+			if = {
+				limit = {
+					root.father.highest_held_title_tier >= root.mother.highest_held_title_tier
+				}
+				root.father = { trigger_event = cop_slavic_yearly.0102 }
+			}
+			else = {
+				root.mother = { trigger_event = cop_slavic_yearly.0102 }
+			}
+		}
+		#If only one is landed, just pick the one who is
+		else_if = {
+			limit = {
+				AND = {
+					exists = root.father
+					is_primary_heir_of = root.father
+				}
+			}
+			root.father = { trigger_event = cop_slavic_yearly.0102 }
+		}
+		else = {
+			root.mother = { trigger_event = cop_slavic_yearly.0102 }
+		}
+	}
+}
+
+#Give a description and a choice of how to proceed
+cop_slavic_yearly.0102 = {
+	type = character_event
+	title = cop_slavic_yearly.0102.t
+	desc = cop_slavic_yearly.0102.desc
+	theme = family
+	left_portrait = {
+		character = scope:postrig_heir
+		animation = personality_bold
+	}
+	override_background = {
+		event_background = army_camp
+	}
+
+	trigger = {
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+			culture = { has_cultural_pillar = heritage_west_slavic }
+			culture = { has_cultural_pillar = heritage_south_slavic }
+			religion = religion:slavic_religion
+		}
+		NOT = { has_character_flag = had_cop_slavic_yearly_0102 }
+		scope:postrig_heir = { is_primary_heir_of = root }
+	}
+
+	immediate = {
+		add_character_flag = had_cop_slavic_yearly_0102
+	}
+
+	#Go through and spend money for additional bonuses
+	option = {
+		name = cop_slavic_yearly.0102.a
+
+		remove_short_term_gold = medium_gold_value
+
+		if = {
+			limit = {
+				exists = dynasty
+				dynasty.dynast = { faith = root.faith }
+			}
+			dynasty = {
+				add_dynasty_prestige = minor_dynasty_prestige_gain
+			}
+		}
+		
+		random_list = {
+			60 = {
+				desc = cop_slavic_yearly.0102.success
+				show_as_tooltip = {
+					scope:postrig_heir = {
+						add_martial_skill = 1
+						add_diplomacy_skill = 1
+						add_prestige = medium_prestige_gain				
+					}
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = strong }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = rowdy }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = bossy }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = physique_good_1 }
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = physique_good_2 }
+				}
+				modifier = {
+					factor = 0.4
+					scope:postrig_heir = { has_trait = physique_good_3 }
+				}
+				scope:postrig_heir = { add_character_flag = cop_slavic_yearly_0103_success }
+			}
+			30 = {
+				desc = cop_slavic_yearly.0102.failure
+				show_as_tooltip = {
+					scope:postrig_heir = {
+						add_prestige = minor_prestige_loss
+					}
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = sickly }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = physique_bad_1 }
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = physique_bad_2 }
+				}
+				modifier = {
+					factor = 0.4
+					scope:postrig_heir = { has_trait = physique_bad_3 }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = clubfooted }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = hunchbacked }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = dwarf }
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = weak }
+				}
+				scope:postrig_heir = { add_character_flag = cop_slavic_yearly_0103_failure }
+			}
+			10 = {
+				desc = cop_slavic_yearly.0102.wound
+				show_as_tooltip = {
+					scope:postrig_heir = {
+						add_prestige = minor_prestige_loss
+						increase_wounds_effect = {
+							REASON = horse_riding_accident
+						}						
+					}
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = sickly }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = physique_bad_1 }
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = physique_bad_2 }
+				}
+				modifier = {
+					factor = 0.4
+					scope:postrig_heir = { has_trait = physique_bad_3 }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = clubfooted }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = hunchbacked }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = dwarf }
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = weak }
+				}
+				scope:postrig_heir = { add_character_flag = cop_slavic_yearly_0103_wound }
+			}
+		}
+
+		hidden_effect = {
+			scope:postrig_heir = { add_character_flag = cop_slavic_yearly_0103_armour }
+			trigger_event = cop_slavic_yearly.0103
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+			content = medium_stress_impact_gain
+			ambitious = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.75
+				ai_energy = 0.25
+				ai_greed = -0.5
+			}
+			modifier = {	# Weight up for stress.
+				add = 10
+				has_trait = ambitious
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = greedy
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = content
+			}
+		}
+	}
+
+	#Go through without spending money for additional bonuses
+	option = {
+		name = cop_slavic_yearly.0102.b
+
+		add_prestige = miniscule_prestige_loss
+
+		
+		random_list = {
+			60 = {
+				desc = cop_slavic_yearly.0102.success
+				show_as_tooltip = {
+					scope:postrig_heir = {
+						add_martial_skill = 1
+						add_diplomacy_skill = 1
+						add_prestige = minor_prestige_gain		
+					}
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = strong }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = rowdy }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = bossy }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = physique_good_1 }
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = physique_good_2 }
+				}
+				modifier = {
+					factor = 0.4
+					scope:postrig_heir = { has_trait = physique_good_3 }
+				}
+				scope:postrig_heir = { add_character_flag = cop_slavic_yearly_0103_success }
+			}
+			30 = {
+				desc = cop_slavic_yearly.0102.failure
+				show_as_tooltip = {
+					scope:postrig_heir = {
+						add_prestige = minor_prestige_loss	
+					}
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = sickly }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = physique_bad_1 }
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = physique_bad_2 }
+				}
+				modifier = {
+					factor = 0.4
+					scope:postrig_heir = { has_trait = physique_bad_3 }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = clubfooted }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = hunchbacked }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = dwarf }
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = weak }
+				}
+				scope:postrig_heir = { add_character_flag = cop_slavic_yearly_0103_failure }
+			}
+			10 = {
+				desc = cop_slavic_yearly.0102.wound
+				show_as_tooltip = {
+					scope:postrig_heir = {
+						add_prestige = minor_prestige_loss
+						increase_wounds_effect = {
+							REASON = horse_riding_accident
+						}						
+					}
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = sickly }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = physique_bad_1 }
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = physique_bad_2 }
+				}
+				modifier = {
+					factor = 0.4
+					scope:postrig_heir = { has_trait = physique_bad_3 }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = clubfooted }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = hunchbacked }
+				}
+				modifier = {
+					factor = 0.2
+					scope:postrig_heir = { has_trait = dwarf }
+				}
+				modifier = {
+					factor = 0.3
+					scope:postrig_heir = { has_trait = weak }
+				}
+				scope:postrig_heir = { add_character_flag = cop_slavic_yearly_0103_wound }
+			}
+		}
+
+		hidden_effect = {
+			trigger_event = cop_slavic_yearly.0103
+		}
+		stress_impact = {
+			generous = medium_stress_impact_gain
+			content = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = 0.25
+				ai_energy = 0.25
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = generous
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = content
+			}
+		}
+	}
+
+	#Reject
+	option = {
+		name = cop_slavic_yearly.0102.c
+
+		add_prestige = minor_prestige_loss
+		scope:postrig_heir = {
+			add_prestige = miniscule_prestige_loss	
+		}
+		stress_impact = {
+			ambitious = medium_stress_impact_gain
+			content = medium_stress_impact_loss
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_honor = -0.5
+				ai_energy = -0.5
+			}
+			modifier = {	# Weight down for stress.
+				add = -20
+				has_trait = ambitious
+			}
+			modifier = {	# Weight up for stress.
+				add = 20
+				has_trait = content
+			}
+		}
+	}
+}
+
+cop_slavic_yearly.0103 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:postrig_heir = { 
+						OR = {
+							has_character_flag = cop_slavic_yearly_0103_wound
+							has_character_flag = cop_slavic_yearly_0103_failure
+						}
+					}
+				}
+				desc = cop_slavic_yearly.0103.t_failure
+			}
+			desc = cop_slavic_yearly.0103.t_success
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:postrig_heir = { has_character_flag = cop_slavic_yearly_0103_armour }
+				}
+				desc = cop_slavic_yearly.0103.intro_armour
+			}
+			triggered_desc = {
+				desc = cop_slavic_yearly.0103.intro
+			}
+		}
+		desc = {
+			first_valid = {
+				triggered_desc = {
+					trigger = {
+						scope:postrig_heir = { has_character_flag = cop_slavic_yearly_0103_wound }
+					}
+					desc = cop_slavic_yearly.0103.wound
+				}
+				triggered_desc = {
+					trigger = {
+						scope:postrig_heir = { has_character_flag = cop_slavic_yearly_0103_failure }
+					}
+					desc = cop_slavic_yearly.0103.failure
+				}
+				triggered_desc = {
+					desc = cop_slavic_yearly.0103.success
+				}
+			}
+		}
+	}
+	theme = family
+	left_portrait = {
+		character = scope:postrig_heir
+		triggered_animation = {
+			trigger = { 
+				scope:postrig_heir = { has_character_flag = cop_slavic_yearly_0103_success }
+			 }
+			animation = personality_bold
+		}
+		triggered_animation = {
+			trigger = { always = yes }
+			animation = pain
+		}
+	}
+	override_background = {
+		event_background = courtyard
+	}
+
+	option = {
+		name = cop_slavic_yearly.0103.a
+
+		trigger = {
+			scope:postrig_heir = {
+				AND = {
+					has_character_flag = cop_slavic_yearly_0103_armour
+					has_character_flag = cop_slavic_yearly_0103_success
+				}
+			}
+		}
+
+		scope:postrig_heir = {
+			add_martial_skill = 1
+			add_diplomacy_skill = 1
+			add_prestige = medium_prestige_gain				
+		}
+	}
+
+	option = {
+		name = cop_slavic_yearly.0103.b
+
+		trigger = {
+			scope:postrig_heir = {
+				has_character_flag = cop_slavic_yearly_0103_success
+				NOT = {
+					has_character_flag = cop_slavic_yearly_0103_armour
+				}
+			}
+		}
+
+		scope:postrig_heir = {
+			add_martial_skill = 1
+			add_diplomacy_skill = 1
+			add_prestige = minor_prestige_gain				
+		}
+	}
+
+	option = {
+		name = cop_slavic_yearly.0103.c
+
+		trigger = {
+			scope:postrig_heir = {
+				has_character_flag = cop_slavic_yearly_0103_failure
+			}
+		}
+
+		scope:postrig_heir = {
+			add_prestige = minor_prestige_loss				
+		}
+	}
+
+	option = {
+		name = cop_slavic_yearly.0103.c
+
+		trigger = {
+			scope:postrig_heir = {
+				has_character_flag = cop_slavic_yearly_0103_wound
+			}
+		}
+
+		scope:postrig_heir = {
+			add_prestige = minor_prestige_loss		
+			increase_wounds_effect = {
+				REASON = horse_riding_accident
+			}				
+		}
+	}
+}
+
+#Test Event
+cop_slavic_yearly.9999 = {
+	type = character_event
+	title = cop_slavic_yearly.9999.t
+	desc = cop_slavic_yearly.9999.desc
+	theme = faith
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	immediate = {
+		if = {
+			limit = { exists = title:e_byzantium.holder }
+			title:d_novgorod.holder = { save_scope_as = roman_emperor }
+		}
+		random_neighboring_top_liege_realm_owner = {
+			limit = {
+				faith = { NOT = { has_doctrine_parameter = unreformed } }
+				faith = { root.faith = founder.var:foundational_faith }
+			}
+			alternative_limit = {
+				faith = { NOT = { has_doctrine_parameter = unreformed } }
+				faith.religion = root.faith.religion
+			}
+			save_scope_as = actor #for the effect to work properly
+		}
+	}
+
+	trigger = {
+		# title:d_novgorod.holder = {
+		# 	faith = {
+		# 		root.faith = founder.var:foundational_faith
+			
+		# 		# AND = {
+		# 		# 	has_variable = cop_original_faith
+		# 		#	var:cop_successor_faith = root.faith
+		# 		# }
+		# 	}
+		# }
+		any_neighboring_top_liege_realm_owner = {
+			faith = { NOT = { has_doctrine_parameter = unreformed } }
+			faith = {
+				var:original_faith = root.faith
+				# founder = {
+				# 	var:foundational_faith = root.faith
+				# 	var:original_faith = root.faith
+				# }
+			}
+		}
+		# title:d_novgorod.holder = {
+		# 	faith.religion = root.faith.religion
+		# }
+		# root.capital_county = {
+		# 	OR = {
+		# 		is_coastal = yes
+		# 		is_riverside = yes
+		# 	}
+		# }
+	}
+	option = {
+		name = cop_slavic_yearly.9999.a
+		set_character_faith = slavic_south
+	}
+}

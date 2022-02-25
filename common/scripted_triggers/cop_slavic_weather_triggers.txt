@@ -1,0 +1,12 @@
+﻿##################################################
+# Winter Trigger
+# This should include Russia and Western Slavs
+culture_uses_frequent_winter_transportation_trigger = {
+	OR = {
+		culture = { has_cultural_pillar = heritage_balto_finnic }
+		culture = { has_cultural_pillar = heritage_north_germanic }
+		culture = { has_cultural_pillar = heritage_east_slavic }
+		culture = { has_cultural_pillar = heritage_west_slavic }
+		# We exclude Normans as being pretty distant from this part of their heritage.
+	}
+}

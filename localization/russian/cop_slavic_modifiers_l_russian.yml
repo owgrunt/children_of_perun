@@ -1,0 +1,72 @@
+﻿l_russian:
+ rus_conversion_agree_opinion:0 "Обращение в ту же веру"
+ rus_conversion_decline_opinion:0 "Отказ принять веру"
+ rus_conversion_start_opinion:0 "Отказ от язычества"
+ rus_conversion_abandon_opinion:0 "Возвращение в язычество"
+
+ bhakti_slavic_perun:0 "Ревнитель Перуна"
+ bhakti_slavic_perun_desc:0 "Среди всех богов этот персонаж выделяет Перуна, могучего и славного бога грома, княжеской власти, войны и воинов."
+ bhakti_slavic_veles:0 "Ревнитель Велеса"
+ bhakti_slavic_veles_desc:0 "Среди всех богов этот персонаж выделяет Велеса, ужасного бога воды, скота, подземного мира и поэзии."
+ bhakti_slavic_dazhbog:0 "Ревнитель Дажьбога"
+ bhakti_slavic_dazhbog_desc:0 "Среди всех богов этот персонаж выделяет Дажьбога, Солнце-цесаря, ослепительного бога урожая и благополучия."
+ bhakti_slavic_stribog:0 "Ревнитель Стрибога"
+ bhakti_slavic_stribog_desc:0 "Среди всех богов этот персонаж выделяет Стрибога, всеведающего бога ветра, который распределяет богатство и распространяет идеи."
+ bhakti_slavic_svarog:0 "Ревнитель Сварога"
+ bhakti_slavic_svarog_desc:0 "Среди всех богов этот персонаж выделяет Сварога, буйного бога огня и кузнецов."
+ bhakti_slavic_mokosh:0 "Ревнитель Мокоши"
+ bhakti_slavic_mokosh_desc:0 "Среди всех богов этот персонаж выделяет Мокошь мать сыру землю, защитницу женщин, богиню прядения, овец, урожайности и деторождения."
+
+ perun_warrior:0 "Победитель перунова побоища"
+ perun_warrior_desc:0 "Этот персонаж победил своих соперников в ходе традиционного побоища на перунов день."
+
+ cop_cop_slavic_yearly_fp1_0071_leshy_attacks_modifier:0 "Нападения дива"
+ cop_cop_slavic_yearly_fp1_0071_leshy_attacks_modifier_desc:0 "В диких землях этого графства водится... #EMP нечто#! — оно убивает местных жителей, и это приводит их в ужас."
+
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_bear_modifier:0 "Убийца медведя"
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_bear_modifier_desc:0 "Этот персонаж прославился убийством то ли дива, то ли огромнейшего медведя в мире."
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolf_modifier:0 "Убийца волка"
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolf_modifier_desc:0 "Этот персонаж убил волка — настолько проворного, что простолюдины считали его дивом."
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolverine_modifier:0 "Убийца росомахи"
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_wolverine_modifier_desc:0 "Этот персонаж сделал леса безопаснее — убил такую свирепую росомаху, что простой народ считал ее дивом."
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_lynx_modifier:0 "Убийца рыси"
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_lynx_modifier_desc:0 "Этот персонаж убил рысь столь бесшумную, что простолюдины считали ее дивом."
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_moose_modifier:0 "Убийца лося"
+ cop_cop_slavic_yearly_fp1_0071_leshy_victory_moose_modifier_desc:0 "Этот персонаж убил лося — настолько свирепого, что в простонародье его считали дивом."
+
+ slavic_fp1_yearly_0591_levy_modifier:1 "Поддержка на вече"
+ slavic_fp1_yearly_0591_levy_modifier_desc:1 "Недавно на местном вече разыгралась драма, в результате которой это графство получило несколько участков приграничных земель, что привело к появлению новых деревень."
+ slavic_fp1_yearly_0591_building_modifier:1 "Оправдание на вече"
+ slavic_fp1_yearly_0591_building_modifier_desc:1 "Политический вес на местном вече позволил этому графству присвоить ряд пограничных земель и получить достаточно места для расширения существующих поселений."
+
+ slavic_blundering_priest_spared:0 "Суеверные крестьяне"
+ slavic_blundering_priest_spared_desc:0 "Местные боятся мести Велеса за то, что его костру позволили погаснуть."
+
+ cop_slavic_yearly_0041_trade_developed:0 "Бурная торговля"
+ cop_slavic_yearly_0041_trade_developed_desc:0 "Это графство постепенно становится крупным торговым узлом."
+ cop_slavic_yearly_0041_trade_stifled:0 "Торговля подавляется"
+ cop_slavic_yearly_0041_trade_stifled_desc:0 "В это графство не пускают торговцев из других держав."
+ cop_slavic_yearly_0041_priest_spared:0 "Вече позабыто"
+ cop_slavic_yearly_0041_priest_spared_desc:0 "История с христианским священником была разрешена без учета мнения веча, что вызвало ропот местных жителей."
+
+ cop_slavic_yearly_0050_joined_skomorokhs:0 "Любитель скоморохов"
+ cop_slavic_yearly_0050_joined_skomorokhs_desc:0 "Иногда этот персонаж присоединяется к веселым ватагам скоморохов и пляшет, пьет, пророчествует и грабит прохожих по всей округе."
+ cop_slavic_yearly_0050_rampant_skomorokhs:0 "Скоморохи разгулялись"
+ cop_slavic_yearly_0050_rampant_skomorokhs_desc:0 "Большая ватага скоморохов облюбовала это графство и выжимает крестьян досуха."
+
+ cop_slavic_yearly_0060_druzhina_positive:0 "Уважил дружину"
+ cop_slavic_yearly_0060_druzhina_positive_desc:0 "Этот персонаж показал свое уважение к дружине, заказав для дружинников серебряные ложки."
+ cop_slavic_yearly_0060_druzhina_negative:0 "Не уважил дружину"
+ cop_slavic_yearly_0060_druzhina_negative_desc:0 "Этот персонаж отказался показать свое уважение к дружине, заказав для дружинников серебряные ложки."
+
+ cop_slavic_yearly_0070_shaved:0 "Обрили голову"
+ cop_slavic_yearly_0070_shaved_desc:0 "Этой женщине пришлось побрить голову и отдать волосы в жертву Мокоши."
+
+ cop_slavic_yearly_0081_jumped:0 "Перепрыгнул через масленичный костер"
+ cop_slavic_yearly_0081_ate:0 "Поел масленичных блинов"
+ cop_slavic_yearly_0081_skomorokh:0 "Посмотрел масленичное представление"
+
+ cop_slavic_yearly_0090_tax:0 "Четкие имущественные права"
+ cop_slavic_yearly_0090_tax_desc:0 "Этот персонаж собирает больше налогов благодаря четко закрепленным правам вассалов."
+ cop_slavic_yearly_0090_honey_good:0 "Процветающее бортничество"
+ cop_slavic_yearly_0090_honey_bad:0 "Бортничество в упадке"

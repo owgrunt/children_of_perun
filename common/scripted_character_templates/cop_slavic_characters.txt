@@ -1,0 +1,285 @@
+﻿#Jewish Emissary
+jewish_emissary_character = {
+	#General
+	age = { 30 60 }
+	faith = faith:kabarism
+	culture = culture:khazar
+	dynasty = generate
+	#Education
+	random_traits_list = {
+		count = 1
+		education_learning_1 = {
+			weight = { base = 20 }
+		}
+		education_learning_2 = {
+			weight = { base = 30 }
+		}
+		education_learning_3 = {
+			weight = { base = 30 }
+		}
+		education_learning_4 = {
+			weight = { base = 20 }
+		}
+	}
+	#Personality
+	trait = zealous
+	random_traits_list = {
+		count = 2
+		honest = {}
+		stubborn = {}
+		just = {}
+		diligent = {}
+		patient = {}
+		arrogant = {}
+		brave = {}
+		ambitious = {}
+		gregarious = {}
+	}
+	#Profession
+	random_traits_list = {
+		count = 1
+		diplomat = {}
+		scholar = {}
+		theologian = {}
+		mystic_2 = {}
+		physician_2 = {}
+	}
+	#Misc
+	random_traits = no
+	gender_female_chance = { add = 2 }
+	#Skills
+	diplomacy = { max_template_average_skill max_template_high_skill }
+	martial = { min_template_low_skill max_template_decent_skill }
+	stewardship = { min_template_low_skill max_template_decent_skill }
+	intrigue = { min_template_low_skill max_template_decent_skill }
+	learning = { max_template_average_skill max_template_high_skill }
+	prowess = { min_template_low_skill max_template_decent_skill }
+}
+
+#Orthodox Emissary
+orthodox_emissary_character = {
+	#General
+	age = { 30 60 }
+	faith = faith:orthodox
+	culture = culture:greek
+	dynasty = generate
+	#Education
+	random_traits_list = {
+		count = 1
+		education_learning_1 = {
+			weight = { base = 20 }
+		}
+		education_learning_2 = {
+			weight = { base = 30 }
+		}
+		education_learning_3 = {
+			weight = { base = 30 }
+		}
+		education_learning_4 = {
+			weight = { base = 20 }
+		}
+	}
+	#Personality
+	trait = zealous
+	random_traits_list = {
+		count = 2
+		honest = {}
+		stubborn = {}
+		just = {}
+		diligent = {}
+		patient = {}
+		arrogant = {}
+		brave = {}
+		ambitious = {}
+		gregarious = {}
+	}
+	#Profession
+	random_traits_list = {
+		count = 1
+		diplomat = {}
+		scholar = {}
+		theologian = {}
+		mystic_2 = {}
+		physician_2 = {}
+	}
+	#Misc
+	random_traits = no
+	gender_female_chance = 0
+	#Skills
+	diplomacy = { max_template_average_skill max_template_high_skill }
+	martial = { min_template_low_skill max_template_decent_skill }
+	stewardship = { min_template_low_skill max_template_decent_skill }
+	intrigue = { min_template_low_skill max_template_decent_skill }
+	learning = { max_template_average_skill max_template_high_skill }
+	prowess = { min_template_low_skill max_template_decent_skill }
+}
+
+perun_bout_character = {
+	age = { 18 35 }
+	dynasty = none
+	random_traits_list = {
+		count = 1
+		education_martial_2 = {}
+		education_martial_3 = {}
+		education_martial_4 = {}
+	}
+	random_traits_list = {
+		count = 1
+		brave = {}
+		just = {}
+	}
+	random_traits_list = { #Something nice
+		honest = {}
+		gregarious = {}
+		trusting = {}
+		compassionate = {}
+		generous = {}
+		humble = {}
+		calm = {}
+	}
+	random_traits_list = {
+		count = 1
+		lustful = {}
+		chaste = {}
+		wrathful = {}
+		arrogant = {}
+		impatient = {}
+		patient = {}
+		impatient  = {}
+		ambitious = {}
+		cynical = {}
+		zealous = {}
+		stubborn = {}
+	}
+	random_traits = no
+	gender_female_chance = root_soldier_female_chance
+	faith = root.faith
+	culture = root.culture
+	martial = {
+		min_template_decent_skill
+		max_template_decent_skill
+	}
+	prowess = {
+		min_template_decent_skill
+		max_template_decent_skill
+	}
+}
+
+slavic_priest_character_template = {
+	age = { 30 60 }
+	random_traits_list = {
+		count = 1
+		education_learning_1 = {
+			weight = { base = 10 }
+		}
+		education_learning_2 = {
+			weight = { base = 20 }
+		}
+		education_learning_3 = {
+			weight = { base = 30 }
+		}
+		education_learning_4 = {
+			weight = { base = 20 }
+		}
+	}
+	trait = zealous
+	trait = ambitious
+	trait = wrathful
+	random_traits = no
+	
+	faith = root.faith
+	culture = root.culture
+	gender_female_chance = root_faith_clergy_gender_female_chance
+	learning = { 10 12 }
+
+	after_creation = {
+		add_character_flag = {
+			flag = need_priest_outfit
+		}
+	}
+}
+
+perun_bout_character = {
+	age = { 18 35 }
+	dynasty = none
+	random_traits_list = {
+		count = 1
+		education_martial_2 = {}
+		education_martial_3 = {}
+		education_martial_4 = {}
+	}
+	random_traits_list = {
+		count = 1
+		brave = {}
+		just = {}
+	}
+	random_traits_list = { #Something nice
+		honest = {}
+		gregarious = {}
+		trusting = {}
+		compassionate = {}
+		generous = {}
+		humble = {}
+		calm = {}
+	}
+	random_traits_list = {
+		count = 1
+		lustful = {}
+		chaste = {}
+		wrathful = {}
+		arrogant = {}
+		impatient = {}
+		patient = {}
+		impatient  = {}
+		ambitious = {}
+		cynical = {}
+		zealous = {}
+		stubborn = {}
+	}
+	random_traits = no
+	gender_female_chance = root_soldier_female_chance
+	faith = root.faith
+	culture = root.culture
+	martial = {
+		min_template_decent_skill
+		max_template_decent_skill
+	}
+	prowess = {
+		min_template_decent_skill
+		max_template_decent_skill
+	}
+}
+
+slavic_priest_character_template = {
+	age = { 30 60 }
+	random_traits_list = {
+		count = 1
+		education_learning_1 = {
+			weight = { base = 10 }
+		}
+		education_learning_2 = {
+			weight = { base = 20 }
+		}
+		education_learning_3 = {
+			weight = { base = 30 }
+		}
+		education_learning_4 = {
+			weight = { base = 20 }
+		}
+	}
+	trait = zealous
+	trait = ambitious
+	trait = wrathful
+	random_traits = no
+	
+	faith = root.faith
+	culture = root.culture
+	gender_female_chance = root_faith_clergy_gender_female_chance
+	learning = { 10 12 }
+
+	after_creation = {
+		add_character_flag = {
+			flag = need_priest_outfit
+		}
+	}
+}

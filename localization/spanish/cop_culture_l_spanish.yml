@@ -1,0 +1,13 @@
+﻿l_spanish:
+ tradition_varangians_greeks_name:0 "From the Varangians to the Greeks"
+ tradition_varangians_greeks_desc:1 "Located right on the trade route from the Varangians to the Greeks, this culture has widely profited from an extensive network of rivers to sell honey, fur, wax and slaves to rich Southern realms and importing precious metals and luxuries itto Northern Europe, but also to engage in raiding and pillage."
+
+#  east_slavic_heritage_trigger:0 "The [culture|E] must be of East Slavic [heritage|E]"
+#  high_riverside_percentage_desc:0 "The [culture|E] does not have #V 70%#! of its [counties|E] along a major river"
+#  percentage_of_culture_along_river_desc:0 "At least #V 50%#! of the [counties|E] of this [culture|E] must be along a major river"
+
+ innovation_table_of_princes_rus:0 "Table of Princes"
+ innovation_table_of_princes_rus_desc:0 "The Table of Princes is the royal seat of Russian rulers, with the one sitting at the table being recognized as the rightful ruler. Under the code of house seniority, titles were given to the eldest living member of the ruling dynasty."
+
+#  innovation_varangians_greeks:0 "From the Varangians to the Greeks"
+#  innovation_varangians_greeks_desc:0 "Located right on the trade route from the Varangians to the Greeks, this culture has widely profited from an extensive network of rivers to sell honey, fur, wax and slaves to rich Southern realms and importing precious metals and luxuries itto Northern Europe, but also to engage in raiding and pillage."

@@ -1,0 +1,69 @@
+﻿# WIP
+
+# Skid Road
+
+# skid_road_01 = {
+# 	construction_time = quick_construction_time
+
+# 	is_enabled = {
+# 		building_requirement_tribal = yes
+# 	}
+# 	can_construct_potential = {
+# 		has_building_or_higher = tribe_01
+# 		scope:holder = {
+# 			culture = {
+# 				has_cultural_parameter = cop_culture_river_commerce
+# 			}
+# 		}
+# 	}	
+	
+# 	cost_prestige = expensive_building_tier_1_cost
+# 	cost_gold = tribal_building_tier_1_cost
+	
+# 	province_modifier = {
+# 		monthly_income = poor_building_tax_tier_3
+# 	}
+	
+# 	county_modifier = {
+# 		development_growth_factor = 0.03
+# 	}
+	
+# 	next_building = skid_road_02
+
+# 	type_icon = "icon_building_market_villages.dds"
+	
+# 	ai_value = {
+# 		base = 1
+# 	}
+# }
+
+# skid_road_02 = {
+# 	construction_time = quick_construction_time
+
+# 	is_enabled = {
+# 		building_requirement_tribal = yes
+# 	}
+# 	can_construct_potential = {
+# 		has_building_or_higher = tribe_01
+# 	}
+# 	can_construct_showing_failures_only = {
+# 		scope:holder = {
+# 			culture = { has_innovation = innovation_city_planning }
+# 		}
+# 	}	
+	
+# 	cost_prestige = expensive_building_tier_2_cost
+# 	cost_gold = tribal_building_tier_2_cost
+	
+# 	province_modifier = {
+# 		monthly_income = poor_building_tax_tier_5
+# 	}
+	
+# 	county_modifier = {
+# 		development_growth_factor = 0.06
+# 	}
+	
+# 	ai_value = {
+# 		base = 1
+# 	}
+# }

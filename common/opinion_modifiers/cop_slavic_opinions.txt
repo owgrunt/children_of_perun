@@ -1,0 +1,99 @@
+﻿rus_conversion_agree_opinion = {
+	opinion = 50
+	decaying = yes
+	years = 10
+}
+
+rus_conversion_decline_opinion = {
+	opinion = -50
+	decaying = yes
+	years = 10
+}
+
+rus_conversion_start_opinion = {
+	opinion = -50
+	decaying = yes
+	years = 10
+}
+
+rus_conversion_abandon_opinion = {
+	opinion = 50
+	decaying = yes
+	years = 10
+}
+
+slavic_blundering_priest_saved = {
+	opinion = 50
+	decaying = yes
+	years = 10
+}
+
+cop_slavic_yearly_041_refused = {
+	opinion = -30
+	decaying = yes
+	years = 10
+}
+
+cop_slavic_yearly_041_succeeded = {
+	opinion = 15
+	decaying = yes
+	years = 5
+}
+
+cop_slavic_yearly_041_failed = {
+	opinion = -15
+	decaying = yes
+	years = 5
+}
+
+cop_slavic_yearly_050_expelled = {
+	#opinion = -15
+	decaying = yes
+	years = 5
+}
+
+cop_slavic_yearly_050_protected = {
+	#opinion = -15
+	decaying = yes
+	years = 5
+}
+
+cop_slavic_yearly_0060_druzhina_positive = {
+	opinion = 15
+	decaying = yes
+	years = 5
+}
+
+cop_slavic_yearly_0060_druzhina_negative = {
+	opinion = -15
+	decaying = yes
+	years = 5
+}
+
+cop_slavic_yearly_0070_forced_sacrifice = {
+	decaying = yes
+	years = 5
+}
+
+cop_slavic_yearly_0070_denied_sacrifice = {
+	decaying = yes
+	years = 5
+}
+
+cop_slavic_yearly_0070_resolved_sacrifice = {
+	opinion = 15
+	decaying = yes
+	years = 5
+}
+
+cop_slavic_yearly_0090_support_claim = {
+	opinion = 15
+	decaying = yes
+	years = 5
+}
+
+cop_slavic_yearly_0090_deny_claim = {
+	opinion = -30
+	decaying = yes
+	years = 5
+}

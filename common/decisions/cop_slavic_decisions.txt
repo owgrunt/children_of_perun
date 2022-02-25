@@ -1,0 +1,222 @@
+﻿select_personal_deity_slavic_decision = {
+	picture = "gfx/interface/illustrations/decisions/mukha_slavs.dds"
+
+	desc = select_personal_deity_slavic_decision_desc
+	selection_tooltip = select_personal_deity_slavic_decision_tooltip
+
+	is_shown = {
+		# Following a valid religion & faith.
+		religion = religion:slavic_religion
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		#faith = { has_doctrine_parameter = select_personal_god_active }
+	}
+
+	is_valid = {
+	}
+
+	is_valid_showing_failures_only = {
+		# Have to at _least_ not be in piety debt.
+		piety >= 0
+	}
+
+	cooldown = { years = 2 }
+
+	effect = {
+		# Show the possible options.
+		show_as_tooltip = {
+			random_list = {
+				desc = select_personal_deity_slavic_decision_tt
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_perun
+					add_character_modifier = bhakti_slavic_perun
+				}
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_veles
+					add_character_modifier = bhakti_slavic_veles
+				}
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_dazhbog
+					add_character_modifier = bhakti_slavic_dazhbog
+				}
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_stribog
+					add_character_modifier = bhakti_slavic_stribog
+				}
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_svarog
+					add_character_modifier = bhakti_slavic_svarog
+				}
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_mokosh
+					add_character_modifier = bhakti_slavic_mokosh
+				}
+			}
+		}
+		# And the actual effect.
+		trigger_event = cop_slavic_decision_event.0001
+	}
+
+	ai_check_interval = 96
+	
+	ai_potential = {
+		piety >= minor_piety_value
+		NOR = {
+			has_character_modifier = bhakti_germanic_generic_odin
+			has_character_modifier = bhakti_germanic_not_danish_ullr
+			has_character_modifier = bhakti_germanic_danish_tyr
+			has_character_modifier = bhakti_germanic_generic_thor
+			has_character_modifier = bhakti_germanic_generic_freyr
+			has_character_modifier = bhakti_slavic_perun
+			has_character_modifier = bhakti_slavic_veles
+			has_character_modifier = bhakti_slavic_dazhbog
+			has_character_modifier = bhakti_slavic_stribog
+			has_character_modifier = bhakti_slavic_svarog
+			has_character_modifier = bhakti_slavic_mokosh
+		}
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+unite_slavic_religion_decision = {
+    picture = gfx/interface/illustrations/decisions/mukha_unite.dds
+    major = yes
+
+    ai_check_interval = 120
+
+	desc = unite_slavic_religion_decision_desc
+	selection_tooltip = unite_slavic_religion_decision_tooltip
+
+    is_shown = {
+		is_landed = yes
+		# Following a valid religion & faith.
+		religion = religion:slavic_religion
+		faith = {
+			NOT = { has_doctrine = unreformed_faith_doctrine }
+		}
+		NOT = {  #Can only do it once.
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:flag_mended_great_schism
+			}
+		}
+    }
+
+	is_valid = {
+		#Has to be around to organise the conversion.
+		is_imprisoned = no
+		#Should have a decent piety level.
+		piety_level >= very_high_piety_level
+		#Must hold an empire title
+		highest_held_title_tier >= tier_empire
+		#Controlling holy sites
+		completely_controls = title:c_kiev
+		completely_controls = title:c_novgorod
+		completely_controls = title:c_terebovl
+		completely_controls = title:c_smolensk
+		completely_controls = title:c_barlad
+		completely_controls = title:c_rugen
+		completely_controls = title:c_plocka
+		completely_controls = title:c_sandomierska
+		completely_controls = title:c_znojmo
+		completely_controls = title:c_villach
+		completely_controls = title:c_skopje
+		completely_controls = title:c_dorostorum
+		completely_controls = title:c_rama
+    }
+
+	cost = {
+		gold = 500
+		piety = 1000
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
+	}
+
+
+    effect = {
+		set_character_faith = faith:slavic_pagan
+		custom_tooltip = unite_slavic_religion_custom_tooltip_a
+		custom_tooltip = unite_slavic_religion_custom_tooltip_b
+		custom_tooltip = unite_slavic_religion_custom_tooltip_c
+		trigger_event = { id = cop_slavic_decision_event.0010 }
+    }
+
+	ai_potential = {
+		always = yes
+	}
+
+    ai_will_do = 100
+}
+
+dodole_decision = {
+	picture = "gfx/interface/illustrations/decisions/makovsky_spring.dds"
+
+	desc = dodole_decision_desc
+	selection_tooltip = dodole_decision_tooltip
+
+	is_shown = {
+		faith = faith:slavic_south
+	}
+
+	is_valid = {
+		piety_level >= low_piety_level
+		custom_description = {
+			text = dodole_decision_date
+			current_month >= 5
+			current_month <= 8
+		}
+	}
+
+	cooldown = { years = 5 }
+
+	# cost = {
+	# 	piety = 100
+	# }
+
+	is_valid_showing_failures_only = {
+		is_available_at_peace_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = dodole_decision_effect.tt
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = cop_slavic_decision_dodole_character 
+				years = 2
+			}
+			capital_county = {
+				add_county_modifier = {
+					modifier = cop_slavic_decision_dodole_county
+					years = 2
+				}
+			}
+		}
+		trigger_event = religious_decision.0001
+	}
+
+	ai_check_interval = 60
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 50
+
+		# 100% chance at 50 zeal, 0% chance at -50 zeal.
+		ai_value_modifier = {
+			ai_zeal = 1
+		}		
+	}
+}
