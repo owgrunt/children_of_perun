@@ -89,242 +89,242 @@ cop_slavic_decision_event.0001 = {
 	}
 }
 
-##################################################
-# Uniting the Religion (adopted from Schism events)
-# by Artem Samarsky
-##################################################
+# ##################################################
+# # Uniting the Religion (adopted from Schism events)
+# # by Artem Samarsky
+# ##################################################
 
-roman_restoration.0100 = {
-	type = character_event
-	title = roman_restoration.0100.t
-	desc = {
-		desc = roman_restoration.0100.desc.intro
-		first_valid = {
-			# As an Orthodox
-			triggered_desc = {
-				trigger = {
-					faith = faith:orthodox
-				}
-				desc = roman_restoration.0100.desc.orthodox
-			}
-			# As a Catholic
-			triggered_desc = {
-				trigger = {
-					faith = faith:catholic
-				}
-				desc = roman_restoration.0100.desc.catholic
-			}
-			# And Everybody else
-			triggered_desc = {
-				trigger = {
-					NOR = {
-						faith = faith:catholic
-						faith = faith:orthodox
-					}
-				}
-				desc = roman_restoration.0100.desc.generic
-			}
-		}
-	}
-	theme = realm
-	left_portrait = {
-		character = scope:scoped_emperor
-		animation = personality_zealous
-	}
+# roman_restoration.0100 = {
+# 	type = character_event
+# 	title = roman_restoration.0100.t
+# 	desc = {
+# 		desc = roman_restoration.0100.desc.intro
+# 		first_valid = {
+# 			# As an Orthodox
+# 			triggered_desc = {
+# 				trigger = {
+# 					faith = faith:orthodox
+# 				}
+# 				desc = roman_restoration.0100.desc.orthodox
+# 			}
+# 			# As a Catholic
+# 			triggered_desc = {
+# 				trigger = {
+# 					faith = faith:catholic
+# 				}
+# 				desc = roman_restoration.0100.desc.catholic
+# 			}
+# 			# And Everybody else
+# 			triggered_desc = {
+# 				trigger = {
+# 					NOR = {
+# 						faith = faith:catholic
+# 						faith = faith:orthodox
+# 					}
+# 				}
+# 				desc = roman_restoration.0100.desc.generic
+# 			}
+# 		}
+# 	}
+# 	theme = realm
+# 	left_portrait = {
+# 		character = scope:scoped_emperor
+# 		animation = personality_zealous
+# 	}
 
-	immediate = {
-		play_music_cue = "mx_cue_faith_conversion"
-		save_scope_as = scoped_emperor
-		faith = { save_scope_as = mending_faith }
-		mend_great_schism_scripted_effect = yes
-	}
+# 	immediate = {
+# 		play_music_cue = "mx_cue_faith_conversion"
+# 		save_scope_as = scoped_emperor
+# 		faith = { save_scope_as = mending_faith }
+# 		mend_great_schism_scripted_effect = yes
+# 	}
 
-	option = {
-		name = roman_restoration.0100.a
-	}
-}
+# 	option = {
+# 		name = roman_restoration.0100.a
+# 	}
+# }
 
-# Ecumenical followers get chance to convert.
-roman_restoration.0101 = {
-	type = character_event
-	title = roman_restoration.0100.t
-	desc = {
-		desc = roman_restoration.0101.desc.intro
-		first_valid = {
-			# As an Orthodox
-			triggered_desc = {
-				trigger = {
-					scope:mending_faith = faith:orthodox
-				}
-				desc = roman_restoration.0101.desc.orthodox
-			}
-			# As a Catholic
-			triggered_desc = {
-				trigger = {
-					scope:mending_faith = faith:catholic
-				}
-				desc = roman_restoration.0101.desc.catholic
-			}
-			# And Everybody else
-			triggered_desc = {
-				trigger = {
-					NOR = {
-						scope:mending_faith = faith:catholic
-						scope:mending_faith = faith:orthodox
-					}
-				}
-				desc = roman_restoration.0101.desc.generic
-			}
-		}
-	}
-	theme = realm
-	left_portrait = {
-		character = scope:scoped_emperor
-		animation = personality_zealous
-	}
+# # Ecumenical followers get chance to convert.
+# roman_restoration.0101 = {
+# 	type = character_event
+# 	title = roman_restoration.0100.t
+# 	desc = {
+# 		desc = roman_restoration.0101.desc.intro
+# 		first_valid = {
+# 			# As an Orthodox
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:mending_faith = faith:orthodox
+# 				}
+# 				desc = roman_restoration.0101.desc.orthodox
+# 			}
+# 			# As a Catholic
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:mending_faith = faith:catholic
+# 				}
+# 				desc = roman_restoration.0101.desc.catholic
+# 			}
+# 			# And Everybody else
+# 			triggered_desc = {
+# 				trigger = {
+# 					NOR = {
+# 						scope:mending_faith = faith:catholic
+# 						scope:mending_faith = faith:orthodox
+# 					}
+# 				}
+# 				desc = roman_restoration.0101.desc.generic
+# 			}
+# 		}
+# 	}
+# 	theme = realm
+# 	left_portrait = {
+# 		character = scope:scoped_emperor
+# 		animation = personality_zealous
+# 	}
 
-	immediate = {
-		play_music_cue = "mx_cue_faith_conversion"
-		faith = { save_scope_as = old_faith }
-	}
+# 	immediate = {
+# 		play_music_cue = "mx_cue_faith_conversion"
+# 		faith = { save_scope_as = old_faith }
+# 	}
 
-	option = {
-		name = roman_restoration.0101.a
-		trigger = {
-			OR = {
-				is_ai = no
-				NOT = { has_trait = zealous } # Never!
-			}
-		}
-		set_character_faith = scope:mending_faith
-		every_held_title = {
-			limit = { tier = tier_county }
-			set_county_faith = scope:mending_faith
-		}
-		ai_chance = {
-			base = 80
-			modifier = { # Where the wind blows, I sail.
-				add = 20
-				has_trait = cynical
-			}
-		}
-	}
-	option = {
-		name = roman_restoration.0101.b
-		ai_chance = {
-			base = 20
-			ai_value_modifier = {
-				ai_zeal = 1.0
-			}
-			modifier = {
-				add = 20
-				has_trait = zealous
-			}
-			modifier = {
-				add = 10
-				OR = {
-					has_title = title:e_byzantium
-					has_title = title:e_hre
-				}
-			}
-		}
-	}
-}
+# 	option = {
+# 		name = roman_restoration.0101.a
+# 		trigger = {
+# 			OR = {
+# 				is_ai = no
+# 				NOT = { has_trait = zealous } # Never!
+# 			}
+# 		}
+# 		set_character_faith = scope:mending_faith
+# 		every_held_title = {
+# 			limit = { tier = tier_county }
+# 			set_county_faith = scope:mending_faith
+# 		}
+# 		ai_chance = {
+# 			base = 80
+# 			modifier = { # Where the wind blows, I sail.
+# 				add = 20
+# 				has_trait = cynical
+# 			}
+# 		}
+# 	}
+# 	option = {
+# 		name = roman_restoration.0101.b
+# 		ai_chance = {
+# 			base = 20
+# 			ai_value_modifier = {
+# 				ai_zeal = 1.0
+# 			}
+# 			modifier = {
+# 				add = 20
+# 				has_trait = zealous
+# 			}
+# 			modifier = {
+# 				add = 10
+# 				OR = {
+# 					has_title = title:e_byzantium
+# 					has_title = title:e_hre
+# 				}
+# 			}
+# 		}
+# 	}
+# }
 
-# Heretics and Heathens are only notified.
-roman_restoration.0102 = {
-	type = character_event
-	title = roman_restoration.0100.t
-	desc = {
-		desc = roman_restoration.0101.desc.intro
-		first_valid = {
-			# As an Orthodox
-			triggered_desc = {
-				trigger = {
-					scope:mending_faith = faith:orthodox
-				}
-				desc = roman_restoration.0101.desc.orthodox
-			}
-			# As a Catholic
-			triggered_desc = {
-				trigger = {
-					scope:mending_faith = faith:catholic
-				}
-				desc = roman_restoration.0101.desc.catholic
-			}
-			# And Everybody else
-			triggered_desc = {
-				trigger = {
-					NOR = {
-						scope:mending_faith = faith:catholic
-						scope:mending_faith = faith:orthodox
-					}
-				}
-				desc = roman_restoration.0101.desc.generic
-			}
-		}
-	}
-	theme = realm
-	left_portrait = {
-		character = scope:scoped_emperor
-		animation = personality_zealous
-	}
+# # Heretics and Heathens are only notified.
+# roman_restoration.0102 = {
+# 	type = character_event
+# 	title = roman_restoration.0100.t
+# 	desc = {
+# 		desc = roman_restoration.0101.desc.intro
+# 		first_valid = {
+# 			# As an Orthodox
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:mending_faith = faith:orthodox
+# 				}
+# 				desc = roman_restoration.0101.desc.orthodox
+# 			}
+# 			# As a Catholic
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:mending_faith = faith:catholic
+# 				}
+# 				desc = roman_restoration.0101.desc.catholic
+# 			}
+# 			# And Everybody else
+# 			triggered_desc = {
+# 				trigger = {
+# 					NOR = {
+# 						scope:mending_faith = faith:catholic
+# 						scope:mending_faith = faith:orthodox
+# 					}
+# 				}
+# 				desc = roman_restoration.0101.desc.generic
+# 			}
+# 		}
+# 	}
+# 	theme = realm
+# 	left_portrait = {
+# 		character = scope:scoped_emperor
+# 		animation = personality_zealous
+# 	}
 
-	immediate = {
-		#Even if you're not converting, it's still all rather momentous.
-		play_music_cue = "mx_cue_faith_conversion"
-	}
+# 	immediate = {
+# 		#Even if you're not converting, it's still all rather momentous.
+# 		play_music_cue = "mx_cue_faith_conversion"
+# 	}
 
-	option = {
-		name = roman_restoration.0102.a
-	}
-}
+# 	option = {
+# 		name = roman_restoration.0102.a
+# 	}
+# }
 
-# Faithful players notified.
-roman_restoration.0103 = {
-	type = character_event
-	title = roman_restoration.0100.t
-	desc = {
-		desc = roman_restoration.0100.desc.intro
-		first_valid = {
-			# As an Orthodox
-			triggered_desc = {
-				trigger = {
-					scope:mending_faith = faith:orthodox
-				}
-				desc = roman_restoration.0100.desc.orthodox
-			}
-			# As a Catholic
-			triggered_desc = {
-				trigger = {
-					scope:mending_faith = faith:catholic
-				}
-				desc = roman_restoration.0100.desc.catholic
-			}
-			# And Everybody else
-			triggered_desc = {
-				trigger = {
-					NOR = {
-						scope:mending_faith = faith:catholic
-						scope:mending_faith = faith:orthodox
-					}
-				}
-				desc = roman_restoration.0100.desc.generic
-			}
-		}
-	}
-	theme = realm
-	left_portrait = {
-		character = scope:scoped_emperor
-		animation = personality_zealous
-	}
+# # Faithful players notified.
+# roman_restoration.0103 = {
+# 	type = character_event
+# 	title = roman_restoration.0100.t
+# 	desc = {
+# 		desc = roman_restoration.0100.desc.intro
+# 		first_valid = {
+# 			# As an Orthodox
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:mending_faith = faith:orthodox
+# 				}
+# 				desc = roman_restoration.0100.desc.orthodox
+# 			}
+# 			# As a Catholic
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:mending_faith = faith:catholic
+# 				}
+# 				desc = roman_restoration.0100.desc.catholic
+# 			}
+# 			# And Everybody else
+# 			triggered_desc = {
+# 				trigger = {
+# 					NOR = {
+# 						scope:mending_faith = faith:catholic
+# 						scope:mending_faith = faith:orthodox
+# 					}
+# 				}
+# 				desc = roman_restoration.0100.desc.generic
+# 			}
+# 		}
+# 	}
+# 	theme = realm
+# 	left_portrait = {
+# 		character = scope:scoped_emperor
+# 		animation = personality_zealous
+# 	}
 
-	immediate = {
-		#Even if you're not converting, it's still all rather momentous.
-		play_music_cue = "mx_cue_faith_conversion"
-	}
+# 	immediate = {
+# 		#Even if you're not converting, it's still all rather momentous.
+# 		play_music_cue = "mx_cue_faith_conversion"
+# 	}
 
-	option = {
-		name = roman_restoration.0100.a
-	}
-}
+# 	option = {
+# 		name = roman_restoration.0100.a
+# 	}
+# }
