@@ -89,6 +89,442 @@ cop_slavic_decision_event.0001 = {
 	}
 }
 
+#########################
+# Dodole
+# Idea and writing by NimbleShadow
+# Editing and scripting by Artem Samarsky
+#########################
+
+#Initial event giving a description and asking for money
+cop_slavic_decision_event.0010 = {
+	type = character_event
+	title = cop_slavic_decision_event.0010.t
+	desc = cop_slavic_decision_event.0010.desc
+	theme = faith
+	override_background = {
+		event_background = farmland
+	}
+	left_portrait = {
+		character = scope:realm_priest
+		animation = personality_zealous
+	}
+	
+	trigger = {
+	}
+
+	weight_multiplier = {
+		base = 1
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = {
+			save_scope_as = realm_priest
+		}
+		capital_county = { save_scope_as = capital_county }
+	}
+
+	option = {
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold > major_gold_value
+			}
+		}
+		name = cop_slavic_decision_event.0010.a
+		remove_short_term_gold = major_gold_value
+		custom_tooltip = cop_slavic_decision_event.0010.a.tt
+		set_variable = {
+			name = dodole_success
+			value = 20
+		}
+		stress_impact = {
+			greedy = medium_stress_gain
+			cynical = medium_stress_gain
+		}
+		trigger_event = {
+			on_action = cop_dodola
+			days = { 2 3 }
+		}
+		ai_chance = {
+			base = 0
+
+			ai_value_modifier = {
+				ai_zeal = 10
+				ai_greed = -10
+			}
+		}		
+	}
+
+	option = {
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold > minor_gold_value
+			}
+		}
+		name = cop_slavic_decision_event.0010.b
+		remove_short_term_gold = minor_gold_value
+		custom_tooltip = cop_slavic_decision_event.0010.b.tt
+		set_variable = {
+			name = dodole_success
+			value = 0
+		}
+		trigger_event = {
+			on_action = cop_dodola
+			days = { 2 3 }
+		}
+		ai_chance = {
+			base = 100
+		}		
+	}
+	
+	option = {
+		name = cop_slavic_decision_event.0010.c
+		custom_tooltip = cop_slavic_decision_event.0010.c.tt
+		set_variable = {
+			name = dodole_success
+			value = -20
+		}
+		stress_impact = {
+			generous = medium_stress_gain
+			humble = medium_stress_gain
+		}
+		trigger_event = {
+			on_action = cop_dodola
+			days = { 2 3 }
+		}
+
+		ai_chance = {
+			base = 0
+
+			ai_value_modifier = {
+				ai_boldness = 5
+				ai_greed = 5
+				ai_zeal = -10
+			}
+		}		
+	}
+}
+
+#Choosing the version of ritual event
+cop_slavic_decision_event.0011 = {
+
+}
+
+#Ritual itself
+cop_slavic_decision_event.0012 = {
+	type = character_event
+	title = cop_slavic_decision_event.0010.t
+	desc = cop_slavic_decision_event.0010.desc
+	theme = faith
+	override_background = {
+		event_background = farmland
+	}
+	left_portrait = {
+		character = scope:realm_priest
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		NOT = { has_character_flag = flag_sought_aid_of_spirits }
+	}
+
+	weight_multiplier = {
+		base = 1
+	}
+
+	immediate = {
+	}
+}
+
+#PREPARATION EVENTS
+
+#Need to get oak leaves for the ritual
+cop_slavic_decision_event.0020 = {
+	type = character_event
+	title = cop_slavic_decision_event.0020.t
+	desc = cop_slavic_decision_event.0020.desc
+	theme = faith
+	override_background = {
+		event_background = farmland
+	}
+	left_portrait = {
+		character = scope:realm_priest
+		animation = personality_rational
+	}
+
+	# weight_multiplier = {
+	# 	base = 1
+	# }
+
+	option = {
+		name = cop_slavic_decision_event.0020.a
+		remove_short_term_gold = tiny_gold_value
+		custom_tooltip = cop_slavic_decision_event.0020.a.tt
+		stress_impact = {
+			greedy = minor_stress_gain
+			lazy = minor_stress_gain
+		}
+		trigger_event = cop_slavic_decision_event.0021
+		hidden_effect = {
+			random_list = {
+				60 = {
+					add_character_flag = cop_dodole_leaves_ok
+				}
+				20 = {
+					add_character_flag = cop_dodole_leaves_artifact
+				}
+				15 = {
+					add_character_flag = cop_dodole_leaves_fail
+				}
+				5 = {
+					add_character_flag = cop_dodole_leaves_epic_fail
+				}
+			}
+		}
+		ai_chance = {
+			base = 0
+
+			ai_value_modifier = {
+				ai_zeal = 10
+				ai_greed = -10
+				ai_energy = 10
+			}
+		}		
+	}
+
+	option = {
+		name = cop_slavic_decision_event.0020.b
+		trigger = {
+			OR = {
+				has_trait = theologian
+				has_trait = scholar
+				learning >= high_skill_rating
+			}
+		}
+		change_variable = {
+			name = dodole_success
+			add = 10
+		}
+		skill = learning
+		custom_tooltip = cop_slavic_decision_event.0020.b.tt
+		trigger_event = cop_slavic_decision_event.0011
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	option = {
+		name = cop_slavic_decision_event.0020.c
+		trigger = {
+			OR = {
+				has_trait = gardener
+				has_trait = deceitful
+				intrigue >= high_skill_rating
+			}
+		}
+		change_variable = {
+			name = dodole_success
+			add = 10
+		}
+		skill = intrigue
+		custom_tooltip = cop_slavic_decision_event.0020.c.tt
+		trigger_event = cop_slavic_decision_event.0011
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	option = {
+		name = cop_slavic_decision_event.0020.d
+		change_variable = {
+			name = dodole_success
+			add = -10
+		}
+		custom_tooltip = cop_slavic_decision_event.0020.d.tt
+		trigger_event = cop_slavic_decision_event.0011
+		ai_chance = {
+			base = 100
+		}		
+	}
+}
+
+#The outcome of going to the forest
+cop_slavic_decision_event.0021 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = cop_dodole_leaves_epic_fail
+				}
+				desc = cop_slavic_decision_event.0021.t.epic_fail
+			}
+			desc = cop_slavic_decision_event.0021.t.ok
+		}
+	}
+	desc = {
+		desc = cop_slavic_decision_event.0021.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = cop_dodole_leaves_epic_fail
+				}
+				desc = cop_slavic_decision_event.0021.desc.epic_fail
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = cop_dodole_leaves_fail
+				}
+				desc = cop_slavic_decision_event.0021.desc.fail
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						has_character_flag = cop_dodole_leaves_artifact
+						has_character_flag = cop_dodole_leaves_ok
+					}
+				}
+				desc = cop_slavic_decision_event.0021.desc.ok
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = cop_dodole_leaves_artifact
+				}
+				desc = cop_slavic_decision_event.0021.desc.artifact
+			}
+		}
+	}
+	theme = faith
+	override_background = {
+		event_background = farmland
+	}
+	left_portrait = {
+		character = scope:realm_priest
+		triggered_animation = {
+			trigger = {
+				has_character_flag = cop_dodole_leaves_epic_fail
+			}
+			animation = shock
+		}
+		triggered_animation = {
+			trigger = {
+				has_character_flag = cop_dodole_leaves_fail
+			}
+			animation = sadness
+		}
+		triggered_animation = {
+			trigger = {
+				has_character_flag = cop_dodole_leaves_artifact
+			}
+			animation = admiration
+		}
+		triggered_animation = {
+			trigger = {
+				has_character_flag = cop_dodole_leaves_ok
+			}
+			animation = happiness
+		}
+	}
+
+	#Regular outcome
+	option = {
+		name = cop_slavic_decision_event.0021.a
+		trigger = {
+			has_character_flag = cop_dodole_leaves_ok
+		}
+		change_variable = {
+			name = dodole_success
+			add = 10
+		}
+		trigger_event = cop_slavic_decision_event.0011
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Got artifact, claim it for yourself
+	option = {
+		name = cop_slavic_decision_event.0021.b
+		trigger = {
+			has_character_flag = cop_dodole_leaves_artifact
+		}
+		change_variable = {
+			name = dodole_success
+			add = 10
+		}
+		create_artifact_armor_effect = {
+			OWNER = scope:exotic_blade_holder
+			CREATOR = scope:dummy_gender
+			SET_ARMOR_TYPE = flag:no
+		}
+		trigger_event = cop_slavic_decision_event.0011
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Got artifact, give it to the people
+	option = {
+		name = cop_slavic_decision_event.0021.c
+		trigger = {
+			has_character_flag = cop_dodole_leaves_artifact
+		}
+		change_variable = {
+			name = dodole_success
+			add = 10
+		}
+		trigger_event = cop_slavic_decision_event.0011
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Got artifact, study it
+	option = {
+		name = cop_slavic_decision_event.0021.c
+		trigger = {
+			has_character_flag = cop_dodole_leaves_artifact
+			OR = {
+				has_focus = learning_scholarship_focus
+				has_trait = scholar
+			}
+		}
+		skill = learning
+		add_learning_lifestyle_xp = major_lifestyle_xp
+		change_variable = {
+			name = dodole_success
+			add = 10
+		}
+		trigger_event = cop_slavic_decision_event.0011
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Got artifact, donate it to priests
+	option = {
+		name = cop_slavic_decision_event.0021.c
+		trigger = {
+			has_character_flag = cop_dodole_leaves_artifact
+			OR = {
+				has_trait = zealous
+				has_trait = 
+			}
+		}
+		trait = zealous
+		add_piety = major_piety_gain
+		change_variable = {
+			name = dodole_success
+			add = 10
+		}
+		trigger_event = cop_slavic_decision_event.0011
+		ai_chance = {
+			base = 100
+		}		
+	}
+}
+
 # ##################################################
 # # Uniting the Religion (adopted from Schism events)
 # # by Artem Samarsky

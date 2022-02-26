@@ -1,0 +1,5 @@
+﻿cop_dodola = {
+	random_events = {
+		100 = cop_slavic_decision_event.0020	
+	}
+}

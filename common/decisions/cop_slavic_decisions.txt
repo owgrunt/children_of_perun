@@ -189,7 +189,6 @@ dodole_decision = {
 	}
 
 	effect = {
-		custom_tooltip = dodole_decision_effect.tt
 		show_as_tooltip = {
 			add_character_modifier = {
 				modifier = cop_slavic_decision_dodole_character 
@@ -202,7 +201,7 @@ dodole_decision = {
 				}
 			}
 		}
-		trigger_event = religious_decision.0001
+		trigger_event = cop_slavic_decision_event.0010
 	}
 
 	ai_check_interval = 60

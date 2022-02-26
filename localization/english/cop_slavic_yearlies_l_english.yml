@@ -1,15 +1,4 @@
 ﻿l_english:
- cop_slavic_decision_event.0001.t:0 "Deciding on a Deity"
- cop_slavic_decision_event.0001.desc:0 "[ROOT.Char.GetFaith.PantheonTerm|U] are many and inscrutable, yet I cannot say that there are not some who hold a level of special appeal for me. Were I to dedicate myself openly to the express worship of primarily one such deity, I would doubtless gain my patron's blessings and draw like-minded souls to my side, gaining health, wealth, and glory."
- cop_slavic_decision_event.0001.perun:0 "Perun, the Thunderer!"
- cop_slavic_decision_event.0001.veles:0 "Veles, the Serpent!"
- cop_slavic_decision_event.0001.dazhbog:0 "Dazhbog, the Sun Caesar!"
- cop_slavic_decision_event.0001.stribog:0 "Stribog, the all-knowing!"
- cop_slavic_decision_event.0001.svarog:0 "Svarog, the Quarrelsome!"
- cop_slavic_decision_event.0001.mokosh:0 "Mokosh, Damp Mother Earth!"
- cop_slavic_decision_event.0001.optout:0 "$religious_decision.0101.flavor$"
- cop_slavic_decision_event.0001.flavor:0 "$religious_decision.0101.flavor$"
-
 cop_slavic_yearly.0011.t:0 "Clubbing for Perun"
  cop_slavic_yearly.0011.desc:0 "Today is the day of Perun the Gromovnik! From early in the morning, [ROOT.Char.GetFaith.BishopMalePlural] have been out and about calling on everyone to honour the god by fighting in the traditional general melee.\n\nThe participants organise into groups and seek out other [ROOT.Char.GetFaith.GetAdherentNamePlural] willing to get some bumps and bruises. Most only fight with their fists, but those most eager to show their courage or [Concept( 'piety', 'piety' )|E] prefer to weild the bronze-headed mace, a symbol of Perun, seeking out those similarly inclined.\n\nAs the [ROOT.Char.GetTitleAsName], I am expected to participate. While fun, it is also risky."
  cop_slavic_yearly.0011.a:0 "Give me the mace!"
