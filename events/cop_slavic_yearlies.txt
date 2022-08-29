@@ -2992,55 +2992,19 @@ cop_slavic_yearly.9999 = {
 
 	immediate = {
 		if = {
-			limit = { exists = title:e_byzantium.holder }
-			title:d_novgorod.holder = { save_scope_as = roman_emperor }
-		}
-		random_neighboring_top_liege_realm_owner = {
 			limit = {
-				faith = { NOT = { has_doctrine_parameter = unreformed } }
-				faith = { root.faith = founder.var:foundational_faith }
+				has_character_flag = cop_dodole_leaves_artifact
 			}
-			alternative_limit = {
-				faith = { NOT = { has_doctrine_parameter = unreformed } }
-				faith.religion = root.faith.religion
+			random_dummy_gender_effect = yes
+			create_artifact_armor_effect = {
+				OWNER = root
+				CREATOR = scope:dummy_gender
+				SET_ARMOR_TYPE = flag:no
 			}
-			save_scope_as = actor #for the effect to work properly
 		}
 	}
 
-	trigger = {
-		# title:d_novgorod.holder = {
-		# 	faith = {
-		# 		root.faith = founder.var:foundational_faith
-			
-		# 		# AND = {
-		# 		# 	has_variable = cop_original_faith
-		# 		#	var:cop_successor_faith = root.faith
-		# 		# }
-		# 	}
-		# }
-		any_neighboring_top_liege_realm_owner = {
-			faith = { NOT = { has_doctrine_parameter = unreformed } }
-			faith = {
-				var:original_faith = root.faith
-				# founder = {
-				# 	var:foundational_faith = root.faith
-				# 	var:original_faith = root.faith
-				# }
-			}
-		}
-		# title:d_novgorod.holder = {
-		# 	faith.religion = root.faith.religion
-		# }
-		# root.capital_county = {
-		# 	OR = {
-		# 		is_coastal = yes
-		# 		is_riverside = yes
-		# 	}
-		# }
-	}
 	option = {
 		name = cop_slavic_yearly.9999.a
-		set_character_faith = slavic_south
 	}
 }

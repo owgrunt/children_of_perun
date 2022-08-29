@@ -95,6 +95,46 @@ cop_slavic_decision_event.0001 = {
 # Editing and scripting by Artem Samarsky
 #########################
 
+#Scripted trigger for sex candidate
+scripted_trigger dodole_lover_trigger = {
+	is_adult = yes
+	NOT = {
+		any_consort = {
+			this = root
+		}
+	}
+	NOT = {
+		has_trait = chaste
+		has_trait = disfigured
+		has_trait = consumption
+		has_trait = typhus
+		has_trait = bubonic_plague
+		has_trait = smallpox
+		has_trait = one_eyed
+		has_trait = depressed_1
+		has_trait = pneumonic
+		has_trait = great_pox
+		has_trait = early_great_pox
+		has_trait = lovers_pox
+		has_trait = leper
+		has_trait = eunuch
+		has_trait = scaly
+		has_trait = celibate
+	}
+	num_of_relation_lover < 2
+	NOT = { has_relation_lover = root }
+	save_temporary_scope_as = adultery_target_check
+	possible_mutual_interest_trigger = {
+		CHARACTER_1 = scope:adultery_target_check
+		CHARACTER_2 = root
+	}
+	opinion = {
+		target = root
+		value > 0
+	}
+	might_cheat_on_every_partner_trigger = yes
+}
+
 #Initial event giving a description and asking for money
 cop_slavic_decision_event.0010 = {
 	type = character_event
@@ -187,7 +227,6 @@ cop_slavic_decision_event.0010 = {
 		}
 		stress_impact = {
 			generous = medium_stress_gain
-			humble = medium_stress_gain
 		}
 		trigger_event = {
 			on_action = cop_dodola
@@ -206,50 +245,608 @@ cop_slavic_decision_event.0010 = {
 	}
 }
 
-#Choosing the version of ritual event
-cop_slavic_decision_event.0011 = {
-
-}
-
 #Ritual itself
-cop_slavic_decision_event.0012 = {
+cop_slavic_decision_event.0011 = {
 	type = character_event
-	title = cop_slavic_decision_event.0010.t
-	desc = cop_slavic_decision_event.0010.desc
+	title = cop_slavic_decision_event.0011.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:dodla_daughter = yes
+				}
+				desc = cop_slavic_decision_event.0011.desc.intro_daughter
+			}
+			desc = cop_slavic_decision_event.0011.desc.intro
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						var:dodole_outcome = flag:ok
+						var:dodole_outcome = flag:great
+					}
+				}
+				desc = cop_slavic_decision_event.0011.desc.mid_good
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						var:dodole_outcome = flag:bad
+						var:dodole_outcome = flag:terrible
+					}
+				}
+				desc = cop_slavic_decision_event.0011.desc.mid_bad
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						var:dodole_outcome = flag:sex
+						var:dodole_outcome = flag:kicking
+					}
+				}
+				desc = cop_slavic_decision_event.0011.desc.mid_sensual
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						var:dodole_outcome = flag:zeal
+						var:dodole_outcome = flag:deceit
+						var:dodole_outcome = flag:lunacy
+					}
+				}
+				desc = cop_slavic_decision_event.0011.desc.mid_effort
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:dodole_outcome = flag:great
+				}
+				desc = cop_slavic_decision_event.0011.desc.end_great
+			}
+			triggered_desc = {
+				trigger = {
+					var:dodole_outcome = flag:terrible
+				}
+				desc = cop_slavic_decision_event.0011.desc.end_terrible
+			}
+			triggered_desc = {
+				trigger = {
+					var:dodole_outcome = flag:sex
+				}
+				desc = cop_slavic_decision_event.0011.desc.end_sex
+			}
+			triggered_desc = {
+				trigger = {
+					var:dodole_outcome = flag:kicking
+				}
+				desc = cop_slavic_decision_event.0011.desc.end_kicking
+			}
+			triggered_desc = {
+				trigger = {
+					var:dodole_outcome = flag:zeal
+				}
+				desc = cop_slavic_decision_event.0011.desc.end_zeal
+			}
+			triggered_desc = {
+				trigger = {
+					var:dodole_outcome = flag:deceit
+				}
+				desc = cop_slavic_decision_event.0011.desc.end_deceit
+			}
+			triggered_desc = {
+				trigger = {
+					var:dodole_outcome = flag:lunacy
+				}
+				desc = cop_slavic_decision_event.0011.desc.end_lunacy
+			}
+		}
+	}
 	theme = faith
 	override_background = {
 		event_background = farmland
 	}
 	left_portrait = {
-		character = scope:realm_priest
+		character = scope:portrait
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						var:dodole_outcome = flag:ok
+						var:dodole_outcome = flag:great
+						var:dodole_outcome = flag:kicking
+						var:dodole_outcome = flag:zeal
+						var:dodole_outcome = flag:deceit
+						var:dodole_outcome = flag:lunacy
+					}
+				}
+			}
+			animation = personality_zealous
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						var:dodole_outcome = flag:bad
+						var:dodole_outcome = flag:terrible
+					}
+				}
+			}
+			animation = grief
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:dodole_outcome = flag:sex
+				}
+			}
+			animation = flirtation
+		}
 		animation = personality_zealous
 	}
-	
-	trigger = {
-		NOT = { has_character_flag = flag_sought_aid_of_spirits }
-	}
-
-	weight_multiplier = {
-		base = 1
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						var:dodole_outcome = flag:ok
+						var:dodole_outcome = flag:great
+						var:dodole_outcome = flag:kicking
+						var:dodole_outcome = flag:zeal
+					}
+				}
+			}
+			animation = admiration
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						var:dodole_outcome = flag:bad
+						var:dodole_outcome = flag:terrible
+					}
+				}
+			}
+			animation = personality_coward
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:dodole_outcome = flag:deceit
+				}
+			}
+			animation = personality_dishonorable
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:dodole_outcome = flag:lunacy
+				}
+			}
+			animation = stress
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:dodole_outcome = flag:sex
+				}
+			}
+			animation = flirtation_left
+		}
+		animation = personality_zealous
 	}
 
 	immediate = {
+		if = {
+			limit = {
+				any_courtier_or_guest = {
+					dodole_lover_trigger = yes
+				}
+			}
+			random_courtier_or_guest = {
+				limit = {
+					dodole_lover_trigger = yes
+				}
+				weight = {
+					modifier = {
+						factor = 100
+						OR = {
+							has_trait = lustful
+							has_trait = seducer
+							has_trait = rakish
+						}
+					}
+					modifier = {
+						factor = 50
+						OR = {
+							has_trait = beauty_good_1
+							has_trait = beauty_good_2
+							has_trait = beauty_good_3
+						}
+					}
+				}
+				save_scope_as = dodole_lover
+				save_scope_as = portrait
+			}
+		}
+		random_list = {
+			50 = {
+				set_variable = {
+					name = dodole_outcome
+					value = flag:ok
+				}
+				scope:realm_priest = {
+					save_scope_as = portrait
+				}
+				modifier = {
+					add = var:dodole_success
+				}
+				modifier = {
+					var:dodole_success <= -10
+					add = -20
+				}
+			}
+			10 = {
+				set_variable = {
+					name = dodole_outcome
+					value = flag:great
+				}
+				scope:realm_priest = {
+					save_scope_as = portrait
+				}
+				modifier = {
+					add = var:dodole_success
+				}
+			}
+			20 = {
+				set_variable = {
+					name = dodole_outcome
+					value = flag:bad
+				}
+				scope:realm_priest = {
+					save_scope_as = portrait
+				}
+				modifier = {
+					subtract = var:dodole_success
+				}
+			}
+			0 = {
+				set_variable = {
+					name = dodole_outcome
+					value = flag:terrible
+				}
+				scope:realm_priest = {
+					save_scope_as = portrait
+				}
+				modifier = {
+					subtract = var:dodole_success
+				}
+			}
+			100 = {
+				trigger = {
+					has_trait = lustful
+					var:dodole_success >= 0
+					any_courtier_or_guest = {
+						dodole_lover_trigger = yes
+					}
+				}
+				set_variable = {
+					name = dodole_outcome
+					value = flag:sex
+				}
+				scope:dodole_lover = {
+					save_scope_as = portrait
+				}
+			}
+			100 = {
+				trigger = {
+					has_trait = pregnant
+					var:dodole_success >= 0
+				}
+				set_variable = {
+					name = dodole_outcome
+					value = flag:kicking
+				}
+				root = {
+					save_scope_as = portrait
+				}
+			}
+			100 = {
+				trigger = {
+					has_trait = zealous
+					var:dodole_success >= 0
+				}
+				set_variable = {
+					name = dodole_outcome
+					value = flag:zeal
+				}
+				root = {
+					save_scope_as = portrait
+				}
+			}
+			100 = {
+				trigger = {
+					or = {
+						has_trait = deceitful
+						has_trait = education_intrigue_1
+						has_trait = education_intrigue_2
+						has_trait = education_intrigue_3
+						has_trait = education_intrigue_4
+					}
+					has_trait = cynical
+					var:dodole_success >= 0
+				}
+				root = {
+					save_scope_as = portrait
+				}
+				set_variable = {
+					name = dodole_outcome
+					value = flag:deceit
+				}
+			}
+			50 = {
+				trigger = {
+					has_trait = depressed
+					var:dodole_success <= 0
+				}
+				set_variable = {
+					name = dodole_outcome
+					value = flag:lunacy
+				}
+				root = {
+					save_scope_as = portrait
+				}
+			}
+		}
+	}
+
+	option = {
+		name = cop_slavic_decision_event.0011.a
+		trigger = {
+			var:dodole_outcome = flag:ok
+		}
+		capital_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_decision_dodole_county
+				years = 2
+			}
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_decision_dodole_character 
+			years = 2
+		}
+		remove_variable = dodole_outcome
+		remove_variable = dodole_success
+		add_piety = medium_piety_gain
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	option = {
+		name = cop_slavic_decision_event.0011.b
+		trigger = {
+			var:dodole_outcome = flag:great
+		}
+		capital_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_decision_dodole_county
+				years = 5
+			}
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_decision_dodole_character 
+			years = 5
+		}
+		remove_variable = dodole_outcome
+		remove_variable = dodole_success
+		add_piety = major_piety_gain
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+
+	option = {
+		name = cop_slavic_decision_event.0011.c
+		trigger = {
+			var:dodole_outcome = flag:bad
+		}
+		add_piety = miniscule_piety_loss
+		remove_variable = dodole_outcome
+		remove_variable = dodole_success
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	option = {
+		name = cop_slavic_decision_event.0011.d
+		trigger = {
+			var:dodole_outcome = flag:terrible
+		}
+		add_piety = miniscule_piety_loss
+		remove_variable = dodole_outcome
+		remove_variable = dodole_success
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Have sex
+	option = {
+		name = cop_slavic_decision_event.0011.e
+		trigger = {
+			var:dodole_outcome = flag:sex
+		}
+		had_sex_with_effect = {
+			CHARACTER = scope:dodole_lover
+			PREGNANCY_CHANCE = pregnancy_chance
+		}
+		capital_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_decision_dodole_county
+				years = 2
+			}
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_decision_dodole_character 
+			years = 5
+		}
+		remove_variable = dodole_outcome
+		remove_variable = dodole_success
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Abstain from having sex
+	option = {
+		name = cop_slavic_decision_event.0011.f
+		trigger = {
+			var:dodole_outcome = flag:sex
+		}
+		capital_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_decision_dodole_county
+				years = 2
+			}
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_decision_dodole_character 
+			years = 2
+		}
+		stress_impact = {
+			base = minor_stress_gain
+		}
+		add_piety = medium_piety_gain
+		remove_variable = dodole_outcome
+		remove_variable = dodole_success
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#You dance hard because of your zeal
+	option = {
+		name = cop_slavic_decision_event.0011.g
+		trigger = {
+			var:dodole_outcome = flag:zeal
+		}
+		capital_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_decision_dodole_county
+				years = 5
+			}
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_decision_dodole_character 
+			years = 5
+		}
+		stress_impact = {
+			base = medium_stress_loss
+		}
+		add_piety = medium_piety_gain
+		remove_variable = dodole_outcome
+		remove_variable = dodole_success
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#You feel your baby kicking
+	option = {
+		name = cop_slavic_decision_event.0011.h
+		trigger = {
+			var:dodole_outcome = flag:kicking
+		}
+		capital_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_decision_dodole_county
+				years = 5
+			}
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_decision_dodole_character 
+			years = 5
+		}
+		stress_impact = {
+			base = medium_stress_loss
+		}
+		add_piety = medium_piety_gain
+		remove_variable = dodole_outcome
+		remove_variable = dodole_success
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#You fake zeal
+	option = {
+		name = cop_slavic_decision_event.0011.i
+		trigger = {
+			var:dodole_outcome = flag:deceit
+		}
+		capital_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_decision_dodole_county
+				years = 5
+			}
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_decision_dodole_character 
+			years = 5
+		}
+		add_piety = medium_piety_gain
+		remove_variable = dodole_outcome
+		remove_variable = dodole_success
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#You become lunatic
+	option = {
+		name = cop_slavic_decision_event.0011.j
+		trigger = {
+			var:dodole_outcome = flag:lunacy
+		}
+		add_trait = lunatic_1
+		capital_county = {
+			add_county_modifier = {
+				modifier = cop_slavic_decision_dodole_county
+				years = 2
+			}
+		}
+		add_character_modifier = {
+			modifier = cop_slavic_decision_dodole_character 
+			years = 2
+		}
+		add_piety = major_piety_gain
+		add_prestige = medium_prestige_loss
+		remove_variable = dodole_outcome
+		remove_variable = dodole_success
+		ai_chance = {
+			base = 100
+		}		
 	}
 }
 
 #PREPARATION EVENTS
 
 #Need to get oak leaves for the ritual
-cop_slavic_decision_event.0020 = {
+cop_slavic_decision_event.0012 = {
 	type = character_event
-	title = cop_slavic_decision_event.0020.t
-	desc = cop_slavic_decision_event.0020.desc
+	title = cop_slavic_decision_event.0012.t
+	desc = cop_slavic_decision_event.0012.desc
 	theme = faith
 	override_background = {
 		event_background = farmland
 	}
 	left_portrait = {
-		character = scope:realm_priest
+		character = root
 		animation = personality_rational
 	}
 
@@ -258,14 +855,14 @@ cop_slavic_decision_event.0020 = {
 	# }
 
 	option = {
-		name = cop_slavic_decision_event.0020.a
+		name = cop_slavic_decision_event.0012.a
 		remove_short_term_gold = tiny_gold_value
-		custom_tooltip = cop_slavic_decision_event.0020.a.tt
+		custom_tooltip = cop_slavic_decision_event.0012.a.tt
 		stress_impact = {
 			greedy = minor_stress_gain
 			lazy = minor_stress_gain
 		}
-		trigger_event = cop_slavic_decision_event.0021
+		trigger_event = cop_slavic_decision_event.0013
 		hidden_effect = {
 			random_list = {
 				60 = {
@@ -294,7 +891,7 @@ cop_slavic_decision_event.0020 = {
 	}
 
 	option = {
-		name = cop_slavic_decision_event.0020.b
+		name = cop_slavic_decision_event.0012.b
 		trigger = {
 			OR = {
 				has_trait = theologian
@@ -307,7 +904,7 @@ cop_slavic_decision_event.0020 = {
 			add = 10
 		}
 		skill = learning
-		custom_tooltip = cop_slavic_decision_event.0020.b.tt
+		custom_tooltip = cop_slavic_decision_event.0012.b.tt
 		trigger_event = cop_slavic_decision_event.0011
 		ai_chance = {
 			base = 100
@@ -315,10 +912,10 @@ cop_slavic_decision_event.0020 = {
 	}
 
 	option = {
-		name = cop_slavic_decision_event.0020.c
+		name = cop_slavic_decision_event.0012.c
 		trigger = {
 			OR = {
-				has_trait = gardener
+				has_trait = lifestyle_gardener
 				has_trait = deceitful
 				intrigue >= high_skill_rating
 			}
@@ -328,7 +925,7 @@ cop_slavic_decision_event.0020 = {
 			add = 10
 		}
 		skill = intrigue
-		custom_tooltip = cop_slavic_decision_event.0020.c.tt
+		custom_tooltip = cop_slavic_decision_event.0012.c.tt
 		trigger_event = cop_slavic_decision_event.0011
 		ai_chance = {
 			base = 100
@@ -336,12 +933,12 @@ cop_slavic_decision_event.0020 = {
 	}
 
 	option = {
-		name = cop_slavic_decision_event.0020.d
+		name = cop_slavic_decision_event.0012.d
 		change_variable = {
 			name = dodole_success
 			add = -10
 		}
-		custom_tooltip = cop_slavic_decision_event.0020.d.tt
+		custom_tooltip = cop_slavic_decision_event.0012.d.tt
 		trigger_event = cop_slavic_decision_event.0011
 		ai_chance = {
 			base = 100
@@ -350,7 +947,7 @@ cop_slavic_decision_event.0020 = {
 }
 
 #The outcome of going to the forest
-cop_slavic_decision_event.0021 = {
+cop_slavic_decision_event.0013 = {
 	type = character_event
 	title = {
 		first_valid = {
@@ -358,25 +955,25 @@ cop_slavic_decision_event.0021 = {
 				trigger = {
 					has_character_flag = cop_dodole_leaves_epic_fail
 				}
-				desc = cop_slavic_decision_event.0021.t.epic_fail
+				desc = cop_slavic_decision_event.0013.t.epic_fail
 			}
-			desc = cop_slavic_decision_event.0021.t.ok
+			desc = cop_slavic_decision_event.0013.t.ok
 		}
 	}
 	desc = {
-		desc = cop_slavic_decision_event.0021.desc.intro
+		desc = cop_slavic_decision_event.0013.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
 					has_character_flag = cop_dodole_leaves_epic_fail
 				}
-				desc = cop_slavic_decision_event.0021.desc.epic_fail
+				desc = cop_slavic_decision_event.0013.desc.epic_fail
 			}
 			triggered_desc = {
 				trigger = {
 					has_character_flag = cop_dodole_leaves_fail
 				}
-				desc = cop_slavic_decision_event.0021.desc.fail
+				desc = cop_slavic_decision_event.0013.desc.fail
 			}
 			triggered_desc = {
 				trigger = {
@@ -385,13 +982,15 @@ cop_slavic_decision_event.0021 = {
 						has_character_flag = cop_dodole_leaves_ok
 					}
 				}
-				desc = cop_slavic_decision_event.0021.desc.ok
+				desc = cop_slavic_decision_event.0013.desc.ok
 			}
+		}
+		first_valid = {
 			triggered_desc = {
 				trigger = {
 					has_character_flag = cop_dodole_leaves_artifact
 				}
-				desc = cop_slavic_decision_event.0021.desc.artifact
+				desc = cop_slavic_decision_event.0013.desc.artifact
 			}
 		}
 	}
@@ -403,41 +1002,60 @@ cop_slavic_decision_event.0021 = {
 		character = scope:realm_priest
 		triggered_animation = {
 			trigger = {
-				has_character_flag = cop_dodole_leaves_epic_fail
+				root = { has_character_flag = cop_dodole_leaves_epic_fail }
 			}
 			animation = shock
 		}
 		triggered_animation = {
 			trigger = {
-				has_character_flag = cop_dodole_leaves_fail
+				root = { has_character_flag = cop_dodole_leaves_fail }
 			}
 			animation = sadness
 		}
 		triggered_animation = {
 			trigger = {
-				has_character_flag = cop_dodole_leaves_artifact
+				root = { has_character_flag = cop_dodole_leaves_artifact }
 			}
 			animation = admiration
 		}
 		triggered_animation = {
 			trigger = {
-				has_character_flag = cop_dodole_leaves_ok
+				root = { has_character_flag = cop_dodole_leaves_ok }
 			}
 			animation = happiness
+		}
+		animation = idle
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_character_flag = cop_dodole_leaves_artifact
+			}
+			random_dummy_gender_effect = yes
+			create_artifact_armor_effect = {
+				OWNER = root
+				CREATOR = scope:dummy_gender
+				SET_ARMOR_TYPE = flag:no
+			}
 		}
 	}
 
 	#Regular outcome
 	option = {
-		name = cop_slavic_decision_event.0021.a
+		name = cop_slavic_decision_event.0013.a
 		trigger = {
 			has_character_flag = cop_dodole_leaves_ok
 		}
+		remove_character_flag = cop_dodole_leaves_ok
 		change_variable = {
 			name = dodole_success
 			add = 10
 		}
-		trigger_event = cop_slavic_decision_event.0011
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
 		ai_chance = {
 			base = 100
 		}		
@@ -445,20 +1063,20 @@ cop_slavic_decision_event.0021 = {
 
 	#Got artifact, claim it for yourself
 	option = {
-		name = cop_slavic_decision_event.0021.b
+		name = cop_slavic_decision_event.0013.b
+		custom_tooltip = cop_slavic_decision_event.0013.b.tt
 		trigger = {
 			has_character_flag = cop_dodole_leaves_artifact
 		}
+		remove_character_flag = cop_dodole_leaves_artifact
 		change_variable = {
 			name = dodole_success
 			add = 10
 		}
-		create_artifact_armor_effect = {
-			OWNER = scope:exotic_blade_holder
-			CREATOR = scope:dummy_gender
-			SET_ARMOR_TYPE = flag:no
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
 		}
-		trigger_event = cop_slavic_decision_event.0011
 		ai_chance = {
 			base = 100
 		}		
@@ -466,15 +1084,21 @@ cop_slavic_decision_event.0021 = {
 
 	#Got artifact, give it to the people
 	option = {
-		name = cop_slavic_decision_event.0021.c
+		name = cop_slavic_decision_event.0013.c
+		custom_tooltip = cop_slavic_decision_event.0013.c.tt
 		trigger = {
 			has_character_flag = cop_dodole_leaves_artifact
 		}
+		remove_character_flag = cop_dodole_leaves_artifact
 		change_variable = {
 			name = dodole_success
-			add = 10
+			add = 20
 		}
-		trigger_event = cop_slavic_decision_event.0011
+		hidden_effect = { destroy_artifact = scope:newly_created_artifact }
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
 		ai_chance = {
 			base = 100
 		}		
@@ -482,7 +1106,8 @@ cop_slavic_decision_event.0021 = {
 
 	#Got artifact, study it
 	option = {
-		name = cop_slavic_decision_event.0021.c
+		name = cop_slavic_decision_event.0013.d
+		custom_tooltip = cop_slavic_decision_event.0013.d.tt
 		trigger = {
 			has_character_flag = cop_dodole_leaves_artifact
 			OR = {
@@ -490,13 +1115,18 @@ cop_slavic_decision_event.0021 = {
 				has_trait = scholar
 			}
 		}
+		remove_character_flag = cop_dodole_leaves_artifact
 		skill = learning
-		add_learning_lifestyle_xp = major_lifestyle_xp
+		add_learning_lifestyle_xp = medium_lifestyle_xp
 		change_variable = {
 			name = dodole_success
 			add = 10
 		}
-		trigger_event = cop_slavic_decision_event.0011
+		hidden_effect = { destroy_artifact = scope:newly_created_artifact }
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
 		ai_chance = {
 			base = 100
 		}		
@@ -504,21 +1134,305 @@ cop_slavic_decision_event.0021 = {
 
 	#Got artifact, donate it to priests
 	option = {
-		name = cop_slavic_decision_event.0021.c
+		name = cop_slavic_decision_event.0013.e
 		trigger = {
 			has_character_flag = cop_dodole_leaves_artifact
 			OR = {
 				has_trait = zealous
-				has_trait = 
+				has_trait = theologian
 			}
 		}
-		trait = zealous
+		remove_character_flag = cop_dodole_leaves_artifact
+		reverse_add_opinion = {
+			target = scope:realm_priest
+			modifier = cop_dodle_artifact
+		}
+		scope:newly_created_artifact = {
+			set_owner = {
+				target = scope:realm_priest
+				history = {
+					type = given
+					actor = scope:realm_priest #reciever
+					recipient = root #giver
+					location = root.location
+				}
+			}
+		}
+		skill = learning
 		add_piety = major_piety_gain
+		change_variable = {
+			name = dodole_success
+			add = 20
+		}
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#No leaves, proceed
+	option = {
+		name = cop_slavic_decision_event.0013.f
+		trigger = {
+			has_character_flag = cop_dodole_leaves_fail
+		}
+		remove_character_flag = cop_dodole_leaves_fail
+		change_variable = {
+			name = dodole_success
+			add = -10
+		}
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#One of the villagers tripped and died
+	#Bury him, proceed
+	option = {
+		name = cop_slavic_decision_event.0013.g
+		trigger = {
+			has_character_flag = cop_dodole_leaves_epic_fail
+			NOT = { has_trait = craven }
+		}
+		remove_character_flag = cop_dodole_leaves_epic_fail
+		add_piety = minor_piety_loss
+		change_variable = {
+			name = dodole_success
+			add = -30
+		}
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Bury him, stop
+	option = {
+		name = cop_slavic_decision_event.0013.h
+		trigger = {
+			has_character_flag = cop_dodole_leaves_epic_fail
+			NOT = { has_trait = craven }
+		}
+		remove_character_flag = cop_dodole_leaves_epic_fail
+		add_prestige = medium_prestige_loss
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Get the leaves from killer oak
+	option = {
+		name = cop_slavic_decision_event.0013.i
+		trigger = {
+			has_character_flag = cop_dodole_leaves_epic_fail
+			has_trait = arrogant
+			NOT = { has_trait = craven }
+		}
+		remove_character_flag = cop_dodole_leaves_epic_fail
+		add_piety = minor_piety_loss
+		trait = arrogant
+		change_variable = {
+			name = dodole_success
+			add = -15
+		}
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Run away if you're craven
+	option = {
+		name = cop_slavic_decision_event.0013.j
+		trigger = {
+			has_character_flag = cop_dodole_leaves_epic_fail
+			has_trait = craven
+		}
+		remove_character_flag = cop_dodole_leaves_epic_fail
+		add_prestige = major_prestige_loss
+		add_stress = medium_stress_gain
+		trait = craven
+		ai_chance = {
+			base = 100
+		}		
+	}
+}
+
+#Daughter wants to be chief dodola
+cop_slavic_decision_event.0014 = {
+	type = character_event
+	title = cop_slavic_decision_event.0014.t
+	desc = cop_slavic_decision_event.0014.desc
+	theme = faith
+	override_background = {
+		event_background = farmland
+	}
+	left_portrait = {
+		character = scope:dodola_candidate
+		animation = personality_honorable
+	}
+
+	trigger = {
+		any_child = {
+			age >= 15
+			age <= 25
+			is_female = yes
+			is_married = no
+			is_available_ai = yes
+			location = root.location
+			NOT = { has_trait = humble }
+		}
+	}
+
+	immediate = {
+		random_child = {
+			limit = {
+				age >= 15
+				age <= 25
+				is_female = yes
+				is_married = no
+				is_available_ai = yes
+				location = root.location
+				NOT = { has_trait = humble }
+			}
+			save_scope_as = dodola_candidate
+		}
+	}
+
+	#Allow the daughter to become dodola
+	option = {
+		name = cop_slavic_decision_event.0014.a
+		custom_tooltip = cop_slavic_decision_event.0014.a.tt
+		change_variable = {
+			name = dodole_success
+			add = -15
+		}
+		set_variable = dodla_daughter
+		add_prestige = minor_prestige_gain
+		scope:dodola_candidate = {
+			add_prestige = medium_prestige_gain
+		}
+		reverse_add_opinion = {
+			target = scope:dodola_candidate
+			modifier = cop_dodle_daughter_positive
+		}
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#The tradition should stand
+	option = {
+		name = cop_slavic_decision_event.0014.b
+		custom_tooltip = cop_slavic_decision_event.0014.b.tt
 		change_variable = {
 			name = dodole_success
 			add = 10
 		}
-		trigger_event = cop_slavic_decision_event.0011
+		add_piety = minor_piety_gain
+		reverse_add_opinion = {
+			target = scope:dodola_candidate
+			modifier = cop_dodle_daughter_negative
+		}
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
+		ai_chance = {
+			base = 100
+		}		
+	}
+}
+
+#Daughter wants to be chief dodola
+cop_slavic_decision_event.0015 = {
+	type = character_event
+	title = cop_slavic_decision_event.0015.t
+	desc = cop_slavic_decision_event.0015.desc
+	theme = faith
+	override_background = {
+		event_background = farmland
+	}
+	left_portrait = {
+		character = scope:wandering_priest
+		animation = personality_zealous
+	}
+
+	immediate = {
+		create_character = {
+			employer = root
+			template = slavic_priest_random_template
+			save_scope_as = wandering_priest
+		}
+	}
+
+	#Allow the daughter to become dodola
+	option = {
+		name = cop_slavic_decision_event.0015.a
+		custom_tooltip = cop_slavic_decision_event.0015.a.tt
+		scope:realm_priest = {
+			duel = {
+				skill = learning
+				target = scope:wandering_priest
+				50 = {
+					root = {
+						add_piety = medium_piety_gain
+					}
+					add_piety = medium_piety_gain
+				}
+				50 = {
+					root = {
+						add_piety = medium_piety_loss
+					}
+					add_piety = medium_piety_loss
+				}
+			}
+		}
+		change_variable = {
+			name = dodole_success
+			add = -15
+		}
+		set_variable = dodla_daughter
+		add_prestige = minor_prestige_gain
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#The tradition should stand
+	option = {
+		name = cop_slavic_decision_event.0015.b
+		custom_tooltip = cop_slavic_decision_event.0015.b.tt
+		change_variable = {
+			name = dodole_success
+			add = 10
+		}
+		add_piety = minor_piety_gain
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = 1
+		}
 		ai_chance = {
 			base = 100
 		}		
