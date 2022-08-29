@@ -199,6 +199,37 @@ slavic_priest_character_template = {
 	}
 }
 
+slavic_priest_random_template = {
+	age = { 30 60 }
+	random_traits_list = {
+		count = 1
+		education_learning_1 = {
+			weight = { base = 10 }
+		}
+		education_learning_2 = {
+			weight = { base = 20 }
+		}
+		education_learning_3 = {
+			weight = { base = 30 }
+		}
+		education_learning_4 = {
+			weight = { base = 20 }
+		}
+	}
+	random_traits = yes
+	
+	faith = root.faith
+	culture = root.culture
+	gender_female_chance = root_faith_clergy_gender_female_chance
+	learning = { 10 15 }
+
+	after_creation = {
+		add_character_flag = {
+			flag = need_priest_outfit
+		}
+	}
+}
+
 perun_bout_character = {
 	age = { 18 35 }
 	dynasty = none

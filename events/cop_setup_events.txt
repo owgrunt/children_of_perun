@@ -20,7 +20,9 @@ cop_setup.0002 = {
 	hidden = yes
 
 	immediate = {
+		#Convert all the Slavic counties to separate faiths
 		every_county = {
+			#East
 			if = {
 				limit = {
 					culture = {
@@ -33,13 +35,20 @@ cop_setup.0002 = {
 				}
 				set_county_faith = faith:slavic_east
 			}
+			#South
 			if = {
 				limit = {
-					culture = { has_cultural_pillar = heritage_south_slavic }
+					culture = {
+						OR = {
+							has_cultural_pillar = heritage_south_slavic
+							has_cultural_pillar = heritage_vlach
+						}
+					}
 					religion = religion:slavic_religion
 				}
 				set_county_faith = faith:slavic_south
 			}
+			#West
 			if = {
 				limit = {
 					culture = { has_cultural_pillar = heritage_west_slavic }
@@ -49,7 +58,9 @@ cop_setup.0002 = {
 			}
 		}
 		faith:slavic_pagan = {
+			#Do the same for characters. Need more cultures for various weird courtiers
 			every_faith_character = {
+				#East
 				if = {
 					limit = {
 						culture = {
@@ -62,6 +73,7 @@ cop_setup.0002 = {
 					}
 					set_character_faith = faith:slavic_east
 				}
+				#South
 				if = {
 					limit = {
 						culture = {
@@ -74,6 +86,7 @@ cop_setup.0002 = {
 					}
 					set_character_faith = faith:slavic_south
 				}
+				#West
 				if = {
 					limit = {
 						culture = { has_cultural_pillar = heritage_west_slavic }

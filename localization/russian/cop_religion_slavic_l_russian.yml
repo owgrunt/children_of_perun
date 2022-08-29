@@ -1,5 +1,7 @@
-﻿
-l_russian:
+﻿l_russian:
+#bug fix by SShredy
+FAITH_VIEW_UNREFORMED_SUBHEADING:1 "[GetFaithDoctrine('unreformed_faith_doctrine').GetBaseName] #L [Faith.GetReligion.GetAdjective|l]ая#! [faith|El]"
+
  #Slavic
 #  slavic_religion:1 "Slavic"
 #  slavic_religion_adj:1 "Slavic"
@@ -75,35 +77,35 @@ l_russian:
  slavic_pagan_adherent:2 "Slav"
  slavic_pagan_adherent_plural:2 "Slavs"
 
- slavic_east_pagan:1 "Восточнославянское язычество"
- slavic_east_pagan_adj:2 "Восточнославянск"
- slavic_east_pagan_adherent:2 "Восточнославянский язычник"
- slavic_east_pagan_adherent_plural:2 "Восточнославянские язычники"
+ slavic_east:1 "Восточнославянское язычество"
+ slavic_east_adj:2 "Восточнославянск"
+ slavic_east_adherent:2 "Восточнославянский язычник"
+ slavic_east_adherent_plural:2 "Восточнославянские язычники"
 
- slavic_east_pagan_old:1 "Старо-восточнославянское язычество"
- slavic_east_pagan_old_adj:2 "Старовосточнославянск"
- slavic_east_pagan_old_adherent:2 "Старовосточнославянский язычник"
- slavic_east_pagan_old_adherent_plural:2 "Старовосточнославянские язычники"
+ slavic_east_old:1 "Старо-восточнославянское язычество"
+ slavic_east_old_adj:2 "Старовосточнославянск"
+ slavic_east_old_adherent:2 "Старовосточнославянский язычник"
+ slavic_east_old_adherent_plural:2 "Старовосточнославянские язычники"
 
- slavic_south_pagan:1 "Южнославянское язычество"
- slavic_south_pagan_adj:2 "Южнославянск"
- slavic_south_pagan_adherent:2 "South Slav"
- slavic_south_pagan_adherent_plural:2 "South Slavs"
+ slavic_south:1 "Южнославянское язычество"
+ slavic_south_adj:2 "Южнославянск"
+ slavic_south_adherent:2 "South Slav"
+ slavic_south_adherent_plural:2 "South Slavs"
 
- slavic_south_pagan_old:1 "Old South Slavic Faith"
- slavic_south_pagan_old_adj:2 "Old South Slavic"
- slavic_south_pagan_old_adherent:2 "Old South Slav"
- slavic_south_pagan_old_adherent_plural:2 "Old South Slavs"
+ slavic_south_old:1 "Old South Slavic Faith"
+ slavic_south_old_adj:2 "Old South Slavic"
+ slavic_south_old_adherent:2 "Old South Slav"
+ slavic_south_old_adherent_plural:2 "Old South Slavs"
 
- slavic_west_pagan:1 "Западнославянское язычество"
- slavic_west_pagan_adj:2 "Западнославянск"
- slavic_west_pagan_adherent:2 "West Slav"
- slavic_west_pagan_adherent_plural:2 "West Slavs"
+ slavic_west:1 "Западнославянское язычество"
+ slavic_west_adj:2 "Западнославянск"
+ slavic_west_adherent:2 "West Slav"
+ slavic_west_adherent_plural:2 "West Slavs"
 
- slavic_west_pagan_old:1 "Old West Slavic Faith"
- slavic_west_pagan_old_adj:2 "Old West Slavic"
- slavic_west_pagan_old_adherent:2 "Old West Slav"
- slavic_west_pagan_old_adherent_plural:2 "Old West Slavs"
+ slavic_west_old:1 "Old West Slavic Faith"
+ slavic_west_old_adj:2 "Old West Slavic"
+ slavic_west_old_adherent:2 "Old West Slav"
+ slavic_west_old_adherent_plural:2 "Old West Slavs"
 
  #Holy Sites
  holy_site_peryn_name:0 "Перынь"

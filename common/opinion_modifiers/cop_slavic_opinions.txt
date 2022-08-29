@@ -97,3 +97,21 @@ cop_slavic_yearly_0090_deny_claim = {
 	decaying = yes
 	years = 5
 }
+
+cop_dodle_artifact = {
+	opinion = 30
+	decaying = yes
+	years = 5
+}
+
+cop_dodle_daughter_positive = {
+	opinion = 30
+	decaying = yes
+	years = 5
+}
+
+cop_dodle_daughter_negative = {
+	opinion = -30
+	decaying = yes
+	years = 5
+}
