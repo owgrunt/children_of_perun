@@ -1,3 +1,6 @@
+1.1.1:
+✽ Slavic faith tenet changes.
+
 1.1:
 ✽ Added 1.7 support.
 ✽ Added separate East, West and South Slavic faiths within the Slavic religion.
