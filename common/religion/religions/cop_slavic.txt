@@ -237,6 +237,8 @@
 			holy_site = smolensk
 			holy_site = barlad
 
+			doctrine = unreformed_faith_doctrine
+
 			doctrine = tenet_sanctity_of_nature
 			doctrine = tenet_ritual_celebrations
 			doctrine = tenet_communal_identity	

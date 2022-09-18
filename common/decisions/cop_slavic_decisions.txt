@@ -159,63 +159,63 @@ unite_slavic_religion_decision = {
     ai_will_do = 100
 }
 
-dodole_decision = {
-	picture = "gfx/interface/illustrations/decisions/makovsky_spring.dds"
+# dodole_decision = {
+# 	picture = "gfx/interface/illustrations/decisions/makovsky_spring.dds"
 
-	desc = dodole_decision_desc
-	selection_tooltip = dodole_decision_tooltip
+# 	desc = dodole_decision_desc
+# 	selection_tooltip = dodole_decision_tooltip
 
-	is_shown = {
-		faith = faith:slavic_south
-	}
+# 	is_shown = {
+# 		faith = faith:slavic_south
+# 	}
 
-	is_valid = {
-		piety_level >= low_piety_level
-		custom_description = {
-			text = dodole_decision_date
-			current_month >= 5
-			current_month <= 8
-		}
-	}
+# 	is_valid = {
+# 		piety_level >= low_piety_level
+# 		custom_description = {
+# 			text = dodole_decision_date
+# 			current_month >= 5
+# 			current_month <= 8
+# 		}
+# 	}
 
-	cooldown = { years = 5 }
+# 	cooldown = { years = 5 }
 
-	# cost = {
-	# 	piety = 100
-	# }
+# 	# cost = {
+# 	# 	piety = 100
+# 	# }
 
-	is_valid_showing_failures_only = {
-		is_available_at_peace_adult = yes
-	}
+# 	is_valid_showing_failures_only = {
+# 		is_available_at_peace_adult = yes
+# 	}
 
-	effect = {
-		show_as_tooltip = {
-			add_character_modifier = {
-				modifier = cop_slavic_decision_dodole_character 
-				years = 2
-			}
-			capital_county = {
-				add_county_modifier = {
-					modifier = cop_slavic_decision_dodole_county
-					years = 2
-				}
-			}
-		}
-		trigger_event = cop_slavic_decision_event.0010
-	}
+# 	effect = {
+# 		show_as_tooltip = {
+# 			add_character_modifier = {
+# 				modifier = cop_slavic_decision_dodole_character 
+# 				years = 2
+# 			}
+# 			capital_county = {
+# 				add_county_modifier = {
+# 					modifier = cop_slavic_decision_dodole_county
+# 					years = 2
+# 				}
+# 			}
+# 		}
+# 		trigger_event = cop_slavic_decision_event.0010
+# 	}
 
-	ai_check_interval = 60
+# 	ai_check_interval = 60
 	
-	ai_potential = {
-		always = yes
-	}
+# 	ai_potential = {
+# 		always = yes
+# 	}
 
-	ai_will_do = {
-		base = 50
+# 	ai_will_do = {
+# 		base = 50
 
-		# 100% chance at 50 zeal, 0% chance at -50 zeal.
-		ai_value_modifier = {
-			ai_zeal = 1
-		}		
-	}
-}
+# 		# 100% chance at 50 zeal, 0% chance at -50 zeal.
+# 		ai_value_modifier = {
+# 			ai_zeal = 1
+# 		}		
+# 	}
+# }

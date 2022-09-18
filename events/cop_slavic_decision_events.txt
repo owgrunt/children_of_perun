@@ -81,7 +81,7 @@ cop_slavic_decision_event.0001 = {
 	# Opt-Out
 	option = {
 		name = cop_slavic_decision_event.0001.optout
-		flavor = cop_slavic_yearly.0001.flavor
+		flavor = cop_slavic_decision_event.0001.flavor
 
 		ai_chance = {
 			base = 0

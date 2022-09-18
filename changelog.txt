@@ -1,3 +1,9 @@
+1.2:
+✽ Added 1.7 support.
+✽ Added separate East, West and South Slavic faiths within the Slavic religion.
+✽ Added four paintings by Vasnetsov, Roerich and Avilov as new loading screens.
+✽ Added a mechanic, where unreformed pagans will be much more likely to convert to a reformed version of their faith over time.
+
 1.1:
 ✽ Fixed the silver spoon event not requiring any spending.
 
