@@ -87,77 +87,77 @@
 	}
 }
 
-unite_slavic_religion_decision = {
-    picture = gfx/interface/illustrations/decisions/mukha_unite.dds
-    major = yes
+# unite_slavic_religion_decision = {
+#     picture = gfx/interface/illustrations/decisions/mukha_unite.dds
+#     major = yes
 
-    ai_check_interval = 120
+#     ai_check_interval = 120
 
-	desc = unite_slavic_religion_decision_desc
-	selection_tooltip = unite_slavic_religion_decision_tooltip
+# 	desc = unite_slavic_religion_decision_desc
+# 	selection_tooltip = unite_slavic_religion_decision_tooltip
 
-    is_shown = {
-		is_landed = yes
-		# Following a valid religion & faith.
-		religion = religion:slavic_religion
-		faith = {
-			NOT = { has_doctrine = unreformed_faith_doctrine }
-		}
-		NOT = {  #Can only do it once.
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:flag_mended_great_schism
-			}
-		}
-    }
+#     is_shown = {
+# 		is_landed = yes
+# 		# Following a valid religion & faith.
+# 		religion = religion:slavic_religion
+# 		faith = {
+# 			NOT = { has_doctrine = unreformed_faith_doctrine }
+# 		}
+# 		NOT = {  #Can only do it once.
+# 			is_target_in_global_variable_list = {
+# 				name = unavailable_unique_decisions
+# 				target = flag:flag_mended_great_schism
+# 			}
+# 		}
+#     }
 
-	is_valid = {
-		#Has to be around to organise the conversion.
-		is_imprisoned = no
-		#Should have a decent piety level.
-		piety_level >= very_high_piety_level
-		#Must hold an empire title
-		highest_held_title_tier >= tier_empire
-		#Controlling holy sites
-		completely_controls = title:c_kiev
-		completely_controls = title:c_novgorod
-		completely_controls = title:c_terebovl
-		completely_controls = title:c_smolensk
-		completely_controls = title:c_barlad
-		completely_controls = title:c_rugen
-		completely_controls = title:c_plocka
-		completely_controls = title:c_sandomierska
-		completely_controls = title:c_znojmo
-		completely_controls = title:c_villach
-		completely_controls = title:c_skopje
-		completely_controls = title:c_dorostorum
-		completely_controls = title:c_rama
-    }
+# 	is_valid = {
+# 		#Has to be around to organise the conversion.
+# 		is_imprisoned = no
+# 		#Should have a decent piety level.
+# 		piety_level >= very_high_piety_level
+# 		#Must hold an empire title
+# 		highest_held_title_tier >= tier_empire
+# 		#Controlling holy sites
+# 		completely_controls = title:c_kiev
+# 		completely_controls = title:c_novgorod
+# 		completely_controls = title:c_terebovl
+# 		completely_controls = title:c_smolensk
+# 		completely_controls = title:c_barlad
+# 		completely_controls = title:c_rugen
+# 		completely_controls = title:c_plocka
+# 		completely_controls = title:c_sandomierska
+# 		completely_controls = title:c_znojmo
+# 		completely_controls = title:c_villach
+# 		completely_controls = title:c_skopje
+# 		completely_controls = title:c_dorostorum
+# 		completely_controls = title:c_rama
+#     }
 
-	cost = {
-		gold = 500
-		piety = 1000
-	}
+# 	cost = {
+# 		gold = 500
+# 		piety = 1000
+# 	}
 
-	is_valid_showing_failures_only = {
-		is_available_at_peace_adult = yes
-	}
+# 	is_valid_showing_failures_only = {
+# 		is_available_at_peace_adult = yes
+# 	}
 
 
-    effect = {
-		set_character_faith = faith:slavic_pagan
-		custom_tooltip = unite_slavic_religion_custom_tooltip_a
-		custom_tooltip = unite_slavic_religion_custom_tooltip_b
-		custom_tooltip = unite_slavic_religion_custom_tooltip_c
-		trigger_event = { id = cop_slavic_decision_event.0010 }
-    }
+#     effect = {
+# 		set_character_faith = faith:slavic_pagan
+# 		custom_tooltip = unite_slavic_religion_custom_tooltip_a
+# 		custom_tooltip = unite_slavic_religion_custom_tooltip_b
+# 		custom_tooltip = unite_slavic_religion_custom_tooltip_c
+# 		trigger_event = { id = cop_slavic_decision_event.0010 }
+#     }
 
-	ai_potential = {
-		always = yes
-	}
+# 	ai_potential = {
+# 		always = yes
+# 	}
 
-    ai_will_do = 100
-}
+#     ai_will_do = 100
+# }
 
 # dodole_decision = {
 # 	picture = "gfx/interface/illustrations/decisions/makovsky_spring.dds"
