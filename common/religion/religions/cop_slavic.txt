@@ -241,7 +241,7 @@
 
 			doctrine = tenet_sanctity_of_nature
 			doctrine = tenet_ritual_celebrations
-			doctrine = tenet_communal_identity	
+			doctrine = tenet_ancestor_worship
 		}
 
 		slavic_south = {
@@ -259,7 +259,7 @@
 
 			doctrine = tenet_sanctity_of_nature
 			doctrine = tenet_ritual_celebrations
-			doctrine = tenet_ancestor_worship
+			doctrine = tenet_christian_syncretism	
 		}
 		
 		slavic_west = {
