@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # DS store (after image opening)
 *.DS_Store
+.vscode/settings.json

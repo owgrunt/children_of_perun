@@ -1361,7 +1361,7 @@ cop_slavic_decision_event.0014 = {
 	}
 }
 
-#Daughter wants to be chief dodola
+#Disagreement over the nature of dodola
 cop_slavic_decision_event.0015 = {
 	type = character_event
 	title = cop_slavic_decision_event.0015.t
@@ -1370,9 +1370,13 @@ cop_slavic_decision_event.0015 = {
 	override_background = {
 		event_background = farmland
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:wandering_priest
 		animation = personality_zealous
+	}
+	left_portrait = {
+		character = scope:realm_priest
+		animation = anger
 	}
 
 	immediate = {
@@ -1383,10 +1387,9 @@ cop_slavic_decision_event.0015 = {
 		}
 	}
 
-	#Allow the daughter to become dodola
+	#Let the priests fight over it
 	option = {
 		name = cop_slavic_decision_event.0015.a
-		custom_tooltip = cop_slavic_decision_event.0015.a.tt
 		scope:realm_priest = {
 			duel = {
 				skill = learning
@@ -1396,47 +1399,148 @@ cop_slavic_decision_event.0015 = {
 						add_piety = medium_piety_gain
 					}
 					add_piety = medium_piety_gain
+					change_variable = {
+						name = dodole_success
+						add = 10
+					}
 				}
 				50 = {
 					root = {
 						add_piety = medium_piety_loss
 					}
 					add_piety = medium_piety_loss
+					change_variable = {
+						name = dodole_success
+						add = -10
+					}
 				}
 			}
-		}
-		change_variable = {
-			name = dodole_success
-			add = -15
-		}
-		set_variable = dodla_daughter
-		add_prestige = minor_prestige_gain
-		trigger_event = {
-			id = cop_slavic_decision_event.0011
-			days = 1
 		}
 		ai_chance = {
 			base = 100
 		}		
 	}
 
-	#The tradition should stand
+	#Wanderer's wrong
 	option = {
 		name = cop_slavic_decision_event.0015.b
-		custom_tooltip = cop_slavic_decision_event.0015.b.tt
+		trigger = {
+			has_trait = arrogant
+			has_trait = cynical
+			has_trait = theologian
+			has_trait = mystic_1
+			has_trait = mystic_2
+			has_trait = mystic_3
+		}
+		trait = arrogant
+		trait = cynical
+		trait = theologian
+		trait = mystic_1
+		trait = mystic_2
+		trait = mystic_3
 		change_variable = {
 			name = dodole_success
-			add = 10
+			add = 5
 		}
-		add_piety = minor_piety_gain
-		trigger_event = {
-			id = cop_slavic_decision_event.0011
-			days = 1
+		reverse_add_opinion = {
+			target = scope:realm_priest
+			modifier = cop_generic_supported_argument
+		}
+		reverse_add_opinion = {
+			target = scope:wandering_priest
+			modifier = cop_generic_abandoned_argument
+		}
+		scope:realm_priest = { add_piety = medium_piety_gain }
+		scope:wandering_priest = { add_piety = medium_piety_loss }
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Priest's wrong
+	option = {
+		name = cop_slavic_decision_event.0015.c
+		trigger = {
+			has_trait = arrogant
+			has_trait = cynical
+			has_trait = theologian
+			has_trait = mystic_1
+			has_trait = mystic_2
+			has_trait = mystic_3
+		}
+		trait = arrogant
+		trait = cynical
+		trait = theologian
+		trait = mystic_1
+		trait = mystic_2
+		trait = mystic_3
+		change_variable = {
+			name = dodole_success
+			add = 5
+		}
+		reverse_add_opinion = {
+			target = scope:wandering_priest
+			modifier = cop_generic_supported_argument
+		}
+		reverse_add_opinion = {
+			target = scope:realm_priest
+			modifier = cop_generic_abandoned_argument
+		}
+		scope:wandering_priest = { add_piety = medium_piety_gain }
+		scope:realm_priest = { add_piety = medium_piety_loss }
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Dismiss both
+	option = {
+		name = cop_slavic_decision_event.0015.d
+		change_variable = {
+			name = dodole_success
+			add = -10
 		}
 		ai_chance = {
 			base = 100
 		}		
 	}
+}
+
+cop_slavic_decision_event.0016 = {
+	type = character_event
+	title = cop_slavic_decision_event.0016.t
+	desc = cop_slavic_decision_event.0016.desc
+	# TODO add triggered descriptions
+	theme = faith
+	override_background = {
+		event_background = farmland
+	}
+	right_portrait = {
+		character = cp:councillor_steward
+		animation = steward
+	}
+
+	immediate = {
+		random_list = {
+			40 = {
+				add_character_flag = cop_dodole_water_great
+			}
+			20 = {
+				add_character_flag = cop_dodole_water_ok
+			}
+			20 = {
+				add_character_flag = cop_dodole_water_bad
+			}
+			15 = {
+				add_character_flag = cop_dodole_water_fail
+			}
+			5 = {
+				add_character_flag = cop_dodole_water_epic_fail
+			}
+		}
+	}
+
+	# TODO add options
 }
 
 # ##################################################
