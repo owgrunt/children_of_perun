@@ -70,3 +70,9 @@
  cop_slavic_yearly_0090_tax_desc:0 "Этот персонаж собирает больше налогов благодаря четко закрепленным правам вассалов."
  cop_slavic_yearly_0090_honey_good:0 "Процветающее бортничество"
  cop_slavic_yearly_0090_honey_bad:0 "Бортничество в упадке"
+
+ cop_slavic_decision_dodole_county:0 "Плодородные земли Додолы"
+ cop_slavic_decision_dodole_character:0 "Призвал Додолу"
+
+ cop_generic_supported_argument:0 "Поддержал в споре"
+ cop_generic_abandoned_argument:0 "Поддержал соперника в споре"

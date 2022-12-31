@@ -16,3 +16,10 @@ select_personal_deity_slavic_decision:0 "Определить личное бо�
  select_personal_deity_slavic_decision.select_stribog:0 "Стрибог, всеведающий"
  select_personal_deity_slavic_decision.select_svarog:0 "Сварог, Задира"
  select_personal_deity_slavic_decision.select_mokosh:0 "Мокошь, мать сыра земля"
+
+dodole_decision:0 "Hold Dodole Ritual"
+ dodole_decision_desc:0 "#italic In times of drought, when the ground sizzles, Dodole dance to make it drizzle. #!\n\nWinter is over and Svarog is preparing for the new year in his sky halls. Now Dazhbog the Red Sun has his undivided attention, drying the fields with scorching heat. It is time for our young women to turn into Dodole and call for Perun to unleash his thunder and showering rain, making fields fertile again."
+ dodole_decision_tooltip:0 "A rain summoning ritual will be held"
+ dodole_decision_effect.tt:0 "Commence a ritual to call for Perun to shower over the land"
+ dodole_decision_date:0 "Month is later than April and earlier than September"
+ dodole_decision_confirm:0 "Oh, dodo, oh dodole!"
