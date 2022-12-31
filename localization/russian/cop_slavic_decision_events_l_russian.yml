@@ -1,12 +1,12 @@
-﻿l_english:
- cop_slavic_decision_event.0001.t:0 "Deciding on a Deity"
- cop_slavic_decision_event.0001.desc:0 "[ROOT.Char.GetFaith.PantheonTerm|U] are many and inscrutable, yet I cannot say that there are not some who hold a level of special appeal for me. Were I to dedicate myself openly to the express worship of primarily one such deity, I would doubtless gain my patron's blessings and draw like-minded souls to my side, gaining health, wealth, and glory."
- cop_slavic_decision_event.0001.perun:0 "Perun, the Thunderer!"
- cop_slavic_decision_event.0001.veles:0 "Veles, the Serpent!"
- cop_slavic_decision_event.0001.dazhbog:0 "Dazhbog, the Sun Caesar!"
- cop_slavic_decision_event.0001.stribog:0 "Stribog, the all-knowing!"
- cop_slavic_decision_event.0001.svarog:0 "Svarog, the Quarrelsome!"
- cop_slavic_decision_event.0001.mokosh:0 "Mokosh, Damp Mother Earth!"
+﻿l_russian:
+ cop_slavic_decision_event.0001.t:0 "Выбор божества"
+ cop_slavic_decision_event.0001.desc:0 "[ROOT.Char.GetFaith.PantheonTerm|U] многочисленны и непостижимы, но все же некоторые из них притягивают меня сильнее прочих. Если я начну открыто поклоняться одному из божеств, то, несомненно, заслужу благословение покровителя и привлеку к себе единомышленников, а с ними - славу и богатство."
+ cop_slavic_decision_event.0001.perun:0 "Перун-громовержец!"
+ cop_slavic_decision_event.0001.veles:0 "Велес, скотий бог!"
+ cop_slavic_decision_event.0001.dazhbog:0 "Дажьбог, Солнце-цесарь!"
+ cop_slavic_decision_event.0001.stribog:0 "Стрибог всеведающий!"
+ cop_slavic_decision_event.0001.svarog:0 "Сварог-задира!"
+ cop_slavic_decision_event.0001.mokosh:0 "Мокошь, мать сыра земля!"
  cop_slavic_decision_event.0001.optout:0 "$religious_decision.0101.flavor$"
  cop_slavic_decision_event.0001.flavor:0 "$religious_decision.0101.flavor$"
 

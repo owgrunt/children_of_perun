@@ -1,3 +1,10 @@
+1.2:
+✽ Added a religious decision to hold a Dodole rite (based on South Slavic tradition), with dosens of potential variations in the subsequent events (depending on your luck and the character's traits).
+✽ Added more options to the Christian traders event, to make it more balanced and interesting.
+✽ Added 9 uniqe event backgrounds.
+✽ Added 2 uniqe decision images (choose personal deity, Dodole).
+✽ Added 2 new loading images - “Bayan” by Victor Vasnetsov and "The Funeral of Ruz in Bulgar" by Henryk Siemiradzki.
+
 1.1.1:
 ✽ Slavic faith tenet changes.
 
@@ -16,3 +23,10 @@
 ✽ Исправил "русских" на "русов", изменил "Российскую империю" на "Великую Русь".
 ✽ Снизил некоторые модификаторы личных божеств.
 ✽ Сделал второй вариант в событии "Перуновы палицы" более безопасным.
+
+TODO
+- Separate relitious events for East and West Slavs (trisna? fortune telling?)
+- War event (bringing back women)
+- New skin (UI, like Norse have)
+- Decision to unite all slavic faiths
+- Unique tenets for each Slavic faith, tying with the unique events

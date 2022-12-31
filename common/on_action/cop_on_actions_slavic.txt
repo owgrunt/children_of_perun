@@ -140,3 +140,22 @@ on_faith_created = {
 		delay = { days = 10 }
 	}
 }
+
+# Dodole festival preparation events
+cop_dodola = {
+	random_events = {
+		100 = cop_slavic_decision_event.0012
+		100 = cop_slavic_decision_event.0014
+		100 = cop_slavic_decision_event.0015
+		100 = cop_slavic_decision_event.0016
+	}
+}
+
+# Outcome of Christian traders arriving
+cop_christian_traders = {
+	random_events = {
+		100 = cop_slavic_yearly.0042
+		100 = cop_slavic_yearly.0047
+		300 = 0
+	}
+}

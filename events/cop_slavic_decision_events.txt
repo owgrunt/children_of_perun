@@ -22,7 +22,7 @@ cop_slavic_decision_event.0001 = {
 		character = root
 		animation = personality_rational
 	}
-	override_background = { event_background = fp1_tribal_temple }
+	override_background = { event_background = cop_slavic_temple }
 
 	# Perun
 	option = {
@@ -142,9 +142,9 @@ cop_slavic_decision_event.0010 = {
 	desc = cop_slavic_decision_event.0010.desc
 	theme = faith
 	override_background = {
-		event_background = farmland
+		event_background = cop_stream
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:realm_priest
 		animation = personality_zealous
 	}
@@ -185,6 +185,10 @@ cop_slavic_decision_event.0010 = {
 			on_action = cop_dodola
 			days = { 2 3 }
 		}
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = { 6 10 }
+		}
 		ai_chance = {
 			base = 0
 
@@ -213,6 +217,10 @@ cop_slavic_decision_event.0010 = {
 			on_action = cop_dodola
 			days = { 2 3 }
 		}
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = { 6 10 }
+		}
 		ai_chance = {
 			base = 100
 		}		
@@ -231,6 +239,10 @@ cop_slavic_decision_event.0010 = {
 		trigger_event = {
 			on_action = cop_dodola
 			days = { 2 3 }
+		}
+		trigger_event = {
+			id = cop_slavic_decision_event.0011
+			days = { 6 10 }
 		}
 
 		ai_chance = {
@@ -345,7 +357,7 @@ cop_slavic_decision_event.0011 = {
 	}
 	theme = faith
 	override_background = {
-		event_background = farmland
+		event_background = cop_slavic_grove
 	}
 	left_portrait = {
 		character = scope:portrait
@@ -472,7 +484,7 @@ cop_slavic_decision_event.0011 = {
 			}
 		}
 		random_list = {
-			50 = {
+			30 = {
 				set_variable = {
 					name = dodole_outcome
 					value = flag:ok
@@ -499,6 +511,10 @@ cop_slavic_decision_event.0011 = {
 				modifier = {
 					add = var:dodole_success
 				}
+				modifier = {
+					var:dodole_success <= -10
+					add = -20
+				}
 			}
 			20 = {
 				set_variable = {
@@ -509,7 +525,9 @@ cop_slavic_decision_event.0011 = {
 					save_scope_as = portrait
 				}
 				modifier = {
-					subtract = var:dodole_success
+					add = {
+						subtract = var:dodole_success
+					}
 				}
 			}
 			0 = {
@@ -521,7 +539,9 @@ cop_slavic_decision_event.0011 = {
 					save_scope_as = portrait
 				}
 				modifier = {
-					subtract = var:dodole_success
+					add = {
+						subtract = var:dodole_success
+					}
 				}
 			}
 			100 = {
@@ -619,7 +639,7 @@ cop_slavic_decision_event.0011 = {
 		}
 		remove_variable = dodole_outcome
 		remove_variable = dodole_success
-		add_piety = medium_piety_gain
+		add_prestige = medium_prestige_gain
 		ai_chance = {
 			base = 100
 		}		
@@ -642,7 +662,7 @@ cop_slavic_decision_event.0011 = {
 		}
 		remove_variable = dodole_outcome
 		remove_variable = dodole_success
-		add_piety = major_piety_gain
+		add_prestige = major_prestige_gain
 		ai_chance = {
 			base = 100
 		}		
@@ -654,7 +674,7 @@ cop_slavic_decision_event.0011 = {
 		trigger = {
 			var:dodole_outcome = flag:bad
 		}
-		add_piety = miniscule_piety_loss
+		add_prestige = miniscule_prestige_loss
 		remove_variable = dodole_outcome
 		remove_variable = dodole_success
 		ai_chance = {
@@ -667,7 +687,7 @@ cop_slavic_decision_event.0011 = {
 		trigger = {
 			var:dodole_outcome = flag:terrible
 		}
-		add_piety = miniscule_piety_loss
+		add_prestige = miniscule_prestige_loss
 		remove_variable = dodole_outcome
 		remove_variable = dodole_success
 		ai_chance = {
@@ -721,7 +741,7 @@ cop_slavic_decision_event.0011 = {
 		stress_impact = {
 			base = minor_stress_gain
 		}
-		add_piety = medium_piety_gain
+		add_prestige = medium_prestige_gain
 		remove_variable = dodole_outcome
 		remove_variable = dodole_success
 		ai_chance = {
@@ -748,7 +768,7 @@ cop_slavic_decision_event.0011 = {
 		stress_impact = {
 			base = medium_stress_loss
 		}
-		add_piety = medium_piety_gain
+		add_prestige = medium_prestige_gain
 		remove_variable = dodole_outcome
 		remove_variable = dodole_success
 		ai_chance = {
@@ -775,7 +795,7 @@ cop_slavic_decision_event.0011 = {
 		stress_impact = {
 			base = medium_stress_loss
 		}
-		add_piety = medium_piety_gain
+		add_prestige = medium_prestige_gain
 		remove_variable = dodole_outcome
 		remove_variable = dodole_success
 		ai_chance = {
@@ -799,7 +819,7 @@ cop_slavic_decision_event.0011 = {
 			modifier = cop_slavic_decision_dodole_character 
 			years = 5
 		}
-		add_piety = medium_piety_gain
+		add_prestige = medium_prestige_gain
 		remove_variable = dodole_outcome
 		remove_variable = dodole_success
 		ai_chance = {
@@ -843,7 +863,7 @@ cop_slavic_decision_event.0012 = {
 	desc = cop_slavic_decision_event.0012.desc
 	theme = faith
 	override_background = {
-		event_background = farmland
+		event_background = wilderness_forest
 	}
 	left_portrait = {
 		character = root
@@ -996,7 +1016,7 @@ cop_slavic_decision_event.0013 = {
 	}
 	theme = faith
 	override_background = {
-		event_background = farmland
+		event_background = wilderness_forest
 	}
 	left_portrait = {
 		character = scope:realm_priest
@@ -1361,18 +1381,22 @@ cop_slavic_decision_event.0014 = {
 	}
 }
 
-#Daughter wants to be chief dodola
+#Disagreement over the nature of dodola
 cop_slavic_decision_event.0015 = {
 	type = character_event
 	title = cop_slavic_decision_event.0015.t
 	desc = cop_slavic_decision_event.0015.desc
 	theme = faith
 	override_background = {
-		event_background = farmland
+		event_background = cop_slavic_temple
 	}
-	left_portrait = {
+	right_portrait = {
 		character = scope:wandering_priest
 		animation = personality_zealous
+	}
+	left_portrait = {
+		character = scope:realm_priest
+		animation = anger
 	}
 
 	immediate = {
@@ -1383,10 +1407,9 @@ cop_slavic_decision_event.0015 = {
 		}
 	}
 
-	#Allow the daughter to become dodola
+	#Let the priests fight over it
 	option = {
 		name = cop_slavic_decision_event.0015.a
-		custom_tooltip = cop_slavic_decision_event.0015.a.tt
 		scope:realm_priest = {
 			duel = {
 				skill = learning
@@ -1394,48 +1417,422 @@ cop_slavic_decision_event.0015 = {
 				50 = {
 					root = {
 						add_piety = medium_piety_gain
+						change_variable = {
+							name = dodole_success
+							add = 10
+						}
+						send_interface_toast = {
+							title = cop_slavic_decision_event.0015.a.argument_won
+							left_icon = scope:realm_priest
+							custom_tooltip = cop_slavic_decision_event.0015.a.argument_won.tt
+						}
 					}
 					add_piety = medium_piety_gain
 				}
 				50 = {
 					root = {
 						add_piety = medium_piety_loss
+						change_variable = {
+							name = dodole_success
+							add = -10
+						}
+						send_interface_toast = {
+							title = cop_slavic_decision_event.0015.a.argument_lost
+							left_icon = scope:wandering_priest
+							custom_tooltip = cop_slavic_decision_event.0015.a.argument_lost.tt
+						}
 					}
 					add_piety = medium_piety_loss
 				}
 			}
-		}
-		change_variable = {
-			name = dodole_success
-			add = -15
-		}
-		set_variable = dodla_daughter
-		add_prestige = minor_prestige_gain
-		trigger_event = {
-			id = cop_slavic_decision_event.0011
-			days = 1
 		}
 		ai_chance = {
 			base = 100
 		}		
 	}
 
-	#The tradition should stand
+	#Wanderer's wrong
 	option = {
 		name = cop_slavic_decision_event.0015.b
-		custom_tooltip = cop_slavic_decision_event.0015.b.tt
+		trigger = {
+			has_trait = arrogant
+			has_trait = cynical
+			has_trait = theologian
+			has_trait = mystic_1
+			has_trait = mystic_2
+			has_trait = mystic_3
+		}
+		trait = arrogant
+		trait = cynical
+		trait = theologian
+		trait = mystic_1
+		trait = mystic_2
+		trait = mystic_3
 		change_variable = {
 			name = dodole_success
-			add = 10
+			add = 5
 		}
-		add_piety = minor_piety_gain
-		trigger_event = {
-			id = cop_slavic_decision_event.0011
-			days = 1
+		reverse_add_opinion = {
+			target = scope:realm_priest
+			modifier = cop_generic_supported_argument
+		}
+		reverse_add_opinion = {
+			target = scope:wandering_priest
+			modifier = cop_generic_abandoned_argument
+		}
+		scope:realm_priest = { add_piety = medium_piety_gain }
+		scope:wandering_priest = { add_piety = medium_piety_loss }
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Priest's wrong
+	option = {
+		name = cop_slavic_decision_event.0015.c
+		trigger = {
+			has_trait = arrogant
+			has_trait = cynical
+			has_trait = theologian
+			has_trait = mystic_1
+			has_trait = mystic_2
+			has_trait = mystic_3
+		}
+		trait = arrogant
+		trait = cynical
+		trait = theologian
+		trait = mystic_1
+		trait = mystic_2
+		trait = mystic_3
+		change_variable = {
+			name = dodole_success
+			add = 5
+		}
+		reverse_add_opinion = {
+			target = scope:wandering_priest
+			modifier = cop_generic_supported_argument
+		}
+		reverse_add_opinion = {
+			target = scope:realm_priest
+			modifier = cop_generic_abandoned_argument
+		}
+		scope:wandering_priest = { add_piety = medium_piety_gain }
+		scope:realm_priest = { add_piety = medium_piety_loss }
+		ai_chance = {
+			base = 100
+		}		
+	}
+
+	#Dismiss both
+	option = {
+		name = cop_slavic_decision_event.0015.d
+		change_variable = {
+			name = dodole_success
+			add = -10
 		}
 		ai_chance = {
 			base = 100
 		}		
+	}
+}
+
+# Villagers going to get some water
+cop_slavic_decision_event.0016 = {
+	type = character_event
+	title = cop_slavic_decision_event.0016.t
+	desc = {
+		desc = cop_slavic_decision_event.0016.desc.intro
+		triggered_desc = {
+			desc = cop_slavic_decision_event.0016.desc.great
+			trigger = {
+				has_character_flag = cop_dodole_water_great
+			}
+		}
+		triggered_desc = {
+			desc = cop_slavic_decision_event.0016.desc.good
+			trigger = {
+				has_character_flag = cop_dodole_water_good
+			}
+		}
+		triggered_desc = {
+			desc = cop_slavic_decision_event.0016.desc.bad
+			trigger = {
+				has_character_flag = cop_dodole_water_bad
+			}
+		}
+		triggered_desc = {
+			desc = cop_slavic_decision_event.0016.desc.no
+			trigger = {
+				has_character_flag = cop_dodole_water_no
+			}
+		}
+		triggered_desc = {
+			desc = cop_slavic_decision_event.0016.desc.snake
+			trigger = {
+				has_character_flag = cop_dodole_water_snake
+			}
+		}
+		triggered_desc = {
+			desc = cop_slavic_decision_event.0016.desc.drown
+			trigger = {
+				has_character_flag = cop_dodole_water_drown
+			}
+		}
+	}
+	theme = faith
+	override_background = {
+		event_background = cop_stream
+	}
+	right_portrait = {
+		character = cp:councillor_steward
+		triggered_animation = {
+			trigger = {
+				has_character_flag = cop_dodole_water_great
+			}
+			animation = steward
+		}
+	}
+
+	immediate = {
+		random_list = {
+			10 = {
+				add_character_flag = cop_dodole_water_great
+			}
+			40 = {
+				add_character_flag = cop_dodole_water_good
+			}
+			20 = {
+				add_character_flag = cop_dodole_water_bad
+			}
+			15 = {
+				add_character_flag = cop_dodole_water_no
+			}
+			10 = {
+				add_character_flag = cop_dodole_water_snake
+			}
+			5 = {
+				add_character_flag = cop_dodole_water_drown
+			}
+		}
+	}
+
+	# Great: give the money
+	option = {
+		name = cop_slavic_decision_event.0016.a
+		custom_tooltip = cop_slavic_decision_event.0016.a.tt
+		trigger = {
+			has_character_flag = cop_dodole_water_great
+		}
+		change_variable = {
+			name = dodole_success
+			add = 15
+		}
+		remove_character_flag = cop_dodole_water_great
+		stress_impact = {
+			generous = medium_stress_loss
+			greedy = medium_stress_gain
+		}
+	}
+
+	# Great: take the money
+	option = {
+		name = cop_slavic_decision_event.0016.b
+		custom_tooltip = cop_slavic_decision_event.0016.b.tt
+		trigger = {
+			has_character_flag = cop_dodole_water_great
+		}
+		add_gold = minor_gold_value
+		change_variable = {
+			name = dodole_success
+			add = -10
+		}
+		remove_character_flag = cop_dodole_water_great
+		stress_impact = {
+			greedy = medium_stress_loss
+			generous = medium_stress_gain
+		}
+	}
+
+	# Good
+	option = {
+		name = cop_slavic_decision_event.0016.c
+		custom_tooltip = cop_slavic_decision_event.0016.a.tt
+		trigger = {
+			has_character_flag = cop_dodole_water_good
+		}
+		change_variable = {
+			name = dodole_success
+			add = 10
+		}
+		remove_character_flag = cop_dodole_water_good
+	}
+
+	# Bad: accept it
+	option = {
+		name = cop_slavic_decision_event.0016.d
+		custom_tooltip = cop_slavic_decision_event.0016.b.tt
+		trigger = {
+			has_character_flag = cop_dodole_water_bad
+		}
+		change_variable = {
+			name = dodole_success
+			add = -10
+		}
+		remove_character_flag = cop_dodole_water_bad		
+		stress_impact = {
+			ambitious = medium_stress_gain
+			diligent = medium_stress_gain
+			lazy = medium_stress_loss
+		}
+	}
+
+	# No: accept it
+	option = {
+		name = cop_slavic_decision_event.0016.e
+		custom_tooltip = cop_slavic_decision_event.0016.b.tt
+		trigger = {
+			has_character_flag = cop_dodole_water_no
+		}
+		change_variable = {
+			name = dodole_success
+			add = -20
+		}
+		remove_character_flag = cop_dodole_water_no
+		stress_impact = {
+			ambitious = medium_stress_gain
+			diligent = medium_stress_gain
+			lazy = medium_stress_loss
+		}
+	}
+
+	# Snake: accept it
+	option = {
+		name = cop_slavic_decision_event.0016.e
+		custom_tooltip = cop_slavic_decision_event.0016.b.tt
+		trigger = {
+			has_character_flag = cop_dodole_water_snake
+		}
+		change_variable = {
+			name = dodole_success
+			add = -20
+		}
+		remove_character_flag = cop_dodole_water_snake
+		stress_impact = {
+			brave = medium_stress_gain
+			craven = medium_stress_gain
+		}
+	}
+
+	# Bad/No: dig a well (regular)
+	option = {
+		name = cop_slavic_decision_event.0016.f
+		custom_tooltip = cop_slavic_decision_event.0016.a.tt
+		trigger = {
+			not = { has_trait = architect }
+			or = {
+				has_character_flag = cop_dodole_water_bad
+				has_character_flag = cop_dodole_water_no
+			}
+		}
+		change_variable = {
+			name = dodole_success
+			add = 15
+		}
+		remove_short_term_gold = major_gold_value
+		remove_character_flag = cop_dodole_water_bad
+		remove_character_flag = cop_dodole_water_no
+		stress_impact = {
+			greedy = medium_stress_gain
+		}
+	}
+
+	# Bad/No: dig a well (architect)
+	option = {
+		name = cop_slavic_decision_event.0016.f
+		custom_tooltip = cop_slavic_decision_event.0016.a.tt
+		trait = architect
+		trigger = {
+			has_trait = architect
+			or = {
+				has_character_flag = cop_dodole_water_bad
+				has_character_flag = cop_dodole_water_no
+			}
+		}
+		change_variable = {
+			name = dodole_success
+			add = 15
+		}
+		remove_character_flag = cop_dodole_water_bad
+		remove_character_flag = cop_dodole_water_no
+	}
+
+	# Snake: get water yourself
+	option = {
+		name = cop_slavic_decision_event.0016.g
+		trigger = {
+			has_character_flag = cop_dodole_water_snake
+		}
+		duel = {
+			skill = prowess
+			value = low_skill_rating
+			#Get the water.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = cop_slavic_decision_event.0016.g.tt_success
+				send_interface_toast = {
+					title = cop_slavic_decision_event.0016.g.tt_success
+					left_icon = root
+					add_prestige = minor_prestige_gain
+					custom_tooltip = cop_slavic_decision_event.0016.a.tt
+				}
+				change_variable = {
+					name = dodole_success
+					add = 15
+				}
+			}
+			#Get bitten.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = cop_slavic_decision_event.0016.g.tt_failure
+				send_interface_toast = {	
+					title = cop_slavic_decision_event.0016.g.tt_failure
+					left_icon = root
+					increase_wounds_effect = { REASON = snakes }
+					custom_tooltip = cop_slavic_decision_event.0016.b.tt
+				}
+				change_variable = {
+					name = dodole_success
+					add = -20
+				}
+			}
+		}
+		remove_character_flag = cop_dodole_water_snake
+		stress_impact = {
+			brave = medium_stress_loss
+			craven = medium_stress_gain
+		}
+	}
+
+	# Drown
+	option = {
+		name = cop_slavic_decision_event.0016.h
+		custom_tooltip = cop_slavic_decision_event.0016.a.tt
+		trigger = {
+			has_character_flag = cop_dodole_water_drown
+		}
+		change_variable = {
+			name = dodole_success
+			add = 20
+		}
+		remove_character_flag = cop_dodole_water_drown
 	}
 }
 

@@ -566,7 +566,7 @@ cop_slavic_yearly.0031 = {
 		character = scope:murderous_priest
 		animation = anger
 	}
-	override_background = { event_background = farmland }
+	override_background = { event_background = cop_slavic_temple }
 
 	trigger = {
 		is_available_adult = yes
@@ -695,7 +695,7 @@ cop_slavic_yearly.0041 = {
 	type = character_event
 	title = cop_slavic_yearly.0041.t
 	desc = cop_slavic_yearly.0041.desc
-	theme = faith
+	theme = stewardship
 	left_portrait = {
 		character = scope:trade_partner
 		animation = personality_greedy
@@ -794,7 +794,7 @@ cop_slavic_yearly.0041 = {
 	option = { #Let them come
 		name = cop_slavic_yearly.0041.a
 		custom_tooltip = cop_slavic_yearly.0041.a_tt
-		add_gold = massive_gold_value
+		add_gold = minor_gold_value
 		add_piety = miniscule_piety_loss
 		#Get development from more trade
 		send_interface_toast = {
@@ -807,12 +807,10 @@ cop_slavic_yearly.0041 = {
 				}
 			}
 		}
-		#Set up the next event with enraged priest
-		hidden_effect = {
-			trigger_event = {
-				id = cop_slavic_yearly.0042
-				days = { 15 30 }
-			}
+		#Set up future events
+		trigger_event = {
+			on_action = cop_christian_traders
+			days = { 15 30 }
 		}
 		stress_impact = {
 			zealous = minor_stress_impact_gain
@@ -829,7 +827,7 @@ cop_slavic_yearly.0041 = {
 	option = { #Don't want the likes of you here
 		name = cop_slavic_yearly.0041.b
 		custom_tooltip = cop_slavic_yearly.0041.b_tt
-		add_piety = medium_piety_gain
+		add_piety = minor_piety_gain
 		stress_impact = {
 			greedy = medium_stress_impact_gain
 		}
@@ -853,21 +851,61 @@ cop_slavic_yearly.0041 = {
 	}
 }
 
-#Volkhv is upset
+#Christians hold a rite
 cop_slavic_yearly.0042 = {
 	type = character_event
-	title = cop_slavic_yearly.0042.t
-	desc = cop_slavic_yearly.0042.desc
+	title = {
+		triggered_desc = {
+			trigger = {
+				var:cop_priest_traders = 2
+			}
+			desc = cop_slavic_yearly.0042.t_enraged
+		}
+		triggered_desc = {
+			trigger = {
+				var:cop_priest_traders = 1
+			}
+			desc = cop_slavic_yearly.0042.t_amused
+		}
+	}
+	desc = {
+		triggered_desc = {
+			trigger = {
+				var:cop_priest_traders = 2
+			}
+			desc = cop_slavic_yearly.0042.desc_enraged
+		}
+		triggered_desc = {
+			trigger = {
+				var:cop_priest_traders = 1
+			}
+			desc = cop_slavic_yearly.0042.desc_amused
+		}
+	}
 	theme = faith
 	left_portrait = {
 		character = scope:christian_priest
-		animation = fear
+		triggered_animation = {
+			trigger = { ROOT = { var:cop_priest_traders = 2 } }
+			animation = fear
+		}
+		triggered_animation = {
+			trigger = { ROOT = { var:cop_priest_traders = 1 } }
+			animation = shame
+		}
 	}
 	right_portrait = {
 		character = scope:enraged_priest
-		animation = anger
+		triggered_animation = {
+			trigger = { ROOT = { var:cop_priest_traders = 2 } }
+			animation = anger
+		}
+		triggered_animation = {
+			trigger = { ROOT = { var:cop_priest_traders = 1 } }
+			animation = laugh
+		}
 	}
-	override_background = { event_background = fp1_tribal_temple }
+	override_background = { event_background = cop_slavic_temple }
 
 	trigger = {
 		is_available_adult = yes
@@ -877,12 +915,79 @@ cop_slavic_yearly.0042 = {
 	}
 
 	immediate = { 
+		random_list = {
+			60 = {
+				set_variable = {
+					name = cop_priest_traders
+					# Value 1 for amused priest
+					value = 1
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = zealous }
+					add = -60
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = callous }
+					add = -30
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = sadistic }
+					add = -60
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = cynical }
+					add = 30
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = forgiving }
+					add = 30
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = calm }
+					add = 30
+				}
+			}
+			40 = {
+				set_variable = {
+					name = cop_priest_traders
+					# Value 2 for enraged priest
+					value = 2
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = zealous }
+					add = 60
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = callous }
+					add = 30
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = sadistic }
+					add = 30
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = cynical }
+					add = -30
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = forgiving }
+					add = -30
+				}
+				modifier = {
+					scope:enraged_priest = { has_trait = calm }
+					add = -30
+				}
+			}
+		}
 		cp:councillor_court_chaplain = { save_scope_as = enraged_priest }
 	}
 
 	option = { #Go to the veche
 		name = cop_slavic_yearly.0042.a
 		custom_tooltip = cop_slavic_yearly.0042.a_tt
+		trigger = {
+			var:cop_priest_traders = 2
+		}
 		#Set up the veche event
 		hidden_effect = {
 			trigger_event = {
@@ -903,6 +1008,9 @@ cop_slavic_yearly.0042 = {
 
 	option = { #Refuse to consider this
 		name = cop_slavic_yearly.0042.b
+		trigger = {
+			var:cop_priest_traders = 2
+		}
 		add_piety = medium_piety_loss
 		stress_impact = {
 			zealous = medium_stress_impact_gain
@@ -926,6 +1034,28 @@ cop_slavic_yearly.0042 = {
 			ai_value_modifier = {
 				ai_zeal = -0.5
 			}
+		}
+	}
+
+	option = { #Convert yourself
+		name = cop_slavic_yearly.0042.c
+		# You convert to scope:christian_priest.faith's faith.
+		set_character_faith_with_conversion = scope:christian_priest.faith
+		# You lose a level of piety.
+		add_piety_level = -1
+		stress_impact = {
+			zealous = major_stress_impact_gain
+		}
+
+		ai_chance = {
+			base = 0
+		}
+	}
+
+	option = { #Nothing happends
+		name = cop_slavic_yearly.0042.d
+		trigger = {
+			var:cop_priest_traders = 1
 		}
 	}
 }
@@ -1212,7 +1342,7 @@ cop_slavic_yearly.0044 = {
 		character = scope:enraged_priest
 		animation = personality_vengeful
 	}
-	override_background = { event_background = army_camp }
+	override_background = { event_background = cop_slavic_temple }
 
 	trigger = {
 		is_available_adult = yes
@@ -1527,6 +1657,31 @@ cop_slavic_yearly.0046 = {
 	}
 }
 
+# Everything goes well
+cop_slavic_yearly.0047 = {
+	type = character_event
+	title = cop_slavic_yearly.0047.t
+	desc = cop_slavic_yearly.0047.desc
+	theme = stewardship
+	left_portrait = {
+		character = scope:trade_partner
+		animation = personality_greedy
+	}
+	right_portrait = {
+		character = scope:christian_priest
+		animation = personality_zealous
+	}
+	override_background = { event_background = market }
+
+	option = {
+		name = cop_slavic_yearly.0047.a
+		add_gold = minor_gold_value
+		capital_province.county = {
+			change_development_level = 2
+		}
+	}
+}
+
 #########################
 # Rampant Skomorokhs
 # by Artem Samarsky
@@ -1545,7 +1700,7 @@ cop_slavic_yearly.0050 = {
 		character = scope:realm_priest
 		animation = personality_zealous
 	}
-	override_background = { event_background = farmland }
+	override_background = { event_background = throne_room }
 
 	trigger = {
 		is_available_adult = yes
@@ -1687,7 +1842,7 @@ cop_slavic_yearly.0060 = {
 		character = scope:realm_marshal
 		animation = personality_bold
 	}
-	override_background = { event_background = fp1_viking_feast }
+	override_background = { event_background = cop_slavic_feast }
 
 	trigger = {
 		is_available_adult = yes
@@ -1770,7 +1925,7 @@ cop_slavic_yearly.0070 = {
 		character = scope:angered_priest
 		animation = personality_bold
 	}
-	override_background = { event_background = fp1_tribal_temple }
+	override_background = { event_background = cop_slavic_study }
 
 	trigger = {
 		is_available_adult = yes
@@ -1917,7 +2072,7 @@ cop_slavic_yearly.0081 = {
 		character = root
 		animation = happiness
 	}
-	override_background = { event_background = maslenitsa }
+	override_background = { event_background = cop_slavic_village_winter }
 
 	trigger = {
 		is_available_adult = yes
@@ -2032,7 +2187,7 @@ cop_slavic_yearly.0082 = {
 		character = root
 		animation = personality_forgiving
 	}
-	override_background = { event_background = maslenitsa }
+	override_background = { event_background = cop_slavic_village_winter }
 
 	option = { #Burn the dummy
 		name = cop_slavic_yearly.0082.a
@@ -2054,7 +2209,7 @@ cop_slavic_yearly.0083 = {
 		character = root
 		animation = personality_bold
 	}
-	override_background = { event_background = maslenitsa }
+	override_background = { event_background = cop_slavic_village_winter }
 
 	option = {
 		name = cop_slavic_yearly.0083.a
@@ -2075,7 +2230,7 @@ cop_slavic_yearly.0084 = {
 		character = root
 		animation = personality_greedy
 	}
-	override_background = { event_background = maslenitsa }
+	override_background = { event_background = cop_slavic_village_winter }
 
 	option = {
 		name = cop_slavic_yearly.0084.a
