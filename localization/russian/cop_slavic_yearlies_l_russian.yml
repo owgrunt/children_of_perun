@@ -1,15 +1,4 @@
 ﻿l_russian:
- cop_slavic_decision_event.0001.t:0 "Выбор божества"
- cop_slavic_decision_event.0001.desc:0 "[ROOT.Char.GetFaith.PantheonTerm|U] многочисленны и непостижимы, но все же некоторые из них притягивают меня сильнее прочих. Если я начну открыто поклоняться одному из божеств, то, несомненно, заслужу благословение покровителя и привлеку к себе единомышленников, а с ними - славу и богатство."
- cop_slavic_decision_event.0001.perun:0 "Перун-громовержец!"
- cop_slavic_decision_event.0001.veles:0 "Велес, скотий бог!"
- cop_slavic_decision_event.0001.dazhbog:0 "Дажьбог, Солнце-цесарь!"
- cop_slavic_decision_event.0001.stribog:0 "Стрибог всеведающий!"
- cop_slavic_decision_event.0001.svarog:0 "Сварог-задира!"
- cop_slavic_decision_event.0001.mokosh:0 "Мокошь, мать сыра земля!"
- cop_slavic_decision_event.0001.optout:0 "$religious_decision.0101.flavor$"
- cop_slavic_decision_event.0001.flavor:0 "$religious_decision.0101.flavor$"
-
 cop_slavic_yearly.0011.t:0 "Перуновы палицы"
  cop_slavic_yearly.0011.desc:0 "Пришел Перунов день! С самого раннего утра [ROOT.Char.GetFaith.BishopMalePlural] ходят по дворам да созывают горожан прославить громовержца доброй дракой.\n\nСмельчаки собираются в отряды и выискивают соперников, которым тоже охота заиметь пару хороших шишек. Большинство машет голыми кулаками, но кое-кто, желая похвалиться храбростью или [Concept( 'piety', 'набожностью' )|E], берет посвященную Перуну палицу с бронзовым оконечником и выходит против таких же ражих.\n\nОбычно [ROOT.Char.GetTitleAsName] тоже участвует в драке. Хороша потеха, но и опасность немалая."
  cop_slavic_yearly.0011.a:0 "Подать мне палицу!"
@@ -72,13 +61,17 @@ cop_slavic_yearly.0041.t:0 "В город прибыли купцы-христи
  cop_slavic_yearly.0041.b_tt:0 "Торговцев прогонят."
  cop_slavic_yearly.0041.b.trade_stifled:0 "Торговля страдает"
 
-cop_slavic_yearly.0042.t:0 "[enraged_priest.GetCouncilTitle] в ярости: христиане провели службу"
- cop_slavic_yearly.0042.desc:0 "До сих пор христианские купцы держали слово: сговаривались с нашими насчет будущих сделок, а так держались особняком. Однако вчера произошло кое-что неожиданное, и раздули эту историю до небес.\n\nОказалось, [christian_priest.GetTitledFirstName] провел службу у самых стен столицы — и пришли на ту службу не только иноземцы, но и два-три смерда. [enraged_priest.GetCouncilTitleFirstName] в ярости: мол, [christian_priest.GetFaith.GetAdjective] обряд на нашей земле оскорбляет богов, и смыть это оскорбление можно только кровью священника. [enraged_priest.GetSheHe|U] уже и вече [Select_CString(enraged_priest.IsFemale, 'созвала', 'созвал' )] и требует схватить священника."
+cop_slavic_yearly.0042.t_enraged:0 "[enraged_priest.GetCouncilTitle] в ярости: христиане провели службу"
+ cop_slavic_yearly.0042.t_amused:0 "Everyone Amused by a Christian Ritual"
+ cop_slavic_yearly.0042.desc_enraged:0 "До сих пор христианские купцы держали слово: сговаривались с нашими насчет будущих сделок, а так держались особняком. Однако вчера произошло кое-что неожиданное, и раздули эту историю до небес.\n\nОказалось, [christian_priest.GetTitledFirstName] провел службу у самых стен столицы — и пришли на ту службу не только иноземцы, но и два-три смерда. [enraged_priest.GetCouncilTitleFirstName] в ярости: мол, [christian_priest.GetFaith.GetAdjective] обряд на нашей земле оскорбляет богов, и смыть это оскорбление можно только кровью священника. [enraged_priest.GetSheHe|U] уже и вече [Select_CString(enraged_priest.IsFemale, 'созвала', 'созвал' )] и требует схватить священника."
+ cop_slavic_yearly.0042.desc_amused:0 "The Christian traders have been largely upholding their side of the bargain, connecting with local merchants for potential trade deals and otherwise keeping to themselves. Although yesterday there occurred an unexpected complication, it did not lead to any lasting harm.\n\nIt seems that [christian_priest.GetTitledFirstName] has been going aroung, inviting anyone who would listen to join the mass he was planning to hold in the trader's camp just outside the [capital_county.GetAdjectiveNoTooltip] walls. Apparently, some [enraged_priest.GetFaith.GetAdherentNamePlural] did join in, amused by the tales of virgin birth and walking on water.\n\nNow the [christian_priest.GetTitledFirstName]'s wierd rituals and tales have become the laughing stock in the community, with [enraged_priest.GetCouncilTitleFirstName] even going as far as making a bawdy song based on the tales, now sung in all of the inns of [capital_county.GetAdjectiveNoTooltip]."
  cop_slavic_yearly.0042.a:0 "Послушаем, что народ скажет."
  cop_slavic_yearly.0042.a_tt:0 "Решение будет принято общим советом."
  cop_slavic_yearly.0042.b:0 "Гостей никто не тронет."
  cop_slavic_yearly_041_refused:0 "Милость к христианам"
  cop_slavic_yearly.0042.b.locals_outraged:0 "$cop_slavic_yearly.0031.b.locals_outraged$"
+ cop_slavic_yearly.0042.c:0 "This new faith actually sounds quite intriguing."
+ cop_slavic_yearly.0042.d:0 "They are lucky we're so accepting."
 
 cop_slavic_yearly.0043.t:0 "Вече требует крови"
  cop_slavic_yearly.0043.desc:0 "[enraged_priest.GetCouncilTitleFirstName] не [Select_CString(enraged_priest.IsFemale, 'теряла', 'терял' )] времени зря: [enraged_priest.GetSheHe] усердно [Select_CString(enraged_priest.IsFemale, 'насаждала', 'насаждал' )] слухи и [Select_CString(enraged_priest.IsFemale, 'клеветала', 'клеветал' )] на священника, и вече требует, чтобы его принесли в жертву богам.\n\nИ все же у меня есть выбор. Можно попробовать сторговаться с гостями и заплатить им достаточно, чтобы они согласились выдать священника. Можно забрать [christian_priest.GetHerHim] силой, но мне придется пойти против собственного слова, и тогда уж выгодных сделок ждать будет нечего. А еще [enraged_priest.GetCouncilTitleFirstName] не [Select_CString(enraged_priest.IsFemale, 'всесильна', 'всесилен' )]: неужто я не убежу вече, что [christian_priest.GetTitledFirstName] того не стоит? Наконец, я могу просто-напросто разогнать вече."
@@ -121,6 +114,10 @@ cop_slavic_yearly.0046.t:0 "Вече осталось при своем мнен
  cop_slavic_yearly.0046.b_success:0 "$cop_slavic_yearly.0043.b_success$"
  cop_slavic_yearly.0046.b_failure:0 "$cop_slavic_yearly.0043.b_failure$"
  cop_slavic_yearly.0046.c:0 "$cop_slavic_yearly.0043.d$"
+
+cop_slavic_yearly.0047.t:0 "Booming Trade"
+ cop_slavic_yearly.0047.desc:0 "Thanks to the successful trade deal with [trade_partner.GetTitledFirstName], the economy of [ROOT.Char.GetPrimaryTitle.GetBaseNameNoTier] is flourishing. The influx of new goods, including luxury items and high-quality textiles, has greatly boosted the local economy.\n\nAs trade flourishes, the demand for skilled craftsmen and artisans has also increased. Many people have turned to these trades as a way to make a living, and the quality of their work has improved due to the influx of new ideas and techniques from the trade delegation. The region is becoming known for its high-quality crafts, and traders from far and wide come to [ROOT.Char.GetPrimaryTitle.GetBaseNameNoTier] to purchase these items."
+ cop_slavic_yearly.0047.a:0 "More trade means more gold in my coffers!"
 
 cop_slavic_yearly.0050.t:0 "Скоморохи буянят"
  cop_slavic_yearly.0050.desc:0 "Скоморохи, наряженные в бабское платье, шкуры или вывернутую наизнанку одежду, целыми ватагами разгуливают по деревням с песнями и плясками, громогласно требуя у селян еду, питье и места для ночлега. Попробуй таким откажи! Натешившись, ряженые уходят, а деревенским остается звон в ушах, полегчавшие кошели да пузатые бабы.\n\nНынче вокруг столицы беспутничает особо шумная ватага из доброй сотни скоморохов. Дорого обходится казне их веселье! Селяне и [realm_steward.GetCouncilTitleFirstName] только и мечтают, как бы найти на них управу, а вот [realm_priest.GetCouncilTitleFirstName] уверяет, что скоромохи угодны богам и трогать их не стоит."

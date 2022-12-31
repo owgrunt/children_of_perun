@@ -73,3 +73,6 @@
 
  cop_slavic_decision_dodole_county:0 "Dodola's Fertile Lands"
  cop_slavic_decision_dodole_character:0 "Summoned Dodola"
+
+ cop_generic_supported_argument:0 "Supported in an argument"
+ cop_generic_abandoned_argument:0 "Supported the other side in an argument"

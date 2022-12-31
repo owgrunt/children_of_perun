@@ -1,0 +1,103 @@
+#################
+# Steam English #
+#################
+
+Do you feel that some regions could use some more love? I have you covered (at least for Slavic people)!
+
+This mod includes a large set of flavour events, decisions and historical accuracy changes for Slavs, bringing life to Slavic religion, traditions and customs. All the content in this mod has been thoroughly researched and is based on reports of events and descriptions of Slavic customs coming from contemporaneous travellers, historians and chroniclers, widely accepted theories by modern scholars and ethnographic materials offering an insight into ancient festivals, beliefs and practises.
+
+[img]https://cdn.discordapp.com/attachments/942161514264133652/1058686676253294662/1_Events.png[/img]
+✽ 20 brand new events: take part in Slavic religious festivals, resolve incidents and disputes between your family, vassals and priests and get a taste of day-to-day princely life in medieval Slavia.
+✽ 20+ Northern Lords events made available to Slavic realms, with culturally-relevant names and flavour where necessary (requires the DLC).
+
+[img]https://cdn.discordapp.com/attachments/942161514264133652/1058686836463108197/2_Religion.png[/img]
+✽ Three separate faiths: East, West and South Slavic, with new holy sites, different tenets and original icon sets.
+✽ A religious decision to hold a Dodole rite, with dosens of potential variations in the subsequent events.
+✽ A decision to choose your patron deity with descriptions of major gods, relevant modifiers and original icons.
+✽ Revised Slavic gods, deities and religious terms based on modern scholarship.
+
+[img]https://cdn.discordapp.com/attachments/942161514264133652/1058686937768149062/3_Culture.png[/img]
+✽ Russian culture is re-named Rus’ and is now a hybrid culture of Norse and Ilmenian cultures, with access to culturally relevant Longships and Table of Princes innovations, as well as trial by combat.
+✽ Cultural and religious events are available to characters of all Slavic cultures, with inspirations for some events coming from East, West and South Slavs.
+✽ Major decision - Seek a New Faith for the Rus' - that is directly based on the Russian Primary Chronicle and sparks a branching chain of 10+ events.
+
+[img]https://cdn.discordapp.com/attachments/942161514264133652/1058687030030237776/4_Team.png[/img]
+✽ Ideas, research, scripting and English texts by owgrunt (Artem Samarsky)
+✽ Russian texts and editing by smakkabagms (Maria Kuznetsova)
+✽ Honourable mention to the members of CK3 Mod Co-op for answering a lot of stupid questions from me.
+
+[img]https://cdn.discordapp.com/attachments/942161514264133652/1058687113589162055/5_community.png[/img]
+✽ If you wish to join our team, discuss the mod, offer suggestions or report issues, you are very welcome on our discord server: https://discord.gg/AES395XuCV
+
+[img]https://cdn.discordapp.com/attachments/942161514264133652/1058687221567324241/6_plans.png[/img]
+✽ Different religious decisions for all Slavic faiths.
+✽ A decision to unite all Slavic faiths into one
+✽ Unique cultural traditions for Slavic peoples.
+✽ Even more events and decisions focusing on Slavic paganism, tribal and feudal life, drawing inspiration from different Slavic cultures.
+
+[img]https://cdn.discordapp.com/attachments/942161514264133652/1058687337015554118/7_Changelog.png[/img]
+1.2:
+✽ Added a religious decision to hold a Dodole rite (based on South Slavic tradition), with dosens of potential variations in the subsequent events (depending on your luck and the character's traits).
+✽ Added more options to the Christian traders event, to make it more balanced and interesting.
+✽ Added 9 uniqe event backgrounds.
+✽ Added 2 uniqe decision images (choose personal deity, Dodole).
+✽ Added 2 new loading images - “Bayan” by Victor Vasnetsov and "The Funeral of Ruz in Bulgar" by Henryk Siemiradzki.
+
+Version 1.1:
+✽ Added 1.7 support.
+✽ Added separate East, West and South Slavic faiths within the Slavic religion.
+✽ Added four paintings by Vasnetsov, Roerich and Avilov as new loading screens.
+✽ Added a mechanic, where unreformed pagans will be much more likely to convert to a reformed version of their faith over time.
+✽ Fixed the silver spoon event not requiring any spending.
+
+Version 1.0.2:
+✽ Replaced Russians with Rus' and Russes.
+✽ Reduced some personal deity modifiers.
+✽ Made the second option in the "Clubbing for Perun" event a bit safer.
+
+#################
+# Steam Russian #
+#################
+
+Вам тоже кажется, что в некоторых регионах пустовато? 
+
+Этот мод добавит в игру целый ряд событий, решений и нововведений для славянских народов. Каждое из них полностью соответствует современным научным взглядам на славянское язычество и традиции: при разработке использовались записи современников и летописцев и более поздние этнографические данные.
+
+[img]https://media.discordapp.net/attachments/942161568945303602/942167225031331920/r1_Flavour_Events.png[/img]
+✽ 20 новых событий, с которыми вы окунетесь в повседневную жизнь славянского князя. Вас ждут религиозные празднества, непростые конфликты между близкими, подданными и жрецами и многое другое.
+✽ 20+ событий из Northern Lords, адаптированных под славянскую специфику (требуется соответствующее DLC).
+✽ 1 серьезное решение, напрямую основанное на знаменитом испытании вер, описанном в "Повести временных лет".  Решение запускает цепочку из 10+ событий с разнообразными последствиями.
+
+[img]https://media.discordapp.net/attachments/942161568945303602/942167301522874438/r2_Religion.png[/img]
+✽ Решение "Определить личное божество" с описанием основных богов, модификаторами и оригинальными символами.
+✽ Список славянских богов и религиозных терминов пересмотрен с учетом мнения современных ученых.
+
+[img]https://media.discordapp.net/attachments/942161568945303602/942167372729577493/r3_Culture.png[/img]
+✽ Русская культура теперь гибрид скандинавской и ильменской культуры; игрокам откроются инновации "Драккары" и "Стол королей" (для восточных славян эта инновация переименована в "Княжеский стол"), а также  суд поединком.
+✽ Большинство новых событий доступны представителям всех славянских культур, хотя отдельные из них опираются на свидетельства о южных, восточных или западных народностях.
+
+[img]https://media.discordapp.net/attachments/942161568945303602/942167451708301322/r4_Plans.png[/img]
+✽ Разработать отдельные славянские веры для восточных, западных и южных славян - с разными божествами, религиозными терминами и списками священных мест.
+✽ Создать для славянских культур уникальные традиции.
+✽ Написать еще больше событий, посвященных славянскому язычеству, племенной и феодальной жизни в разных уголках славянского мира.
+
+[img]https://media.discordapp.net/attachments/942161568945303602/942167503067557908/r5_Team.png[/img]
+✽ Идея, сбор данных, программирование и тексты на английском - owgrunt (Артем Самарский)
+✽ Тексты на русском языке и редактура - smakkabagms (Мария Кузнецова)
+✽ Отдельное спасибо членам CK3 Mod Co-op за то, что отвечали на мои глупые вопросы.
+
+[img]https://media.discordapp.net/attachments/942161568945303602/942167586261577808/r6_Community.png[/img]
+✽ Если вы хотите помочь с разработкой мода, обсудить его, поделиться предложениями или сообщить об ошибках, приходите к нам в дискорд: https://discord.gg/qDNSErSD9Y
+
+[img]https://media.discordapp.net/attachments/942161568945303602/942765247314399262/r7_Changelog.png[/img]
+Версия 1.1:
+✽ Добавил поддержку 1.7.
+✽ Добавил восточную, западную и южную славянские веры.
+✽ Добавил четыре картины (Васнецов, Рерих, Авилов) на экран загрузки.
+✽ Добавил механику, благодаря которой нереформированные язычники постепенно переходят в реформированный вариант своей религии (после реформации).
+✽ Исправил ошибку, из-за которой серебряные ложки для дружины были бесплатны.
+
+Версия 1.0.2:
+✽ Исправил "русских" на "русов", изменил "Российскую империю" на "Великую Русь".
+✽ Снизил некоторые модификаторы личных божеств.
+✽ Сделал второй вариант в событии "Перуновы палицы" более безопасным.

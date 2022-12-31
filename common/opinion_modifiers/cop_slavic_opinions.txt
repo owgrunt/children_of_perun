@@ -115,3 +115,15 @@ cop_dodle_daughter_negative = {
 	decaying = yes
 	years = 5
 }
+
+cop_generic_supported_argument = {
+	opinion = 15
+	decaying = yes
+	years = 5
+}
+
+cop_generic_abandoned_argument = {
+	opinion = -15
+	decaying = yes
+	years = 5
+}

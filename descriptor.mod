@@ -1,4 +1,4 @@
-version="1.1.1"
+version="1.2"
 tags={
 	"Historical"
 	"Culture"
@@ -8,5 +8,5 @@ tags={
 }
 picture="thumbnail.png"
 name="Children of Perun: a Slavic Flavour Mod"
-supported_version="1.7.*"
+supported_version="1.8.*"
 remote_file_id="2751710778"
